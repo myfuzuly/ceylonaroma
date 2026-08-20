@@ -1,0 +1,16 @@
+<?php
+
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+
+$appRoot = dirname(__DIR__) . '/ceylon_aroma';
+
+if (file_exists($maintenance = $appRoot . '/storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+require $appRoot . '/vendor/autoload.php';
+
+(require_once $appRoot . '/bootstrap/app.php')
+    ->handleRequest(Request::capture());
