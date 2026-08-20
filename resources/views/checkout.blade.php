@@ -27,33 +27,33 @@
                     <div class="checkout-section-title">Contact & Shipping</div>
                     <div class="form-row-2">
                         <div class="form-group">
-                            <label>Full Name *</label>
-                            <input type="text" name="name" value="{{ old('name', $customer?->name) }}" required
+                            <label for="co-name">Full Name *</label>
+                            <input type="text" id="co-name" name="name" value="{{ old('name', $customer?->name) }}" required autocomplete="name"
                                    class="form-control @error('name') is-invalid @enderror" placeholder="John Smith">
                             @error('name')<span class="invalid-feedback">{{ $message }}</span>@enderror
                         </div>
                         <div class="form-group">
-                            <label>Email Address *</label>
-                            <input type="email" name="email" value="{{ old('email', $customer?->email) }}" required
+                            <label for="co-email">Email Address *</label>
+                            <input type="email" id="co-email" name="email" value="{{ old('email', $customer?->email) }}" required autocomplete="email"
                                    class="form-control @error('email') is-invalid @enderror" placeholder="john@company.com">
                             @error('email')<span class="invalid-feedback">{{ $message }}</span>@enderror
                         </div>
                     </div>
                     <div class="form-row-2">
                         <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" name="phone" value="{{ old('phone', $customer?->phone) }}"
+                            <label for="co-phone">Phone</label>
+                            <input type="text" id="co-phone" name="phone" value="{{ old('phone', $customer?->phone) }}" autocomplete="tel"
                                    class="form-control" placeholder="+1 234 567 8900">
                         </div>
                         <div class="form-group">
-                            <label>Company</label>
-                            <input type="text" name="company" value="{{ old('company', $customer?->company) }}"
+                            <label for="co-company">Company</label>
+                            <input type="text" id="co-company" name="company" value="{{ old('company', $customer?->company) }}" autocomplete="organization"
                                    class="form-control" placeholder="Your Company Ltd">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Country *</label>
-                        <select name="country" required class="form-control @error('country') is-invalid @enderror">
+                        <label for="co-country">Country *</label>
+                        <select id="co-country" name="country" required class="form-control @error('country') is-invalid @enderror">
                             <option value="">Select Country</option>
                             @foreach(['United States','United Kingdom','Canada','Australia','Germany','France','Netherlands','Japan','China','India','UAE','Saudi Arabia','Singapore','Sri Lanka','Other'] as $c)
                                 <option value="{{ $c }}" {{ old('country', $customer?->country) == $c ? 'selected' : '' }}>{{ $c }}</option>
@@ -62,12 +62,12 @@
                         @error('country')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
-                        <label>Shipping Address</label>
-                        <textarea name="address" rows="3" class="form-control" placeholder="Street, City, State, ZIP">{{ old('address', $customer?->address) }}</textarea>
+                        <label for="co-address">Shipping Address</label>
+                        <textarea id="co-address" name="address" rows="3" class="form-control" placeholder="Street, City, State, ZIP" autocomplete="street-address">{{ old('address', $customer?->address) }}</textarea>
                     </div>
                     <div class="form-group">
-                        <label>Order Notes / Specifications</label>
-                        <textarea name="notes" rows="3" class="form-control" placeholder="Packaging requirements, certifications needed, delivery window, etc.">{{ old('notes') }}</textarea>
+                        <label for="co-notes">Order Notes / Specifications</label>
+                        <textarea id="co-notes" name="notes" rows="3" class="form-control" placeholder="Packaging requirements, certifications needed, delivery window, etc.">{{ old('notes') }}</textarea>
                     </div>
 
                     {{-- Payment Method --}}
@@ -95,6 +95,7 @@
                         </label>
                     </div>
 
+                    <div id="checkout-error" style="display:none;margin-top:.75rem;padding:.75rem 1rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;color:#b91c1c;font-size:.875rem"></div>
                     <button type="submit" class="btn btn-gold btn-block mt-4" id="submit-btn">
                         Place Order
                     </button>
@@ -124,40 +125,59 @@
     </div>
 </section>
 
+@push('scripts')
 <script>
-document.getElementById('checkout-form').addEventListener('submit', function(e) {
-    const method = document.querySelector('input[name="payment_method"]:checked').value;
-    if (method === 'payhere') {
-        e.preventDefault();
-        submitPayhere();
+(function(){
+    var btn = document.getElementById('submit-btn');
+    var errBox = document.getElementById('checkout-error');
+
+    function showError(msg) {
+        errBox.textContent = msg;
+        errBox.style.display = 'block';
+        errBox.scrollIntoView({behavior:'smooth',block:'nearest'});
+        btn.disabled = false;
+        btn.textContent = 'Place Order';
     }
-});
 
-function submitPayhere() {
-    const form = document.getElementById('checkout-form');
-    const data = new FormData(form);
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        var method = document.querySelector('input[name="payment_method"]:checked').value;
+        if (method === 'payhere') {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.textContent = 'Redirecting to PayHere…';
+            errBox.style.display = 'none';
+            submitPayhere();
+        } else {
+            btn.disabled = true;
+            btn.textContent = 'Placing Order…';
+        }
+    });
 
-    fetch('{{ route("checkout.payhere.init") }}', {
-        method: 'POST',
-        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
-        body: data
-    })
-    .then(r => r.json())
-    .then(json => {
-        if (json.error) { alert(json.error); return; }
-        // Build PayHere form and submit
-        const ph = document.createElement('form');
-        ph.method = 'POST';
-        ph.action = json.checkout_url;
-        Object.entries(json.fields).forEach(([k, v]) => {
-            const inp = document.createElement('input');
-            inp.type = 'hidden'; inp.name = k; inp.value = v;
-            ph.appendChild(inp);
-        });
-        document.body.appendChild(ph);
-        ph.submit();
-    })
-    .catch(() => alert('Payment initiation failed. Please try again.'));
-}
+    function submitPayhere() {
+        var form = document.getElementById('checkout-form');
+        var data = new FormData(form);
+        fetch('{{ route("checkout.payhere.init") }}', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+            body: data
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(json){
+            if (json.error) { showError(json.error); return; }
+            var ph = document.createElement('form');
+            ph.method = 'POST';
+            ph.action = json.checkout_url;
+            Object.entries(json.fields).forEach(function([k,v]){
+                var inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = k; inp.value = v;
+                ph.appendChild(inp);
+            });
+            document.body.appendChild(ph);
+            ph.submit();
+        })
+        .catch(function(){ showError('Payment initiation failed. Please check your connection and try again.'); });
+    }
+})();
 </script>
+@endpush
 @endsection

@@ -71,8 +71,8 @@
 
                     {{-- Products of interest — main categories as pill checkboxes --}}
                     @if($categories->count())
-                    <div class="form-group">
-                        <label>Products of Interest</label>
+                    <fieldset class="form-group" style="border:none;padding:0;margin:0">
+                        <legend style="font-size:.875rem;font-weight:600;color:var(--canopy);margin-bottom:.5rem;padding:0">Products of Interest</legend>
                         <div class="cat-pill-group">
                             @foreach($categories as $cat)
                             <label class="cat-pill">
@@ -82,7 +82,7 @@
                             </label>
                             @endforeach
                         </div>
-                    </div>
+                    </fieldset>
                     @endif
 
                     <div class="form-group">
@@ -127,7 +127,7 @@
                         </div>
                         <div class="contact-info-text">
                             <strong>Email</strong>
-                            <span>{{ $settings['site_email'] ?? 'info@ceylonaroma.com' }}</span>
+                            <a href="mailto:{{ $settings['site_email'] ?? 'info@ceylonaroma.com' }}" class="contact-tel">{{ $settings['site_email'] ?? 'info@ceylonaroma.com' }}</a>
                         </div>
                     </div>
                     <a href="https://wa.me/94718821234" target="_blank" rel="noopener" class="whatsapp-cta-btn">

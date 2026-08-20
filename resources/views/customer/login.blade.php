@@ -7,7 +7,7 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-logo">
-                <img src="/img/logo.png" alt="Ceylon Aroma" class="auth-logo-img">
+                <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma" class="auth-logo-img">
             </div>
             <h1 class="auth-title">Welcome Back</h1>
             <p class="auth-subtitle">Sign in to your Ceylon Aroma account</p>
@@ -29,9 +29,12 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required
+                    <input type="password" id="password" name="password" required autocomplete="current-password"
                            placeholder="••••••••" class="form-control @error('password') is-invalid @enderror">
                     @error('password')<span class="invalid-feedback">{{ $message }}</span>@enderror
+                </div>
+                <div style="text-align:right;margin-top:-.25rem">
+                    <a href="{{ route('contact') }}" style="font-size:.8rem;color:var(--forest)">Forgot password? Contact us</a>
                 </div>
                 <button type="submit" class="btn btn-gold btn-block">Sign In</button>
             </form>

@@ -7,7 +7,7 @@
     <div class="auth-container auth-container-wide">
         <div class="auth-card">
             <div class="auth-logo">
-                <img src="/img/logo.png" alt="Ceylon Aroma" class="auth-logo-img">
+                <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma" class="auth-logo-img">
             </div>
             <h1 class="auth-title">Create Account</h1>
             <p class="auth-subtitle">Join Ceylon Aroma as a trade partner</p>
@@ -29,35 +29,35 @@
                 <input type="text" name="_hp" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;opacity:0">
                 <div class="form-row-2">
                     <div class="form-group">
-                        <label>Full Name *</label>
-                        <input type="text" name="name" value="{{ old('name') }}" required
+                        <label for="reg-name">Full Name *</label>
+                        <input type="text" id="reg-name" name="name" value="{{ old('name') }}" required autocomplete="name"
                                placeholder="John Smith" class="form-control @error('name') is-invalid @enderror">
                         @error('name')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
-                        <label>Email Address *</label>
-                        <input type="email" name="email" value="{{ old('email') }}" required
+                        <label for="reg-email">Email Address *</label>
+                        <input type="email" id="reg-email" name="email" value="{{ old('email') }}" required autocomplete="email"
                                placeholder="john@company.com" class="form-control @error('email') is-invalid @enderror">
                         @error('email')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                 </div>
                 <div class="form-row-2">
                     <div class="form-group">
-                        <label>Phone</label>
-                        <input type="text" name="phone" value="{{ old('phone') }}"
+                        <label for="reg-phone">Phone</label>
+                        <input type="text" id="reg-phone" name="phone" value="{{ old('phone') }}" autocomplete="tel"
                                placeholder="+94 77 123 4567" class="form-control @error('phone') is-invalid @enderror">
                         @error('phone')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
-                        <label>Company</label>
-                        <input type="text" name="company" value="{{ old('company') }}"
+                        <label for="reg-company">Company</label>
+                        <input type="text" id="reg-company" name="company" value="{{ old('company') }}" autocomplete="organization"
                                placeholder="Your Company Ltd" class="form-control @error('company') is-invalid @enderror">
                         @error('company')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Country *</label>
-                    <select name="country" required class="form-control @error('country') is-invalid @enderror">
+                    <label for="reg-country">Country *</label>
+                    <select id="reg-country" name="country" required class="form-control @error('country') is-invalid @enderror">
                         <option value="">Select Country</option>
                         @foreach(['United States','United Kingdom','Canada','Australia','Germany','France','Netherlands','Japan','China','India','UAE','Saudi Arabia','Singapore','Sri Lanka','Other'] as $c)
                             <option value="{{ $c }}" {{ old('country') == $c ? 'selected' : '' }}>{{ $c }}</option>
@@ -67,27 +67,27 @@
                 </div>
                 <div class="form-row-2">
                     <div class="form-group">
-                        <label>Password *</label>
-                        <input type="password" name="password" required minlength="8"
+                        <label for="reg-password">Password *</label>
+                        <input type="password" id="reg-password" name="password" required minlength="8" autocomplete="new-password"
                                placeholder="Min 8 characters" class="form-control @error('password') is-invalid @enderror">
                         @error('password')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
-                        <label>Confirm Password *</label>
-                        <input type="password" name="password_confirmation" required
+                        <label for="reg-password-confirm">Confirm Password *</label>
+                        <input type="password" id="reg-password-confirm" name="password_confirmation" required autocomplete="new-password"
                                placeholder="Repeat password" class="form-control">
                     </div>
                 </div>
                 {{-- Math CAPTCHA --}}
                 @php $q = session('captcha_question', $question ?? ''); @endphp
                 <div class="form-group captcha-group">
-                    <label class="captcha-label">
+                    <label class="captcha-label" for="reg-captcha">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         Security Check
                     </label>
                     <div class="captcha-row">
-                        <div class="captcha-question">{{ $q ?: $question }}</div>
-                        <input type="number" name="captcha" class="form-control captcha-input @if(session('captcha_error')) is-invalid @endif"
+                        <div class="captcha-question">{{ $q ?: ($question ?? '? + ? = ?') }}</div>
+                        <input type="number" id="reg-captcha" name="captcha" class="form-control captcha-input @if(session('captcha_error')) is-invalid @endif"
                                placeholder="Answer" required autocomplete="off" inputmode="numeric">
                     </div>
                     @if(session('captcha_error'))

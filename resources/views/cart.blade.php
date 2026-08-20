@@ -52,8 +52,8 @@
                         <form method="POST" action="{{ route('cart.remove') }}" class="cart-remove-form">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $item['id'] }}">
-                            <button type="submit" class="cart-remove-btn" title="Remove">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                            <button type="submit" class="cart-remove-btn" aria-label="Remove {{ $item['name'] }} from cart" title="Remove">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
                             </button>
                         </form>
                     </div>
@@ -73,7 +73,8 @@
                         <a href="{{ route('checkout') }}" class="btn btn-gold btn-block mt-3">Proceed to Checkout</a>
                         <a href="{{ route('products.index') }}" class="btn btn-outline btn-block mt-2">Continue Shopping</a>
 
-                        <form method="POST" action="{{ route('cart.clear') }}" class="mt-3">
+                        <form method="POST" action="{{ route('cart.clear') }}" class="mt-3"
+                              onsubmit="return confirm('Remove all items from your cart?')">
                             @csrf
                             <button type="submit" class="cart-clear-btn">Clear Cart</button>
                         </form>
@@ -85,17 +86,27 @@
 </section>
 
 <script>
-document.querySelectorAll('.qty-dec').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const input = document.querySelector(`.qty-input[data-id="${btn.dataset.id}"]`);
-        if (parseInt(input.value) > 1) { input.value = parseInt(input.value) - 1; input.form.submit(); }
+(function(){
+    var timers = {};
+    function debouncedSubmit(input) {
+        clearTimeout(timers[input.dataset.id]);
+        timers[input.dataset.id] = setTimeout(function(){ input.form.submit(); }, 600);
+    }
+    document.querySelectorAll('.qty-dec').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            var input = document.querySelector('.qty-input[data-id="'+btn.dataset.id+'"]');
+            if(input && parseInt(input.value) > 1){ input.value = parseInt(input.value) - 1; debouncedSubmit(input); }
+        });
     });
-});
-document.querySelectorAll('.qty-inc').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const input = document.querySelector(`.qty-input[data-id="${btn.dataset.id}"]`);
-        if (parseInt(input.value) < 999) { input.value = parseInt(input.value) + 1; input.form.submit(); }
+    document.querySelectorAll('.qty-inc').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            var input = document.querySelector('.qty-input[data-id="'+btn.dataset.id+'"]');
+            if(input && parseInt(input.value) < 999){ input.value = parseInt(input.value) + 1; debouncedSubmit(input); }
+        });
     });
-});
+    document.querySelectorAll('.qty-input').forEach(function(input){
+        input.addEventListener('change', function(){ debouncedSubmit(input); });
+    });
+})();
 </script>
 @endsection

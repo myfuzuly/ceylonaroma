@@ -102,18 +102,18 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
                                     data-index="{{ $vi }}"
                                     data-price="{{ $variant['price'] ?? '' }}"
                                     data-unit="{{ $variant['price_unit'] ?? 'kg' }}"
-                                    data-currency="{{ $product->currency }}"
-                                    data-image="{{ $variant['image'] ? asset('storage/'.$variant['image']) : '' }}">
+                                    data-currency="{{ $product->currency ?: 'USD' }}"
+                                    data-image="{{ !empty($variant['image']) ? asset('storage/'.$variant['image']) : '' }}">
                                     {{ $variant['name'] }}
                                 </button>
                                 @endforeach
                             </div>
                         </div>
                         {{-- Dynamic price display --}}
-                        @php $first = $variants[0]; @endphp
+                        @php $first = $variants[0]; $cur = $product->currency ?: 'USD'; @endphp
                         <div class="product-price-main" id="variant-price-display">
                             @if(isset($first['price']) && $first['price'] !== null)
-                            <span class="product-price-amount" id="vprice-amt">{{ number_format($first['price'], 2) }}</span>
+                            <span class="product-price-amount" id="vprice-amt">{{ $cur }} {{ number_format($first['price'], 2) }}</span>
                             @else
                             <div class="product-price-request" id="vprice-por">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -123,7 +123,7 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
                         </div>
                     @elseif($product->price)
                         <div class="product-price-main">
-                            <span class="product-price-amount">{{ number_format($product->price, 2) }}</span>
+                            <span class="product-price-amount">{{ $product->currency ?: 'USD' }} {{ number_format($product->price, 2) }}</span>
                         </div>
                     @else
                         <div class="product-price-request">
@@ -225,22 +225,27 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
 
 @endsection
 
+@push('scripts')
 <script>
-// Gallery thumb switching
+(function(){
+// Gallery thumb switching — also updates active thumb strip
 document.querySelectorAll('.gallery-thumb').forEach(function(thumb){
     thumb.addEventListener('click', function(){
-        document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.gallery-thumb').forEach(function(t){ t.classList.remove('active'); });
         thumb.classList.add('active');
         var main = document.getElementById('gallery-main');
         if(main) main.src = thumb.dataset.src;
     });
 });
+
 // Qty buttons on detail page
 var dqInput = document.getElementById('detail-qty');
-document.querySelector('.qty-dec-detail')?.addEventListener('click', function(){
+var decBtn = document.querySelector('.qty-dec-detail');
+var incBtn = document.querySelector('.qty-inc-detail');
+if(decBtn) decBtn.addEventListener('click', function(){
     if(dqInput && parseInt(dqInput.value) > 1) dqInput.value = parseInt(dqInput.value) - 1;
 });
-document.querySelector('.qty-inc-detail')?.addEventListener('click', function(){
+if(incBtn) incBtn.addEventListener('click', function(){
     if(dqInput && parseInt(dqInput.value) < 999) dqInput.value = parseInt(dqInput.value) + 1;
 });
 
@@ -250,25 +255,31 @@ document.querySelectorAll('.variant-pill').forEach(function(pill){
         document.querySelectorAll('.variant-pill').forEach(function(p){ p.classList.remove('active'); });
         pill.classList.add('active');
 
-        var price = pill.dataset.price;
-        var img   = pill.dataset.image;
+        var price    = pill.dataset.price;
+        var currency = pill.dataset.currency || 'USD';
+        var img      = pill.dataset.image;
 
         // Update price display
         var priceWrap = document.getElementById('variant-price-display');
         if(priceWrap){
             if(price){
-                priceWrap.innerHTML =
-                    '<span class="product-price-amount">'+parseFloat(price).toFixed(2)+'</span>';
+                priceWrap.innerHTML = '<span class="product-price-amount">'+currency+' '+parseFloat(price).toFixed(2)+'</span>';
             } else {
                 priceWrap.innerHTML = '<div class="product-price-request">Price on Request</div>';
             }
         }
 
-        // Swap main gallery image if variant has its own image
+        // Swap main gallery image and update active thumb
         if(img){
             var mainImg = document.getElementById('gallery-main');
             if(mainImg){ mainImg.src = img; }
+            // Highlight matching thumb if it exists
+            document.querySelectorAll('.gallery-thumb').forEach(function(t){
+                t.classList.toggle('active', t.dataset.src === img);
+            });
         }
     });
 });
+})();
 </script>
+@endpush

@@ -88,11 +88,9 @@
                     <h5>Company</h5>
                     <div class="footer-links">
                         <a href="{{ route('about') }}">About Us</a>
-                        <a href="{{ route('about') }}">Our Story</a>
                         <a href="{{ route('quality') }}">Quality Assurance</a>
                         <a href="{{ route('quality') }}">Our Certifications</a>
-                        <a href="{{ route('about') }}">Sustainability</a>
-                        <a href="{{ route('contact') }}">Careers</a>
+                        <a href="{{ route('export') }}">Export Capabilities</a>
                         <a href="{{ route('contact') }}">Contact Us</a>
                     </div>
                 </div>
@@ -104,7 +102,7 @@
                         <a href="{{ route('about') }}">Why Sri Lanka</a>
                         <a href="{{ route('quality') }}">Our Certifications</a>
                         <a href="{{ route('export') }}">Shipping &amp; Delivery</a>
-                        <a href="{{ route('contact') }}">Terms &amp; Conditions</a>
+                        <a href="{{ route('terms') }}">Terms &amp; Conditions</a>
                     </div>
                 </div>
                 {{-- Contact --}}
@@ -124,7 +122,7 @@
                     </div>
                     <div class="footer-contact-item">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                        <span>{{ $settings['site_email'] ?? 'info@ceylonaroma.com' }}</span>
+                        <span><a href="mailto:{{ $settings['site_email'] ?? 'info@ceylonaroma.com' }}" class="footer-tel">{{ $settings['site_email'] ?? 'info@ceylonaroma.com' }}</a></span>
                     </div>
                     <div class="footer-contact-cta">
                         <a href="{{ route('contact') }}" class="btn btn-gold btn-sm">Request a Quote</a>

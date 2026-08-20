@@ -1468,7 +1468,7 @@ textarea.form-control{resize:vertical;min-height:120px}
 .about-hero-label{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:.4rem;margin-bottom:.85rem}
 .about-hero-sub{font-size:.95rem;color:var(--muted);line-height:1.75;max-width:54ch;margin-top:.75rem}
 .about-intro-sub{font-size:.7rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.65rem}
-.about-intro-body{font-size:.92rem;color:#3E5044;line-height:1.78}
+.about-intro-body{font-size:.95rem;color:var(--muted);line-height:1.78;margin-bottom:1rem}
 .about-intro-cta{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
 .about-main-img{width:100%;border-radius:16px;object-fit:cover;box-shadow:var(--shadow-md)}
 .about-stat-num{font-family:var(--font-serif);font-size:1.6rem;font-weight:800;color:#fff;line-height:1;display:block}
@@ -1519,9 +1519,7 @@ textarea.form-control{resize:vertical;min-height:120px}
 .captcha-question{background:var(--parchment);border:1.5px solid var(--border);border-radius:var(--radius);padding:.68rem 1.1rem;font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--canopy);white-space:nowrap;letter-spacing:.03em;min-width:110px;text-align:center}
 .captcha-input{max-width:120px;text-align:center;font-size:1rem;font-weight:600}
 
-/* ── About intro body ── */
-.about-intro-body{color:var(--muted);line-height:1.78;font-size:.95rem;margin-bottom:1rem}
-.about-intro-cta{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+/* ── About intro body — canonical rules are above with other .about-* selectors ── */
 
 /* ── Products-grid-4 responsive (matches .products-grid breakpoints) ── */
 @media(max-width:1100px){.products-grid-4{grid-template-columns:repeat(3,1fr)}}
