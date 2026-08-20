@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordResetMail;
 use App\Models\Customer;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class CustomerAuthController extends Controller
@@ -208,6 +211,68 @@ class CustomerAuthController extends Controller
 
         $this->setSession($customer);
         return redirect()->route('customer.dashboard')->with('success', 'Phone verified. Welcome back!');
+    }
+
+    /* ── Forgot Password ── */
+    public function showForgotPassword()
+    {
+        if (session('customer_id')) return redirect()->route('customer.dashboard');
+        return view('customer.forgot-password');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $customer = Customer::where('email', $request->email)->first();
+
+        if ($customer) {
+            $token = Str::random(64);
+            DB::table('customer_password_resets')->updateOrInsert(
+                ['email' => $customer->email],
+                ['token' => Hash::make($token), 'created_at' => now()]
+            );
+            $url = route('customer.reset-password') . '?token=' . $token . '&email=' . urlencode($customer->email);
+            Mail::to($customer->email)->send(new PasswordResetMail($customer->name, $url));
+        }
+
+        return back()->with('success', 'If that email is registered, a reset link has been sent. Check your inbox (and spam folder).');
+    }
+
+    public function showResetPassword(Request $request)
+    {
+        $token = $request->query('token', '');
+        $email = $request->query('email', '');
+        if (!$token || !$email) return redirect()->route('customer.forgot-password')->with('error', 'Invalid reset link.');
+        return view('customer.reset-password', compact('token', 'email'));
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token'    => 'required',
+            'email'    => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $record = DB::table('customer_password_resets')->where('email', $request->email)->first();
+
+        if (!$record || !Hash::check($request->token, $record->token)) {
+            return back()->with('error', 'Invalid or expired reset link. Please request a new one.');
+        }
+
+        if (now()->diffInMinutes($record->created_at) > 60) {
+            DB::table('customer_password_resets')->where('email', $request->email)->delete();
+            return back()->with('error', 'This reset link has expired. Please request a new one.');
+        }
+
+        $customer = Customer::where('email', $request->email)->first();
+        if (!$customer) return back()->with('error', 'Account not found.');
+
+        $customer->update(['password' => Hash::make($request->password)]);
+        DB::table('customer_password_resets')->where('email', $request->email)->delete();
+
+        return redirect()->route('customer.login')->with('success', 'Password updated successfully. Please sign in.');
     }
 
     /* ── Logout ── */

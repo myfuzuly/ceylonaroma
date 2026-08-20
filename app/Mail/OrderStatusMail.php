@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Mail;
+
+use App\Models\Order;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
+
+class OrderStatusMail extends Mailable implements \Illuminate\Contracts\Queue\ShouldQueue
+{
+    use Queueable, SerializesModels;
+
+    public function __construct(public Order $order) {}
+
+    public function envelope(): Envelope
+    {
+        $label = match($this->order->status) {
+            'confirmed'  => 'Order Confirmed',
+            'processing' => 'Order Being Processed',
+            'shipped'    => 'Your Order Has Been Shipped',
+            'delivered'  => 'Order Delivered',
+            'cancelled'  => 'Order Cancelled',
+            default      => 'Order Update',
+        };
+        return new Envelope(subject: "{$label} — Ceylon Aroma #{$this->order->order_number}");
+    }
+
+    public function content(): Content
+    {
+        return new Content(view: 'emails.order-status');
+    }
+}

@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PayHereController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\SliderController;
 
@@ -27,6 +28,7 @@ Route::get('/quality', fn() => view('pages.quality'))->name('quality');
 Route::get('/private-label', fn() => abort(404))->name('private-label');
 Route::get('/privacy-policy', fn() => view('pages.privacy'))->name('privacy');
 Route::get('/terms-conditions', fn() => view('pages.terms'))->name('terms');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 /* ─── Cart ─── */
 Route::get('/cart',              [CartController::class, 'index'])->name('cart.index');
@@ -60,6 +62,12 @@ Route::prefix('account')->name('customer.')->group(function () {
     Route::post('/otp/send',        [CustomerAuthController::class, 'sendOtp'])->name('otp.send');
     Route::get('/otp/verify',       [CustomerAuthController::class, 'showVerifyOtp'])->name('otp.verify');
     Route::post('/otp/verify',      [CustomerAuthController::class, 'verifyOtp'])->name('otp.verify.post');
+
+    /* ─── Forgot / Reset Password ─── */
+    Route::get('/forgot-password',   [CustomerAuthController::class, 'showForgotPassword'])->name('forgot-password');
+    Route::post('/forgot-password',  [CustomerAuthController::class, 'sendResetLink'])->name('forgot-password.post')->middleware('throttle:5,10');
+    Route::get('/reset-password',    [CustomerAuthController::class, 'showResetPassword'])->name('reset-password');
+    Route::post('/reset-password',   [CustomerAuthController::class, 'resetPassword'])->name('reset-password.post');
 
     /* ─── Customer Protected ─── */
     Route::middleware('customer.auth')->group(function () {
@@ -110,6 +118,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{order}',             [Admin\OrderController::class, 'show'])->name('show');
             Route::patch('/{order}/status',    [Admin\OrderController::class, 'updateStatus'])->name('status');
         });
+
+        Route::resource('/users', Admin\UserController::class)->except(['show']);
 
         Route::get('/settings',  [Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [Admin\SettingController::class, 'update'])->name('settings.update');

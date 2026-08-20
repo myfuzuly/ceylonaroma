@@ -1595,3 +1595,175 @@ textarea.form-control{resize:vertical;min-height:120px}
     /* Reduce container padding further */
     .container{padding-left:.75rem;padding-right:.75rem}
 }
+
+/* ═══════════════════════════════════════
+   Toast Notification System
+   ═══════════════════════════════════════ */
+#toast-container{
+    position:fixed;top:1.25rem;right:1.25rem;
+    z-index:9999;display:flex;flex-direction:column;gap:.5rem;
+    pointer-events:none;
+}
+.toast{
+    display:flex;align-items:flex-start;gap:.65rem;
+    background:#fff;border-radius:10px;
+    padding:.85rem 1rem .85rem .9rem;
+    box-shadow:0 8px 32px rgba(0,0,0,.14),0 2px 8px rgba(0,0,0,.06);
+    min-width:260px;max-width:360px;
+    pointer-events:all;
+    border-left:3px solid var(--canopy);
+    animation:toastIn .28s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+.toast.toast-success{border-left-color:#16a34a}
+.toast.toast-error  {border-left-color:#dc2626}
+.toast.toast-warning{border-left-color:#d97706}
+.toast.toast-info   {border-left-color:#2563eb}
+.toast-icon{flex-shrink:0;margin-top:.1rem}
+.toast-msg{font-size:.875rem;line-height:1.45;color:var(--ink);flex:1}
+.toast-close{
+    flex-shrink:0;cursor:pointer;opacity:.4;padding:.1rem;
+    line-height:1;background:none;border:none;font-size:1rem;
+}
+.toast-close:hover{opacity:.8}
+.toast.toast-out{animation:toastOut .22s ease forwards}
+@keyframes toastIn{
+    from{opacity:0;transform:translateX(1.25rem) scale(.96)}
+    to  {opacity:1;transform:translateX(0) scale(1)}
+}
+@keyframes toastOut{
+    from{opacity:1;transform:translateX(0);max-height:100px;padding-top:.85rem;padding-bottom:.85rem;margin-bottom:0}
+    to  {opacity:0;transform:translateX(1.5rem);max-height:0;padding-top:0;padding-bottom:0;margin-bottom:0;overflow:hidden}
+}
+@media(max-width:480px){
+    #toast-container{left:.75rem;right:.75rem}
+    .toast{min-width:0;max-width:100%}
+}
+
+/* ═══════════════════════════════════════
+   Page Progress Bar
+   ═══════════════════════════════════════ */
+#page-progress{
+    position:fixed;top:0;left:0;right:0;height:3px;
+    background:var(--gold);z-index:10000;
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .25s ease;pointer-events:none;
+    will-change:transform;
+}
+
+/* ═══════════════════════════════════════
+   Password Toggle Button
+   ═══════════════════════════════════════ */
+.input-pwd-wrap{position:relative}
+.input-pwd-wrap input{padding-right:2.6rem}
+.pwd-toggle{
+    position:absolute;right:.7rem;top:50%;transform:translateY(-50%);
+    background:none;border:none;cursor:pointer;
+    color:var(--muted);padding:.25rem;
+    display:flex;align-items:center;justify-content:center;
+    line-height:1;
+}
+.pwd-toggle:hover{color:var(--canopy)}
+.pwd-toggle .eye-off{display:none}
+.pwd-toggle.showing .eye-on{display:none}
+.pwd-toggle.showing .eye-off{display:block}
+
+/* ═══════════════════════════════════════
+   Live Password Validation
+   ═══════════════════════════════════════ */
+.pwd-strength-bar{
+    height:3px;border-radius:2px;
+    background:var(--border);overflow:hidden;margin-top:.35rem;
+}
+.pwd-strength-fill{
+    height:100%;border-radius:2px;width:0;
+    transition:width .3s ease,background .3s ease;
+}
+.pwd-match-hint{
+    font-size:.74rem;margin-top:.25rem;display:none;
+}
+.pwd-match-hint.show-ok  {display:block;color:#16a34a}
+.pwd-match-hint.show-err {display:block;color:#dc2626}
+
+/* ═══════════════════════════════════════
+   Empty State Component
+   ═══════════════════════════════════════ */
+.empty-state{
+    text-align:center;padding:5rem 2rem;
+}
+.empty-state-icon{
+    width:76px;height:76px;margin:0 auto 1.5rem;
+    background:var(--cream-alt);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+}
+.empty-state h3{color:var(--canopy);margin-bottom:.5rem;font-size:1.25rem}
+.empty-state p{font-size:.93rem;color:var(--muted);max-width:40ch;margin:0 auto .75rem}
+
+/* ═══════════════════════════════════════
+   Cart / AJAX Loading States
+   ═══════════════════════════════════════ */
+.qty-form.loading .qty-btn{opacity:.35;pointer-events:none}
+.qty-form.loading .qty-input{opacity:.55}
+.cart-item.removing{opacity:.35;pointer-events:none;transition:opacity .2s}
+.quick-add-btn.is-adding{opacity:.6;pointer-events:none}
+.quick-add-btn.is-added{background:var(--forest)!important;color:#fff!important}
+
+/* ═══════════════════════════════════════
+   Auth page improvements
+   ═══════════════════════════════════════ */
+.auth-section{
+    min-height:calc(100vh - 80px);
+    display:flex;align-items:center;
+    padding:3rem 1rem;
+    background:linear-gradient(135deg,var(--cream) 0%,var(--parchment) 100%);
+}
+.auth-container{width:100%;max-width:440px;margin:0 auto}
+.auth-container-wide{max-width:620px}
+.auth-card{
+    background:#fff;border-radius:16px;
+    padding:2.25rem 2rem;
+    box-shadow:0 8px 40px rgba(27,67,50,.1);
+}
+.auth-logo{text-align:center;margin-bottom:1.25rem}
+.auth-logo-img{height:52px;margin:0 auto;object-fit:contain}
+.auth-title{
+    font-family:var(--font-serif);font-size:1.65rem;
+    font-weight:800;color:var(--canopy);
+    text-align:center;margin-bottom:.35rem;
+    letter-spacing:-.025em;
+}
+.auth-subtitle{
+    text-align:center;color:var(--muted);
+    font-size:.9rem;margin-bottom:1.5rem;
+}
+.auth-divider{
+    display:flex;align-items:center;gap:.75rem;
+    margin:1.25rem 0;
+    font-size:.78rem;color:var(--muted);
+}
+.auth-divider::before,.auth-divider::after{
+    content:'';flex:1;height:1px;background:var(--border);
+}
+.auth-social{display:flex;flex-direction:column;gap:.6rem}
+.btn-social{
+    display:flex;align-items:center;justify-content:center;gap:.6rem;
+    padding:.7rem 1rem;border-radius:8px;font-size:.88rem;font-weight:500;
+    border:1.5px solid var(--border);color:var(--ink);
+    transition:background .18s,border-color .18s;
+}
+.btn-social:hover{background:var(--cream-alt);border-color:var(--sage)}
+.btn-google{background:#fff}
+.btn-phone{background:#fff}
+.auth-footer-text{
+    text-align:center;font-size:.85rem;color:var(--muted);margin-top:1.25rem;
+}
+.auth-footer-text a{color:var(--forest);font-weight:500}
+.auth-alert{
+    border-radius:8px;padding:.75rem 1rem;margin-bottom:1rem;
+    font-size:.875rem;
+}
+.auth-alert-success{background:#eaf7f0;color:#166534;border:1px solid #bbf7d0}
+.auth-alert-error  {background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+
+/* ─ Forgot password link ─ */
+.forgot-link{font-size:.8rem;color:var(--forest);opacity:.8}
+.forgot-link:hover{opacity:1}

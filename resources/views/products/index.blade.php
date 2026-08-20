@@ -96,9 +96,11 @@
                 </div>
                 @endif
                 @else
-                <div style="text-align:center;padding:4rem 2rem;color:var(--muted)">
-                    <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
-                    <h3 style="color:var(--canopy);margin-bottom:.5rem">No products found</h3>
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                    <h3>No products found</h3>
                     <p>Try a different category or search term.</p>
                     <a href="{{ route('products.index') }}" class="btn btn-outline" style="margin-top:1rem">View All Products</a>
                 </div>

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderStatusMail;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -48,10 +50,21 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
+            'status' => 'required|in:pending,processing,confirmed,shipped,delivered,cancelled',
         ]);
 
+        $previous = $order->status;
         $order->update(['status' => $request->status]);
+
+        /* Send customer email on meaningful status transitions */
+        $notifyOn = ['confirmed', 'shipped', 'delivered', 'cancelled'];
+        if (in_array($request->status, $notifyOn) && $request->status !== $previous && $order->email) {
+            try {
+                Mail::to($order->email)->send(new OrderStatusMail($order));
+            } catch (\Throwable) {
+                /* Non-fatal — status is saved regardless */
+            }
+        }
 
         return back()->with('success', "Order #{$order->order_number} status updated to {$request->status}.");
     }
