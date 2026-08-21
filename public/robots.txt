@@ -6,4 +6,4 @@ Disallow: /checkout
 Disallow: /account/
 Disallow: /api/
 
-Sitemap: https://ceylonaroma.com/sitemap.php
+Sitemap: https://ceylonaroma.com/sitemap.xml

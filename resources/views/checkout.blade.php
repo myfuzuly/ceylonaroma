@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Checkout')
+@section('title', 'Submit Inquiry')
 
 @section('content')
 <section class="checkout-section">
     <div class="container">
-        <h1 class="page-title">Checkout</h1>
+        <h1 class="page-title">Submit Inquiry</h1>
 
         @if(session('error'))
             <div class="auth-alert auth-alert-error">{{ session('error') }}</div>
@@ -55,9 +55,7 @@
                         <label for="co-country">Country *</label>
                         <select id="co-country" name="country" required class="form-control @error('country') is-invalid @enderror">
                             <option value="">Select Country</option>
-                            @foreach(['United States','United Kingdom','Canada','Australia','Germany','France','Netherlands','Japan','China','India','UAE','Saudi Arabia','Singapore','Sri Lanka','Other'] as $c)
-                                <option value="{{ $c }}" {{ old('country', $customer?->country) == $c ? 'selected' : '' }}>{{ $c }}</option>
-                            @endforeach
+                            @include('partials.country-options', ['fieldName' => 'country', 'selected' => old('country', $customer?->country)])
                         </select>
                         @error('country')<span class="invalid-feedback">{{ $message }}</span>@enderror
                     </div>
@@ -70,34 +68,12 @@
                         <textarea id="co-notes" name="notes" rows="3" class="form-control" placeholder="Packaging requirements, certifications needed, delivery window, etc.">{{ old('notes') }}</textarea>
                     </div>
 
-                    {{-- Payment Method --}}
-                    <div class="checkout-section-title mt-4">Payment Method</div>
-                    <div class="payment-methods">
-                        <label class="payment-option">
-                            <input type="radio" name="payment_method" value="inquiry" checked>
-                            <div class="payment-option-body">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-                                <div>
-                                    <strong>Send Inquiry</strong>
-                                    <small>Place order as a quote request — we'll contact you within 24 hours with pricing</small>
-                                </div>
-                            </div>
-                        </label>
-                        <label class="payment-option">
-                            <input type="radio" name="payment_method" value="payhere">
-                            <div class="payment-option-body">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                                <div>
-                                    <strong>Pay Online (PayHere)</strong>
-                                    <small>Secure card or bank payment via PayHere — Sri Lanka's trusted payment gateway</small>
-                                </div>
-                            </div>
-                        </label>
-                    </div>
+                    {{-- Payment Method (PayHere hidden — inquiry only for now) --}}
+                    <input type="hidden" name="payment_method" value="inquiry">
 
                     <div id="checkout-error" style="display:none;margin-top:.75rem;padding:.75rem 1rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;color:#b91c1c;font-size:.875rem"></div>
                     <button type="submit" class="btn btn-gold btn-block mt-4" id="submit-btn">
-                        Place Order
+                        Submit Inquiry
                     </button>
                 </form>
             </div>
@@ -129,54 +105,10 @@
 <script>
 (function(){
     var btn = document.getElementById('submit-btn');
-    var errBox = document.getElementById('checkout-error');
-
-    function showError(msg) {
-        errBox.textContent = msg;
-        errBox.style.display = 'block';
-        errBox.scrollIntoView({behavior:'smooth',block:'nearest'});
-        btn.disabled = false;
-        btn.textContent = 'Place Order';
-    }
-
-    document.getElementById('checkout-form').addEventListener('submit', function(e) {
-        var method = document.querySelector('input[name="payment_method"]:checked').value;
-        if (method === 'payhere') {
-            e.preventDefault();
-            btn.disabled = true;
-            btn.textContent = 'Redirecting to PayHere…';
-            errBox.style.display = 'none';
-            submitPayhere();
-        } else {
-            btn.disabled = true;
-            btn.textContent = 'Placing Order…';
-        }
+    document.getElementById('checkout-form').addEventListener('submit', function() {
+        btn.disabled = true;
+        btn.textContent = 'Submitting…';
     });
-
-    function submitPayhere() {
-        var form = document.getElementById('checkout-form');
-        var data = new FormData(form);
-        fetch('{{ route("checkout.payhere.init") }}', {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
-            body: data
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(json){
-            if (json.error) { showError(json.error); return; }
-            var ph = document.createElement('form');
-            ph.method = 'POST';
-            ph.action = json.checkout_url;
-            Object.entries(json.fields).forEach(function([k,v]){
-                var inp = document.createElement('input');
-                inp.type = 'hidden'; inp.name = k; inp.value = v;
-                ph.appendChild(inp);
-            });
-            document.body.appendChild(ph);
-            ph.submit();
-        })
-        .catch(function(){ showError('Payment initiation failed. Please check your connection and try again.'); });
-    }
 })();
 </script>
 @endpush

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Order Confirmed')
+@section('title', 'Inquiry Submitted')
 
 @section('content')
 <section class="confirm-section">
@@ -12,8 +12,8 @@
                     <polyline points="22 4 12 14.01 9 11.01"/>
                 </svg>
             </div>
-            <h1 class="confirm-title">Order Placed!</h1>
-            <p class="confirm-subtitle">Thank you for your inquiry. We'll be in touch within 24 hours.</p>
+            <h1 class="confirm-title">Inquiry Submitted!</h1>
+            <p class="confirm-subtitle">Thank you — our export team will respond with a personalised quote within 24 hours.</p>
 
             <div class="confirm-order-num">
                 <span class="confirm-label">Order Reference</span>
@@ -60,6 +60,7 @@
                 @if(session('customer_id'))
                     <a href="{{ route('customer.orders') }}" class="btn btn-gold">My Orders</a>
                 @endif
+                <button type="button" onclick="window.print()" class="btn btn-outline">Print Confirmation</button>
                 <a href="{{ route('home') }}" class="btn btn-outline">Back to Home</a>
                 <a href="{{ route('products.index') }}" class="btn btn-outline">Browse More</a>
             </div>

@@ -25,10 +25,11 @@ Route::post('/inquiry', [InquiryController::class, 'store'])->name('inquiry.stor
 Route::get('/about', fn() => view('pages.about'))->name('about');
 Route::get('/export', fn() => view('pages.export'))->name('export');
 Route::get('/quality', fn() => view('pages.quality'))->name('quality');
-Route::get('/private-label', fn() => abort(404))->name('private-label');
+Route::get('/private-label', fn() => view('pages.private-label'))->name('private-label');
 Route::get('/privacy-policy', fn() => view('pages.privacy'))->name('privacy');
 Route::get('/terms-conditions', fn() => view('pages.terms'))->name('terms');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/wishlist', fn() => view('wishlist'))->name('wishlist');
 
 /* ─── Cart ─── */
 Route::get('/cart',              [CartController::class, 'index'])->name('cart.index');
@@ -52,16 +53,16 @@ Route::get('/payhere/cancel',    [PayHereController::class, 'cancelUrl'])->name(
 /* ─── Customer Auth ─── */
 Route::prefix('account')->name('customer.')->group(function () {
     Route::get('/login',            [CustomerAuthController::class, 'showLogin'])->name('login');
-    Route::post('/login',           [CustomerAuthController::class, 'login'])->name('login.post');
+    Route::post('/login',           [CustomerAuthController::class, 'login'])->name('login.post')->middleware('throttle:5,5');
     Route::get('/register',         [CustomerAuthController::class, 'showRegister'])->name('register');
     Route::post('/register',        [CustomerAuthController::class, 'register'])->name('register.post')->middleware('throttle:8,10');
     Route::post('/logout',          [CustomerAuthController::class, 'logout'])->name('logout');
     Route::get('/auth/google',      [CustomerAuthController::class, 'redirectToGoogle'])->name('google');
     Route::get('/auth/google/callback', [CustomerAuthController::class, 'handleGoogleCallback'])->name('google.callback');
     Route::get('/otp/phone',        [CustomerAuthController::class, 'showPhoneLogin'])->name('otp.phone');
-    Route::post('/otp/send',        [CustomerAuthController::class, 'sendOtp'])->name('otp.send');
+    Route::post('/otp/send',        [CustomerAuthController::class, 'sendOtp'])->name('otp.send')->middleware('throttle:5,5');
     Route::get('/otp/verify',       [CustomerAuthController::class, 'showVerifyOtp'])->name('otp.verify');
-    Route::post('/otp/verify',      [CustomerAuthController::class, 'verifyOtp'])->name('otp.verify.post');
+    Route::post('/otp/verify',      [CustomerAuthController::class, 'verifyOtp'])->name('otp.verify.post')->middleware('throttle:5,5');
 
     /* ─── Forgot / Reset Password ─── */
     Route::get('/forgot-password',   [CustomerAuthController::class, 'showForgotPassword'])->name('forgot-password');
@@ -83,7 +84,7 @@ Route::prefix('account')->name('customer.')->group(function () {
 /* ─── Admin Auth ─── */
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login',  [Admin\AuthController::class, 'login'])->name('login');
-    Route::post('/login', [Admin\AuthController::class, 'authenticate'])->name('authenticate');
+    Route::post('/login', [Admin\AuthController::class, 'authenticate'])->name('authenticate')->middleware('throttle:5,5');
     Route::post('/logout',[Admin\AuthController::class, 'logout'])->name('logout');
 
     /* ─── Admin Protected ─── */

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmMail;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
@@ -72,6 +74,12 @@ class OrderController extends Controller
         }
 
         session()->forget('cart');
+
+        try {
+            Mail::to($order->email)->send(new OrderConfirmMail($order));
+        } catch (\Throwable $e) {
+            \Log::error('OrderConfirmMail failed: ' . $e->getMessage());
+        }
 
         return redirect()->route('order.confirmation', $order->order_number);
     }

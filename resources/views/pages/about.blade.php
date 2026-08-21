@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'About Us — Ceylon Aroma Commodities')
+@section('meta_description', 'Ceylon Aroma is a Sri Lanka B2B exporter of natural spices, teas, coffees and oils. 25+ years of experience, ISO 22000 certified, serving importers in 60+ countries.')
 @section('content')
 
 {{-- ── Hero ── --}}
@@ -18,7 +19,7 @@
             <div>
                 <span class="section-label">Who We Are</span>
                 <h2 class="section-title">About Ceylon Aroma<br>Commodities</h2>
-                <p class="section-sub about-intro-sub">
+                <p class="about-intro-body">
                     Ceylon Aroma Commodities is a Sri Lankan export company dedicated to supplying premium spices, natural aromatic products, and value-added agricultural commodities to global markets. Built on Sri Lanka's rich agricultural heritage and world-renowned spice tradition, we bring authentic island-grown products to customers worldwide.
                 </p>
                 <p class="about-intro-body">
@@ -70,15 +71,6 @@
             </div>
             @endforeach
         </div>
-    </div>
-</section>
-
-{{-- ── Core Values Infographic ── --}}
-<section class="core-values-section">
-    <div class="container">
-        <img src="/images/core-values.png"
-             alt="Our Core Values — Authenticity, Purity, Sustainability, Quality, Trust"
-             loading="lazy" class="core-values-img">
     </div>
 </section>
 

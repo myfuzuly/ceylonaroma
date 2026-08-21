@@ -1,13 +1,30 @@
 @extends('layouts.app')
 
-@section('title', 'Products')
+@section('title', (request('category') ? ucwords(str_replace('-', ' ', request('category'))).' — ' : '') . (request('search') ? '"'.request('search').'" — ' : '') . 'Products' . ($products->currentPage() > 1 ? ' | Page '.$products->currentPage() : ''))
 
 @section('content')
 
 <div class="products-hero">
     <div class="container">
-        <h1>Our Products</h1>
-        <p>Premium quality natural products sourced direct from Sri Lankan farms and plantations.</p>
+        @php
+        $activeCatName = null;
+        if(request('category')) {
+            foreach($categories as $c) {
+                if($c->slug === request('category')) { $activeCatName = $c->name; break; }
+                foreach($c->children as $ch) {
+                    if($ch->slug === request('category')) { $activeCatName = $ch->name; break 2; }
+                }
+            }
+        }
+        @endphp
+        <h1>{{ $activeCatName ? $activeCatName : 'Our Products' }}</h1>
+        @if(request('search'))
+            <p>Showing results for "<strong>{{ request('search') }}</strong>"</p>
+        @elseif($activeCatName)
+            <p>Premium quality {{ $activeCatName }} sourced direct from Sri Lankan farms.</p>
+        @else
+            <p>Premium quality natural products sourced direct from Sri Lankan farms and plantations.</p>
+        @endif
     </div>
 </div>
 
@@ -56,17 +73,9 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="sidebar-card">
-                    <h4>Filter By</h4>
-                    <div style="display:flex;flex-direction:column;gap:.4rem">
-                        @foreach(['featured'=>'Featured','new'=>'New Arrivals','export'=>'Export Ready'] as $t => $label)
-                        <a href="{{ route('products.index', ['tab'=>$t]) }}" class="sidebar-cat {{ request('tab')===$t ? 'active' : '' }}">{{ $label }}</a>
-                        @endforeach
-                    </div>
-                </div>
-                <div style="background:var(--canopy);border-radius:12px;padding:1.5rem;text-align:center">
-                    <p style="color:rgba(255,255,255,.8);font-size:.875rem;margin-bottom:1rem">Need a custom quote?</p>
-                    <a href="{{ route('contact') }}" class="btn btn-gold" style="width:100%;justify-content:center">Get a Quote</a>
+                <div class="sidebar-quote-cta">
+                    <p class="sidebar-quote-text">Need a custom quote?</p>
+                    <a href="{{ route('contact') }}" class="btn btn-gold sidebar-quote-btn">Get a Quote</a>
                 </div>
             </aside>
 
@@ -74,7 +83,7 @@
             <div>
                 <div class="products-toolbar">
                     <span class="products-count">{{ $products->total() }} products found</span>
-                    <div class="product-tabs" style="border:none;margin:0">
+                    <div class="product-tabs product-tabs-toolbar">
                         <a href="{{ route('products.index', array_merge(request()->except('tab'), [])) }}" class="tab-btn {{ !request('tab') ? 'active' : '' }}">All</a>
                         <a href="{{ route('products.index', array_merge(request()->all(), ['tab'=>'featured'])) }}" class="tab-btn {{ request('tab')==='featured' ? 'active' : '' }}">Featured</a>
                         <a href="{{ route('products.index', array_merge(request()->all(), ['tab'=>'new'])) }}" class="tab-btn {{ request('tab')==='new' ? 'active' : '' }}">New Arrivals</a>
@@ -102,7 +111,7 @@
                     </div>
                     <h3>No products found</h3>
                     <p>Try a different category or search term.</p>
-                    <a href="{{ route('products.index') }}" class="btn btn-outline" style="margin-top:1rem">View All Products</a>
+                    <a href="{{ route('products.index') }}" class="btn btn-outline empty-state-btn">View All Products</a>
                 </div>
                 @endif
             </div>

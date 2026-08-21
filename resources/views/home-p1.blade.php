@@ -1,3 +1,8 @@
+@push('head')
+@php $firstSlideImg = $slides->isNotEmpty() ? asset('storage/'.$slides->first()->image) : '/images/hero-visual.webp'; @endphp
+<link rel="preload" as="image" href="{{ $firstSlideImg }}" fetchpriority="high">
+@endpush
+
 {{-- ── Hero — Reference exact layout ── --}}
 <section class="hero hero-split" id="heroSection">
 
@@ -6,13 +11,15 @@
         <div class="hs-slides">
             @forelse($slides as $i => $slide)
             <div class="hs-slide{{ $i === 0 ? ' active' : '' }}" data-index="{{ $i }}">
+                @php $slideAlt = (strlen(trim($slide->title ?? '')) > 5) ? $slide->title : 'Ceylon Aroma — Premium Ceylon Spices, Tea & Coffee Export from Sri Lanka'; @endphp
                 <img src="{{ asset('storage/'.$slide->image) }}"
-                     alt="{{ $slide->title ?? 'Ceylon Aroma' }}"
-                     loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
+                     alt="{{ $slideAlt }}"
+                     loading="{{ $i === 0 ? 'eager' : 'lazy' }}"
+                     {{ $i === 0 ? 'fetchpriority="high"' : 'decoding="async"' }}>
             </div>
             @empty
             <div class="hs-slide active">
-                <img src="/images/hero-visual.webp" alt="Ceylon Aroma Premium Products" loading="eager">
+                <img src="/images/hero-visual.webp" alt="Ceylon Aroma Premium Products" loading="eager" fetchpriority="high">
             </div>
             @endforelse
         </div>
@@ -33,7 +40,7 @@
     {{-- BADGE — positioned at image left boundary --}}
     <div class="hero-purity-badge">
         <div class="hpb-pct">100%</div>
-        <div class="hpb-label">Pure Ceylon<br>Goodness</div>
+        <div class="hpb-label" aria-label="Pure Ceylon Goodness">Pure Ceylon<br>Goodness</div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="hpb-leaf"><path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/></svg>
     </div>
 
@@ -197,12 +204,12 @@
       var el = e.target;
       var to = parseInt(el.getAttribute('data-to'));
       var plus = el.getAttribute('data-plus') || '';
-      var dur = 1400, start = null;
+      var dur = 900, start = null, from = Math.round(to * 0.6);
       function tick(now){
         if(!start) start = now;
         var pct = Math.min((now - start) / dur, 1);
         var ease = 1 - Math.pow(1 - pct, 3);
-        el.textContent = Math.round(ease * to) + plus;
+        el.textContent = Math.round(from + ease * (to - from)) + plus;
         if(pct < 1) requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);

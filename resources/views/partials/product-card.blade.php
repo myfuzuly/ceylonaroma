@@ -1,9 +1,19 @@
-<article class="product-card">
+<article class="product-card" aria-labelledby="pc-name-{{ $product->id }}">
     <div class="product-img-wrap">
+        <button type="button" class="product-wish"
+            data-id="{{ $product->id }}"
+            data-name="{{ $product->name }}"
+            data-slug="{{ $product->slug }}"
+            data-image="{{ $product->image ? asset('storage/'.$product->image) : '' }}"
+            data-category="{{ $product->category?->name }}"
+            aria-label="Save {{ $product->name }} to wishlist"
+            title="Save to Wishlist">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
         <a href="{{ route('products.show', $product->slug) }}" class="product-img-link">
             <div class="product-img">
                 @if($product->image)
-                    <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" loading="lazy">
+                    <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" loading="lazy" decoding="async" width="400" height="400">
                 @else
                     <div class="product-img-placeholder">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.2" opacity=".5"><path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/><path d="M12 2c0 3-1.5 6-4 8.5C10 12 12 14 12 18c0-4 2-6 4-7.5C13.5 8 12 5 12 2z"/></svg>
@@ -22,8 +32,8 @@
             <form method="POST" action="{{ route('cart.add') }}" class="ajax-cart-form" onsubmit="return false">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button type="button" class="quick-add-btn" onclick="window.ajaxAddToCart(this.closest('form'), this)">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                <button type="button" class="quick-add-btn" onclick="window.ajaxAddToCart(this.closest('form'), this)" aria-label="Add {{ $product->name }} to cart">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
                     Add to Cart
                 </button>
             </form>
@@ -39,7 +49,7 @@
             <div class="product-category">{{ $product->category->name }}</div>
         @endif
 
-        <h3 class="product-name">
+        <h3 class="product-name" id="pc-name-{{ $product->id }}">
             <a href="{{ route('products.show', $product->slug) }}">{{ $product->name }}</a>
         </h3>
 

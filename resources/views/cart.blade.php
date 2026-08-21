@@ -45,7 +45,7 @@
                                 <input type="hidden" name="product_id" value="{{ $item['id'] }}">
                                 <button type="button" class="qty-btn qty-dec" data-id="{{ $item['id'] }}">−</button>
                                 <input type="number" name="quantity" value="{{ $item['qty'] }}" min="1" max="999"
-                                       class="qty-input" data-id="{{ $item['id'] }}" onchange="this.form.submit()">
+                                       class="qty-input" data-id="{{ $item['id'] }}">
                                 <button type="button" class="qty-btn qty-inc" data-id="{{ $item['id'] }}">+</button>
                             </form>
                         </div>

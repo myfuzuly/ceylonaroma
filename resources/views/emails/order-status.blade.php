@@ -70,7 +70,7 @@ p{line-height:1.65;color:#3a4a3e;margin:0 0 1rem;font-size:.93rem}
             @foreach($order->items as $item)
             <div class="item-row">
                 <span>{{ $item->product_name }}</span>
-                <span>× {{ $item->qty }}</span>
+                <span>× {{ $item->quantity }}</span>
             </div>
             @endforeach
         </div>

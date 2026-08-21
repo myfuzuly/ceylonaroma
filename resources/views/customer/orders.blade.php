@@ -24,6 +24,7 @@
                                     <th>Order #</th>
                                     <th>Items</th>
                                     <th>Country</th>
+                                    <th>Quote</th>
                                     <th>Status</th>
                                     <th>Date</th>
                                     <th></th>
@@ -35,6 +36,13 @@
                                 <td><span class="order-num">{{ $order->order_number }}</span></td>
                                 <td>{{ $order->items_count }} item(s)</td>
                                 <td>{{ $order->country }}</td>
+                                <td>
+                                    @if($order->total_amount)
+                                        <span class="order-quote-amount">{{ $order->currency ?? 'USD' }} {{ number_format($order->total_amount, 2) }}</span>
+                                    @else
+                                        <span class="status-pill status-pending" title="Our team will send a personalised quote within 24 hours">Quote Pending</span>
+                                    @endif
+                                </td>
                                 <td><span class="status-pill status-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
                                 <td>{{ $order->created_at->format('d M Y') }}</td>
                                 <td><a href="{{ route('customer.order.show', $order->order_number) }}" class="btn btn-xs btn-outline">View</a></td>

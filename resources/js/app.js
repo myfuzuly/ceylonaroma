@@ -16,12 +16,14 @@ const mobileClose = document.querySelector('.mobile-close');
 
 function openMobile() {
     hamburger?.classList.add('open');
+    hamburger?.setAttribute('aria-expanded', 'true');
     mobileNav?.classList.add('open');
     overlay?.classList.add('open');
     document.body.style.overflow = 'hidden';
 }
 function closeMobile() {
     hamburger?.classList.remove('open');
+    hamburger?.setAttribute('aria-expanded', 'false');
     mobileNav?.classList.remove('open');
     overlay?.classList.remove('open');
     document.body.style.overflow = '';
@@ -51,35 +53,42 @@ function getWish() {
 function saveWish(arr) {
     localStorage.setItem(wishKey, JSON.stringify(arr));
 }
+function wishIds() {
+    return getWish().map(x => String(typeof x === 'object' ? x.id : x));
+}
 document.querySelectorAll('.product-wish[data-id]').forEach(btn => {
     const id = String(btn.dataset.id);
-    let list = getWish();
-    if (list.includes(id)) btn.classList.add('active');
+    if (wishIds().includes(id)) btn.classList.add('active');
     btn.addEventListener('click', () => {
         let w = getWish();
-        if (w.includes(id)) { w = w.filter(x => x !== id); btn.classList.remove('active'); }
-        else { w.push(id); btn.classList.add('active'); }
+        const ids = w.map(x => String(typeof x === 'object' ? x.id : x));
+        if (ids.includes(id)) {
+            w = w.filter(x => String(typeof x === 'object' ? x.id : x) !== id);
+            btn.classList.remove('active');
+        } else {
+            w.push({
+                id,
+                name:     btn.dataset.name     || '',
+                slug:     btn.dataset.slug     || '',
+                image:    btn.dataset.image    || '',
+                category: btn.dataset.category || '',
+            });
+            btn.classList.add('active');
+        }
         saveWish(w);
         updateWishBadge();
     });
 });
 function updateWishBadge() {
-    const badge = document.querySelector('.nav-wish-btn .nav-badge');
-    if (badge) badge.textContent = getWish().length || '';
+    const count = getWish().length;
+    document.querySelectorAll('.nav-wish-badge').forEach(b => {
+        b.textContent = count || '';
+        b.style.display = count ? '' : 'none';
+    });
 }
 updateWishBadge();
 
-// ── Product gallery thumbnails
-const mainImg = document.querySelector('.gallery-main-img');
-document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-    thumb.addEventListener('click', () => {
-        document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-        thumb.classList.add('active');
-        if (mainImg && thumb.dataset.src) {
-            mainImg.src = thumb.dataset.src;
-        }
-    });
-});
+// Gallery thumbnails handled inline in products/show.blade.php
 
 // ── Alert auto-dismiss
 document.querySelectorAll('.alert').forEach(el => {

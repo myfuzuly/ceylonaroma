@@ -47,7 +47,11 @@
                                 <img src="{{ asset('storage/' . $item->product_image) }}" alt="{{ $item->product_name }}" class="order-item-img">
                             @endif
                             <div class="order-item-info">
+                                @if($item->product_slug)
                                 <a href="{{ route('products.show', $item->product_slug) }}" class="order-item-name">{{ $item->product_name }}</a>
+                                @else
+                                <span class="order-item-name">{{ $item->product_name }}</span>
+                                @endif
                                 <span class="order-item-qty">Qty: {{ $item->quantity }}</span>
                                 @if($item->notes)<p class="order-item-note">Note: {{ $item->notes }}</p>@endif
                             </div>

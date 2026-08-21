@@ -29,15 +29,15 @@
                 {{-- Stats --}}
                 <div class="cust-stats-row">
                     <div class="cust-stat">
-                        <span class="cust-stat-num">{{ $customer->orders()->count() }}</span>
+                        <span class="cust-stat-num">{{ $totalOrders }}</span>
                         <span class="cust-stat-label">Total Orders</span>
                     </div>
                     <div class="cust-stat">
-                        <span class="cust-stat-num">{{ $customer->orders()->where('status','delivered')->count() }}</span>
+                        <span class="cust-stat-num">{{ $deliveredOrders }}</span>
                         <span class="cust-stat-label">Delivered</span>
                     </div>
                     <div class="cust-stat">
-                        <span class="cust-stat-num">{{ $customer->orders()->whereIn('status',['pending','processing','shipped'])->count() }}</span>
+                        <span class="cust-stat-num">{{ $activeOrders }}</span>
                         <span class="cust-stat-label">Active Orders</span>
                     </div>
                 </div>

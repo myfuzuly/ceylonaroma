@@ -5,7 +5,7 @@
 
 @push('schema')
 @php
-$schemaImg = $product->image ? asset('storage/'.$product->image) : 'https://ceylonaroma.com/images/og-ceylon-aroma.jpg';
+$schemaImg = $product->image ? asset('storage/'.$product->image) : 'https://ceylonaroma.com/images/spice-flatlay.png';
 $schemaDesc = addslashes($product->short_description ?: $product->name . ' — premium export quality from Sri Lanka.');
 $schemaPrice = $product->price ? number_format($product->price, 2, '.', '') : null;
 $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
@@ -29,6 +29,19 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ceylonaroma.com" },
+    { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://ceylonaroma.com/products" }@if($product->category),
+    { "@type": "ListItem", "position": 3, "name": "{{ addslashes($product->category->name) }}", "item": "https://ceylonaroma.com/products?category={{ $product->category->slug }}" },
+    { "@type": "ListItem", "position": 4, "name": "{{ addslashes($product->name) }}", "item": "https://ceylonaroma.com/products/{{ $product->slug }}" }@else,
+    { "@type": "ListItem", "position": 3, "name": "{{ addslashes($product->name) }}", "item": "https://ceylonaroma.com/products/{{ $product->slug }}" }@endif
+  ]
+}
+</script>
 @endpush
 
 @section('content')
@@ -41,11 +54,11 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
             <div class="product-gallery">
                 <div class="product-gallery-main">
                     @if($product->image)
-                        <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" class="gallery-main-img" id="gallery-main">
+                        <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }} — main product image" class="gallery-main-img" id="gallery-main">
                     @else
-                        <div class="product-img-placeholder" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;background:var(--parchment)">
-                            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.2" opacity=".5"><path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/></svg>
-                            <span style="font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">No image</span>
+                        <div class="detail-img-placeholder">
+                            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.2" opacity=".5" aria-hidden="true"><path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/></svg>
+                            <span class="detail-img-placeholder-label">No image</span>
                         </div>
                     @endif
                 </div>
@@ -53,12 +66,12 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
                 <div class="product-gallery-thumbs">
                     @if($product->image)
                     <div class="gallery-thumb active" data-src="{{ asset('storage/'.$product->image) }}">
-                        <img src="{{ asset('storage/'.$product->image) }}" alt="Main">
+                        <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" loading="lazy">
                     </div>
                     @endif
-                    @foreach($product->gallery as $img)
+                    @foreach($product->gallery as $gi => $img)
                     <div class="gallery-thumb" data-src="{{ asset('storage/'.$img) }}">
-                        <img src="{{ asset('storage/'.$img) }}" alt="Gallery image">
+                        <img src="{{ asset('storage/'.$img) }}" alt="{{ $product->name }} — view {{ $gi + 2 }}" loading="lazy">
                     </div>
                     @endforeach
                 </div>
@@ -162,25 +175,30 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
                 {{-- Actions --}}
                 <div class="product-actions">
                     @if($product->in_stock !== false)
-                    <form method="POST" action="{{ route('cart.add') }}" style="flex:1">
+                    <form method="POST" action="{{ route('cart.add') }}" class="detail-add-form">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <div class="product-qty-row">
                             <div class="qty-form">
+                                <label for="detail-qty" class="sr-only">Quantity</label>
                                 <button type="button" class="qty-btn qty-dec-detail">−</button>
                                 <input type="number" name="quantity" value="1" min="1" max="999" class="qty-input qty-input-detail" id="detail-qty">
                                 <button type="button" class="qty-btn qty-inc-detail">+</button>
                             </div>
-                            <button type="submit" class="btn btn-gold" style="flex:1">
+                            <button type="submit" class="btn btn-gold detail-add-btn">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
                                 Add to Cart
                             </button>
                         </div>
                     </form>
                     @endif
-                    <a href="{{ route('contact') }}?product={{ urlencode($product->name) }}" class="btn btn-primary">
+                    <a href="{{ route('contact') }}?product={{ urlencode($product->name) }}&inquiry=quote" class="btn btn-primary">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                         Get Export Quote
+                    </a>
+                    <a href="{{ route('contact') }}?product={{ urlencode($product->name) }}&inquiry=sample" class="btn btn-outline">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16v-2"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                        Request Sample
                     </a>
                 </div>
 
@@ -259,13 +277,20 @@ document.querySelectorAll('.variant-pill').forEach(function(pill){
         var currency = pill.dataset.currency || 'USD';
         var img      = pill.dataset.image;
 
-        // Update price display
+        // Update price display (DOM-safe — no innerHTML)
         var priceWrap = document.getElementById('variant-price-display');
         if(priceWrap){
+            priceWrap.textContent = '';
             if(price){
-                priceWrap.innerHTML = '<span class="product-price-amount">'+currency+' '+parseFloat(price).toFixed(2)+'</span>';
+                var amtEl = document.createElement('span');
+                amtEl.className = 'product-price-amount';
+                amtEl.textContent = currency + ' ' + parseFloat(price).toFixed(2);
+                priceWrap.appendChild(amtEl);
             } else {
-                priceWrap.innerHTML = '<div class="product-price-request">Price on Request</div>';
+                var porEl = document.createElement('div');
+                porEl.className = 'product-price-request';
+                porEl.textContent = 'Price on Request';
+                priceWrap.appendChild(porEl);
             }
         }
 

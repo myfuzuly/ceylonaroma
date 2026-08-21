@@ -10,11 +10,14 @@ class CustomerController extends Controller
 {
     public function dashboard()
     {
-        $customer = Customer::find(session('customer_id'));
-        $orders   = Order::with('items')
+        $customer     = Customer::find(session('customer_id'));
+        $orders       = Order::with('items')
             ->where('customer_id', $customer->id)
             ->latest()->take(5)->get();
-        return view('customer.dashboard', compact('customer', 'orders'));
+        $totalOrders    = Order::where('customer_id', $customer->id)->count();
+        $deliveredOrders = Order::where('customer_id', $customer->id)->where('status', 'delivered')->count();
+        $activeOrders   = Order::where('customer_id', $customer->id)->whereIn('status', ['pending', 'processing', 'shipped'])->count();
+        return view('customer.dashboard', compact('customer', 'orders', 'totalOrders', 'deliveredOrders', 'activeOrders'));
     }
 
     public function orders()
@@ -63,12 +66,17 @@ class CustomerController extends Controller
     public function updatePassword(Request $request)
     {
         $request->validate([
-            'password' => 'required|min:8|confirmed',
+            'current_password' => 'required',
+            'password'         => 'required|min:8|confirmed',
         ]);
 
-        Customer::find(session('customer_id'))->update([
-            'password' => $request->password,
-        ]);
+        $customer = Customer::find(session('customer_id'));
+
+        if (!$customer->password || !\Illuminate\Support\Facades\Hash::check($request->current_password, $customer->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        $customer->update(['password' => $request->password]);
 
         return back()->with('success', 'Password updated.');
     }

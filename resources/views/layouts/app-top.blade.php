@@ -7,11 +7,11 @@
 @php
   $siteName    = $settings['site_name']    ?? 'Ceylon Aroma';
   $siteUrl     = 'https://ceylonaroma.com';
-  $pageTitle   = trim(strip_tags(View::yieldContent('title'))) ?: 'Premium Ceylon Spices, Tea & Coffee Exporter';
+  $pageTitle   = html_entity_decode(trim(strip_tags(View::yieldContent('title'))), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: 'Premium Ceylon Spices, Tea & Coffee Exporter';
   $metaTitle   = $pageTitle . ' | ' . $siteName . ' — Sri Lanka Export';
   $metaDesc    = View::yieldContent('meta_description')
                  ?: ($settings['meta_description'] ?? 'Ceylon Aroma exports premium Ceylon cinnamon, spices, tea, coffee and natural products from Sri Lanka to 60+ countries. ISO certified. Request a wholesale quote today.');
-  $metaImage   = View::yieldContent('og_image') ?: $siteUrl . '/images/og-ceylon-aroma.jpg';
+  $metaImage   = View::yieldContent('og_image') ?: $siteUrl . '/images/spice-flatlay.png';
   $canonicalUrl = $siteUrl . request()->getPathInfo();
 @endphp
 
@@ -20,7 +20,7 @@
 <meta name="keywords" content="{{ $settings['meta_keywords'] ?? 'Ceylon cinnamon exporter, Sri Lanka spices wholesale, Ceylon tea supplier, Ceylon coffee export, natural products Sri Lanka, spice exporters Sri Lanka' }}">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="{{ $canonicalUrl }}">
-<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.php">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
 {{-- Open Graph --}}
 <meta property="og:type"        content="@yield('og_type', 'website')">
@@ -67,7 +67,13 @@
         "@type": "PostalAddress",
         "addressCountry": "LK"
       },
-      "sameAs": []
+      "sameAs": [
+        @if(!empty($settings['facebook_url']))"{{ $settings['facebook_url'] }}"@endif
+        @if(!empty($settings['facebook_url']) && !empty($settings['linkedin_url'])),@endif
+        @if(!empty($settings['linkedin_url']))"{{ $settings['linkedin_url'] }}"@endif
+        @if((!empty($settings['facebook_url']) || !empty($settings['linkedin_url'])) && !empty($settings['instagram_url'])),@endif
+        @if(!empty($settings['instagram_url']))"{{ $settings['instagram_url'] }}"@endif
+      ]
     },
     {
       "@type": "WebSite",
@@ -96,6 +102,7 @@
 @stack('head')
 </head>
 <body>
+<a href="#main-content" class="skip-nav">Skip to main content</a>
 
 {{-- ── Topbar ── --}}
 <div class="topbar">
@@ -121,10 +128,7 @@
         <div class="topbar-right">
             <div class="topbar-lang">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                <select aria-label="Language">
-                    <option value="en">EN</option>
-                    <option value="si">SI</option>
-                </select>
+                <span aria-label="Language: English">EN</span>
             </div>
             <a href="{{ route('contact') }}" class="topbar-cta">EXPORT INQUIRY
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -197,28 +201,31 @@
             </div>
             <a href="{{ route('export') }}" class="nav-link {{ request()->routeIs('export') ? 'active' : '' }}">Export</a>
             <a href="{{ route('quality') }}" class="nav-link {{ request()->routeIs('quality') ? 'active' : '' }}">Quality</a>
+            <a href="{{ route('private-label') }}" class="nav-link {{ request()->routeIs('private-label') ? 'active' : '' }}">Private Label</a>
             <a href="{{ route('blog.index') }}" class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">Blog</a>
             <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contact Us</a>
         </div>
 
         <div class="nav-actions">
-            <button class="nav-search-btn" aria-label="Search">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </button>
+            {{-- Wishlist icon --}}
+            <a href="{{ route('wishlist') }}" class="nav-wish-btn" aria-label="Wishlist" id="nav-wish-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                <span class="nav-badge nav-wish-badge" style="display:none">0</span>
+            </a>
             {{-- Cart icon --}}
             <a href="{{ route('cart.index') }}" class="nav-cart-btn" aria-label="Cart" id="nav-cart-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
                 @php $cartCount = count(session('cart',[])); @endphp
                 @if($cartCount > 0)
-                    <span class="nav-cart-badge" id="nav-cart-badge">{{ $cartCount }}</span>
+                    <span class="nav-cart-badge cart-count" id="nav-cart-badge">{{ $cartCount }}</span>
                 @else
-                    <span class="nav-cart-badge nav-cart-badge-hidden" id="nav-cart-badge">0</span>
+                    <span class="nav-cart-badge nav-cart-badge-hidden cart-count" id="nav-cart-badge">0</span>
                 @endif
             </a>
             {{-- Customer Account --}}
             @if(session('customer_id'))
                 <div class="nav-account-wrap">
-                    <button class="nav-account-btn" aria-label="My Account">
+                    <button type="button" class="nav-account-btn" aria-label="My Account">
                         @if(session('customer_avatar'))
                             <img src="{{ session('customer_avatar') }}" alt="{{ session('customer_name') }}" class="nav-account-avatar">
                         @else
@@ -247,7 +254,7 @@
             </a>
         </div>
 
-        <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <button type="button" class="hamburger" aria-label="Open menu" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
     </div>
@@ -255,12 +262,12 @@
 
 {{-- Mobile overlay + drawer --}}
 <div class="mobile-overlay" aria-hidden="true"></div>
-<div class="mobile-nav" role="dialog" aria-label="Mobile menu">
+<div class="mobile-nav" role="dialog" aria-label="Mobile menu" aria-modal="true">
     <div class="mobile-nav-header">
         <a href="{{ route('home') }}" class="logo" aria-label="Ceylon Aroma Home">
             <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma" class="logo-img">
         </a>
-        <button class="mobile-close" aria-label="Close menu">
+        <button type="button" class="mobile-close" aria-label="Close menu">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
     </div>
@@ -270,27 +277,38 @@
 
         {{-- Products accordion --}}
         <div class="mobile-accordion">
-            <button class="mobile-link mobile-accordion-btn" aria-expanded="false">
+            <button type="button" class="mobile-link mobile-accordion-btn" aria-expanded="false" aria-controls="mobile-products-panel">
                 Products
                 <svg class="mobile-acc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="mobile-accordion-body">
-                <a href="{{ route('products.index') }}" class="mobile-sub-link mobile-sub-all">All Products →</a>
-                @foreach($navCategories ?? [] as $cat)
-                <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="mobile-sub-link mobile-sub-cat">{{ $cat->name }}</a>
+            <div class="mobile-accordion-body" id="mobile-products-panel">
+                <a href="{{ route('products.index') }}" class="mobile-sub-link mobile-sub-all">All Products <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+                @foreach($navCategories ?? [] as $catIdx => $cat)
                 @if($cat->children->isNotEmpty())
-                    @foreach($cat->children as $sub)
-                    <a href="{{ route('products.index', ['category' => $sub->slug]) }}" class="mobile-sub-link mobile-sub-sub">↳ {{ $sub->name }}</a>
-                    @endforeach
+                <div class="mobile-cat-acc">
+                    <button type="button" class="mobile-sub-link mobile-sub-cat mobile-cat-acc-btn" aria-expanded="false" aria-controls="mob-cat-{{ $cat->slug }}">
+                        {{ $cat->name }}
+                        <svg class="mob-cat-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="mobile-cat-acc-body" id="mob-cat-{{ $cat->slug }}">
+                        <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="mobile-sub-link mobile-sub-sub">All {{ $cat->name }}</a>
+                        @foreach($cat->children as $sub)
+                        <a href="{{ route('products.index', ['category' => $sub->slug]) }}" class="mobile-sub-link mobile-sub-sub">↳ {{ $sub->name }}</a>
+                        @endforeach
+                    </div>
+                </div>
+                @else
+                <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="mobile-sub-link mobile-sub-cat">{{ $cat->name }}</a>
                 @endif
                 @endforeach
             </div>
         </div>
 
-        <a href="{{ route('export') }}"        class="mobile-link">Export</a>
-        <a href="{{ route('quality') }}"       class="mobile-link">Quality</a>
-        <a href="{{ route('blog.index') }}"    class="mobile-link">Blog</a>
-        <a href="{{ route('contact') }}"       class="mobile-link">Contact Us</a>
+        <a href="{{ route('export') }}"         class="mobile-link">Export Services</a>
+        <a href="{{ route('quality') }}"        class="mobile-link">Quality & Certs</a>
+        <a href="{{ route('private-label') }}"  class="mobile-link">Private Label</a>
+        <a href="{{ route('blog.index') }}"     class="mobile-link">Blog</a>
+        <a href="{{ route('contact') }}"        class="mobile-link">Contact Us</a>
     </div>
     <div class="mobile-actions">
         <a href="{{ route('cart.index') }}" class="btn btn-outline">
@@ -325,18 +343,18 @@
     <a href="{{ route('cart.index') }}" class="mob-nav-item {{ request()->routeIs('cart.*') ? 'active' : '' }}" aria-label="Cart">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
         @if(count(session('cart',[])) > 0)
-            <span class="mob-nav-badge">{{ count(session('cart',[])) }}</span>
+            <span class="mob-nav-badge cart-count">{{ count(session('cart',[])) }}</span>
         @endif
         <span>Cart</span>
     </a>
-    <button class="mob-nav-item" id="mobNavMenu" aria-label="Menu" aria-expanded="false">
+    <button type="button" class="mob-nav-item" id="mobNavMenu" aria-label="Menu" aria-expanded="false">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         <span>Menu</span>
     </button>
 </nav>
 <script>
 (function(){
-  /* ── Mobile accordion ── */
+  /* ── Mobile accordion (Products panel) ── */
   var accBtn  = document.querySelector('.mobile-accordion-btn');
   var accBody = document.querySelector('.mobile-accordion-body');
   if(accBtn && accBody){
@@ -345,6 +363,17 @@
       accBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   }
+  /* ── Mobile category sub-accordions ── */
+  document.querySelectorAll('.mobile-cat-acc-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var body = document.getElementById(btn.getAttribute('aria-controls'));
+      if(!body) return;
+      var open = body.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      var chevron = btn.querySelector('.mob-cat-chevron');
+      if(chevron) chevron.style.transform = open ? 'rotate(180deg)' : '';
+    });
+  });
 
   /* ── Desktop mega-menu ── */
   var wrap = document.querySelector('.nav-mega-wrap');
@@ -418,7 +447,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 {{-- ── Floating WhatsApp Quick-Contact Widget (left side) ── --}}
 <div class="wa-widget" id="waWidget" aria-label="WhatsApp Chat">
-    <button class="wa-toggle" id="waToggle" aria-label="Open WhatsApp chat" aria-expanded="false">
+    <button type="button" class="wa-toggle" id="waToggle" aria-label="Open WhatsApp chat" aria-expanded="false">
         <svg class="wa-icon-wa" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.537 4.066 1.481 5.786L.057 23.882a.5.5 0 00.613.613l6.196-1.424A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.947 9.947 0 01-5.073-1.388l-.363-.214-3.779.868.883-3.68-.236-.38A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
         <svg class="wa-icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
@@ -438,32 +467,13 @@ document.addEventListener('DOMContentLoaded',function(){
             </div>
         </div>
         <div class="wa-panel-foot">
-            <a class="wa-chat-btn" href="https://wa.me/94718821234?text=Hello%20Ceylon%20Aroma%2C%20I%20am%20interested%20in%20your%20products." target="_blank" rel="noopener">
+            <a class="wa-chat-btn" href="https://wa.me/{{ $settings['phone_whatsapp'] ?? '94718821234' }}?text=Hello%20Ceylon%20Aroma%2C%20I%20am%20interested%20in%20your%20products." target="_blank" rel="noopener">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.537 4.066 1.481 5.786L.057 23.882a.5.5 0 00.613.613l6.196-1.424A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.947 9.947 0 01-5.073-1.388l-.363-.214-3.779.868.883-3.68-.236-.38A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
                 Start WhatsApp Chat
             </a>
         </div>
     </div>
 </div>
-<style>
-.wa-widget{position:fixed;left:20px;bottom:24px;z-index:9998;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-.wa-toggle{width:52px;height:52px;border-radius:50%;background:#25D366;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.45);transition:transform .2s,box-shadow .2s;position:relative}
-.wa-toggle:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(37,211,102,.6)}
-.wa-icon-close{display:none;position:absolute}
-.wa-widget.open .wa-icon-wa{display:none}
-.wa-widget.open .wa-icon-close{display:block}
-.wa-panel{display:none;width:280px;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.18);background:#fff;margin-bottom:8px;order:-1}
-.wa-widget.open .wa-panel{display:flex;flex-direction:column}
-.wa-panel-head{background:#25D366;padding:.9rem 1rem;display:flex;align-items:center;gap:.75rem}
-.wa-avatar{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.wa-head-name{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2}
-.wa-head-status{font-size:.68rem;color:rgba(255,255,255,.82)}
-.wa-panel-body{padding:1rem;background:#e5ddd5;flex:1}
-.wa-bubble{background:#fff;border-radius:0 10px 10px 10px;padding:.65rem .85rem;font-size:.82rem;color:#1a2a20;line-height:1.5;max-width:240px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.wa-panel-foot{padding:.75rem 1rem;background:#fff}
-.wa-chat-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:#25D366;color:#fff;font-size:.8rem;font-weight:700;text-decoration:none;padding:.65rem 1rem;border-radius:6px;transition:background .2s}
-.wa-chat-btn:hover{background:#1ebe5a;color:#fff}
-</style>
 <script>
 (function(){
   var w=document.getElementById('waWidget');

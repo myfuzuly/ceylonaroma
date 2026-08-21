@@ -8,7 +8,7 @@
             </a>
         </div>
         <div class="products-carousel-wrap">
-            <button class="pc-arrow pc-prev" id="pcPrev" aria-label="Previous products">
+            <button type="button" class="pc-arrow pc-prev" id="pcPrev" aria-label="Previous products">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
             <div class="products-carousel" id="home-products">
@@ -16,7 +16,7 @@
                 @include('partials.product-card', ['product' => $product])
                 @endforeach
             </div>
-            <button class="pc-arrow pc-next" id="pcNext" aria-label="Next products">
+            <button type="button" class="pc-arrow pc-next" id="pcNext" aria-label="Next products">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
         </div>
@@ -47,6 +47,7 @@
     function update(){
         if(!prev || !next) return;
         prev.disabled = carousel.scrollLeft <= 4;
+        next.disabled = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 4;
     }
     carousel.addEventListener('scroll', update, {passive:true});
     update();

@@ -42,7 +42,7 @@
             <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="d-flex gap-2">
                 @csrf @method('PATCH')
                 <select name="status" class="form-control">
-                    @foreach(['pending','processing','shipped','delivered','cancelled'] as $s)
+                    @foreach(['pending','confirmed','processing','shipped','delivered','cancelled'] as $s)
                         <option value="{{ $s }}" {{ $order->status === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
                     @endforeach
                 </select>

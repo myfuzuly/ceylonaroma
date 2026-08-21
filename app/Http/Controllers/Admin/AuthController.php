@@ -21,18 +21,19 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $adminEmail    = config('app.admin_email', env('ADMIN_EMAIL', 'admin@ceylonaroma.com'));
-        $adminPassword = env('ADMIN_PASSWORD', 'Admin@2024');
-
-        // Also allow DB users
+        // DB users (primary path)
         $user = \App\Models\User::where('email', $request->email)->first();
         if ($user && Hash::check($request->password, $user->password)) {
+            session()->regenerate();
             session(['admin_logged_in' => true, 'admin_name' => $user->name, 'admin_email' => $user->email]);
             return redirect()->route('admin.dashboard')->with('success', 'Welcome back, '.$user->name.'!');
         }
 
-        // Fallback env credentials
-        if ($request->email === $adminEmail && $request->password === $adminPassword) {
+        // Fallback env credentials — compared with hash to avoid plaintext
+        $adminEmail       = env('ADMIN_EMAIL', 'admin@ceylonaroma.com');
+        $adminPasswordHash = env('ADMIN_PASSWORD_HASH', '');
+        if ($adminPasswordHash && $request->email === $adminEmail && Hash::check($request->password, $adminPasswordHash)) {
+            session()->regenerate();
             session(['admin_logged_in' => true, 'admin_name' => 'Administrator', 'admin_email' => $adminEmail]);
             return redirect()->route('admin.dashboard');
         }

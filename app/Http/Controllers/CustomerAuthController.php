@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PasswordResetMail;
+use App\Models\CartItem;
 use App\Models\Customer;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
@@ -105,18 +106,28 @@ class CustomerAuthController extends Controller
     /* ── Google OAuth ── */
     public function redirectToGoogle()
     {
+        $state = Str::random(40);
+        session(['oauth_state' => $state]);
         $params = http_build_query([
             'client_id'     => env('GOOGLE_CLIENT_ID'),
             'redirect_uri'  => route('customer.google.callback'),
             'response_type' => 'code',
             'scope'         => 'openid email profile',
             'access_type'   => 'online',
+            'state'         => $state,
         ]);
         return redirect('https://accounts.google.com/o/oauth2/auth?' . $params);
     }
 
     public function handleGoogleCallback(Request $request)
     {
+        // Validate state to prevent OAuth CSRF
+        $expectedState = session('oauth_state');
+        session()->forget('oauth_state');
+        if (!$expectedState || !$request->state || !hash_equals($expectedState, $request->state)) {
+            return redirect()->route('customer.login')->with('error', 'Invalid OAuth state. Please try again.');
+        }
+
         if (!$request->code) {
             return redirect()->route('customer.login')->with('error', 'Google login failed.');
         }
@@ -278,17 +289,52 @@ class CustomerAuthController extends Controller
     /* ── Logout ── */
     public function logout()
     {
-        session()->forget(['customer_id','customer_name','customer_email','customer_avatar']);
+        session()->forget(['customer_id','customer_name','customer_email','customer_avatar','cart']);
         return redirect()->route('home')->with('success', 'Logged out successfully.');
     }
 
     private function setSession(Customer $customer): void
     {
+        session()->regenerate();
         session([
             'customer_id'     => $customer->id,
             'customer_name'   => $customer->name,
             'customer_email'  => $customer->email,
             'customer_avatar' => $customer->avatar,
         ]);
+
+        // Merge any session cart into DB, then refresh from DB so nothing is lost
+        $sessionCart = session('cart', []);
+        if (!empty($sessionCart)) {
+            foreach ($sessionCart as $slug => $item) {
+                CartItem::updateOrCreate(
+                    ['customer_id' => $customer->id, 'product_id' => $item['id']],
+                    [
+                        'product_name'     => $item['name'],
+                        'product_slug'     => $item['slug'],
+                        'product_image'    => $item['image'] ?? null,
+                        'product_category' => $item['category'] ?? null,
+                        'qty'              => $item['qty'],
+                    ]
+                );
+            }
+        }
+
+        // Pull full DB cart into session
+        $dbItems = CartItem::where('customer_id', $customer->id)->get();
+        $merged = [];
+        foreach ($dbItems as $row) {
+            $merged[$row->product_slug] = [
+                'id'       => $row->product_id,
+                'name'     => $row->product_name,
+                'slug'     => $row->product_slug,
+                'image'    => $row->product_image,
+                'category' => $row->product_category,
+                'qty'      => $row->qty,
+            ];
+        }
+        if (!empty($merged)) {
+            session(['cart' => $merged]);
+        }
     }
 }

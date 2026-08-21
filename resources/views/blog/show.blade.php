@@ -33,10 +33,10 @@ $postImg = $blog_post->image ? asset('storage/'.$blog_post->image) : 'https://ce
 <div class="blog-post-hero">
     <div class="container">
         @if($blog_post->category)
-        <span class="section-label" style="color:var(--gold-2)">{{ $blog_post->category }}</span>
+        <span class="section-label blog-cat-label-gold">{{ $blog_post->category }}</span>
         @endif
         <h1>{{ $blog_post->title }}</h1>
-        <p class="blog-meta">{{ $blog_post->published_at?->format('d M Y') }}</p>
+        <p class="blog-meta"><time datetime="{{ $blog_post->published_at?->toDateString() }}">{{ $blog_post->published_at?->format('d M Y') }}</time></p>
     </div>
 </div>
 
@@ -53,12 +53,12 @@ $postImg = $blog_post->image ? asset('storage/'.$blog_post->image) : 'https://ce
 
             <div class="blog-content">
                 @if($blog_post->excerpt)
-                <p style="font-size:1.125rem;color:var(--canopy);font-weight:500;margin-bottom:1.5rem">{{ $blog_post->excerpt }}</p>
+                <p class="blog-post-excerpt">{{ $blog_post->excerpt }}</p>
                 @endif
                 {!! nl2br(e($blog_post->content)) !!}
             </div>
 
-            <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;gap:1rem;flex-wrap:wrap">
+            <div class="blog-post-foot">
                 <a href="{{ route('blog.index') }}" class="btn btn-outline btn-sm">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
                     Back to Articles
@@ -73,18 +73,18 @@ $postImg = $blog_post->image ? asset('storage/'.$blog_post->image) : 'https://ce
             <div class="sidebar-card">
                 <h4>Related Articles</h4>
                 @foreach($related as $r)
-                <div style="padding:.75rem 0;border-bottom:1px solid var(--border)">
-                    <div style="font-size:.7rem;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">{{ $r->category }}</div>
-                    <a href="{{ route('blog.show', $r->slug) }}" style="font-size:.875rem;font-weight:600;color:var(--canopy);line-height:1.4">{{ $r->title }}</a>
-                    <div style="font-size:.75rem;color:var(--muted);margin-top:.25rem">{{ $r->published_at?->format('d M Y') }}</div>
+                <div class="blog-related-item">
+                    <div class="blog-related-cat">{{ $r->category }}</div>
+                    <a href="{{ route('blog.show', $r->slug) }}" class="blog-related-title">{{ $r->title }}</a>
+                    <div class="blog-related-date"><time datetime="{{ $r->published_at?->toDateString() }}">{{ $r->published_at?->format('d M Y') }}</time></div>
                 </div>
                 @endforeach
             </div>
             @endif
-            <div style="background:var(--canopy);border-radius:12px;padding:1.5rem;text-align:center">
-                <h4 style="color:var(--gold-2);font-family:var(--font-serif);font-size:1.125rem;margin-bottom:.75rem">Ready to Import?</h4>
-                <p style="color:rgba(255,255,255,.75);font-size:.875rem;margin-bottom:1rem">Get premium Ceylon products exported worldwide.</p>
-                <a href="{{ route('contact') }}" class="btn btn-gold" style="width:100%;justify-content:center">Contact Us</a>
+            <div class="blog-sidebar-cta">
+                <h4 class="blog-sidebar-cta-title">Ready to Import?</h4>
+                <p class="blog-sidebar-cta-text">Get premium Ceylon products exported worldwide.</p>
+                <a href="{{ route('contact') }}" class="btn btn-gold">Contact Us</a>
             </div>
         </aside>
     </div>

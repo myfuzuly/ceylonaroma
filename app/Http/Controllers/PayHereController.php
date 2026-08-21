@@ -30,6 +30,10 @@ class PayHereController extends Controller
      */
     public function initiate(Request $request)
     {
+        if (env('PAYHERE_ENABLED', 'false') !== 'true') {
+            return response()->json(['error' => 'Payment gateway is not available. Please contact us to place your order.'], 503);
+        }
+
         $cart = session('cart', []);
         if (empty($cart)) {
             return response()->json(['error' => 'Cart is empty'], 422);
@@ -122,6 +126,10 @@ class PayHereController extends Controller
     public function notify(Request $request)
     {
         $merchantId     = $request->input('merchant_id');
+        if ($merchantId !== $this->merchantId) {
+            Log::warning("PayHere IPN: merchant_id mismatch");
+            return response('Forbidden', 403);
+        }
         $orderId        = $request->input('order_id');
         $paymentId      = $request->input('payment_id');
         $payhere_amount = $request->input('payhere_amount');

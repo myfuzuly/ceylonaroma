@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Force HTTPS (nginx proxy: SSL terminated at nginx, check X-Forwarded-Proto)
+    RewriteCond %{HTTP:X-Forwarded-Proto} =http
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -54,8 +58,5 @@
     <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|ttf|otf)$">
         Header set Cache-Control "public, max-age=15552000"
     </FilesMatch>
-    # Security headers
-    Header always set X-Content-Type-Options "nosniff"
-    Header always set X-Frame-Options "SAMEORIGIN"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    # Security headers handled by Laravel SecurityHeaders middleware
 </IfModule>

@@ -12,7 +12,9 @@
 <div data-flash="error" data-msg="{{ session('error') }}" style="display:none"></div>
 @endif
 
+<main id="main-content">
 @yield('content')
+</main>
 @include('layouts.app-foot')
 
 <script>
@@ -88,7 +90,12 @@
             /* update nav cart badge */
             document.querySelectorAll('.cart-count,.cart-badge').forEach(function(el){
                 el.textContent = json.count;
-                el.style.display = json.count > 0 ? '' : 'none';
+                if (json.count > 0) {
+                    el.classList.remove('nav-cart-badge-hidden');
+                    el.style.display = '';
+                } else {
+                    el.style.display = 'none';
+                }
             });
             window.showToast(json.message || 'Added to cart', 'success');
         })
