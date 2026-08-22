@@ -80,9 +80,9 @@
     </div>
 </section>
 
-{{-- ── Testimonials (hidden — review later) ── --}}
-{{-- <section class="section testimonials-section"> --}}
-@if(false)<section class="section testimonials-section">
+{{-- ── Testimonials ── --}}
+@if(false)
+<section class="section testimonials-section">
     <div class="container">
         <div class="section-head center">
             <span class="section-label">What Importers Say</span>
@@ -143,7 +143,8 @@
             </div>
         </div>
     </div>
-</section>@endif
+</section>
+@endif
 
 {{-- ── Knowledge Centre — Premium ── --}}
 @if($posts->count())

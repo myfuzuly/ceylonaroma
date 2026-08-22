@@ -20,6 +20,8 @@
 <meta name="keywords" content="{{ $settings['meta_keywords'] ?? 'Ceylon cinnamon exporter, Sri Lanka spices wholesale, Ceylon tea supplier, Ceylon coffee export, natural products Sri Lanka, spice exporters Sri Lanka' }}">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="{{ $canonicalUrl }}">
+<link rel="alternate" hreflang="en" href="{{ $canonicalUrl }}">
+<link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl }}">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
 {{-- Open Graph --}}
