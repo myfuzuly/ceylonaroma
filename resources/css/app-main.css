@@ -2193,3 +2193,124 @@ button.mob-nav-item:active{background:var(--forest)}
 .btn-loading{opacity:.7;pointer-events:none;cursor:not-allowed}
 .btn-loading svg{animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══════════════════════════════════════════
+   UI/UX DESIGN ENHANCEMENTS — Aug 2026
+   ══════════════════════════════════════════ */
+
+/* 1. Primary button: gradient depth over flat colour */
+.btn-primary{background:linear-gradient(135deg,#1B4332 0%,#24583F 100%)}
+.btn-primary:hover{background:linear-gradient(135deg,#2D6A4F 0%,#357A5C 100%)}
+
+/* 2. Nav CTA: pill shape */
+.nav-cta-btn{border-radius:100px;padding-left:1.1rem;padding-right:1.1rem}
+
+/* 3. Nav link: animated underline slides in on hover */
+.nav-links .nav-link::after{
+    content:'';position:absolute;bottom:-1px;
+    left:.7rem;right:.7rem;height:2px;
+    background:var(--gold);border-radius:2px;
+    transform:scaleX(0);transform-origin:center;
+    transition:transform .22s ease;
+}
+.nav-links .nav-link:hover::after,
+.nav-links .nav-link.active::after{transform:scaleX(1)}
+
+/* 4. Nav scrolled: backdrop blur for glass effect */
+.nav.scrolled{
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 4px 24px rgba(27,67,50,.1);
+}
+
+/* 5. Section title underline: wider + stronger gradient */
+.section-title::after{
+    width:52px;height:3px;
+    background:linear-gradient(90deg,var(--gold) 0%,rgba(200,146,42,.15) 100%);
+}
+
+/* 6. Section label on light backgrounds: subtle pill */
+.section-head .section-label,
+.section-header-center .section-label,
+.kcp-header .section-label,
+.wyc-header .section-label{
+    background:rgba(200,146,42,.08);
+    border:1px solid rgba(200,146,42,.2);
+    border-radius:100px;
+    padding:.2rem .85rem .2rem .6rem;
+}
+
+/* 7. Product card: more modern rounded corners */
+.product-card{border-radius:12px}
+
+/* 8. Product card footer icon buttons: slightly larger */
+.product-quote-icon,.product-view-btn{width:32px;height:32px}
+
+/* 9. Quick-add overlay buttons: rounder */
+.quick-add-btn,.quick-quote-btn{border-radius:6px}
+
+/* 10. Blog card: animated gold top-border on hover */
+.blog-card{
+    border-top-width:3px;
+    border-top-color:transparent;
+    transition:transform .25s,box-shadow .25s,border-top-color .25s;
+}
+.blog-card:hover{border-top-color:var(--gold)}
+
+/* 11. Hero purity badge: gentle float (desktop only, avoids mobile transform:none conflict) */
+@media(min-width:769px){
+    @keyframes hpb-float{
+        0%,100%{transform:translateY(-50%) scale(1)}
+        50%{transform:translateY(calc(-50% - 8px)) scale(1.01)}
+    }
+    .hero-purity-badge{animation:hpb-float 4.2s ease-in-out infinite}
+}
+
+/* 12. WYC card icon: lift scale on hover */
+.wyc-card:hover .wyc-card-icon{transform:scale(1.1)}
+.wyc-card-icon{transition:transform .28s cubic-bezier(.4,0,.2,1),background .28s,color .28s}
+
+/* 13. Process icon circle: ring glow on hover */
+.process-step-wrap:hover .process-icon-circle{
+    box-shadow:0 8px 28px rgba(27,67,50,.22),0 0 0 8px rgba(200,146,42,.1);
+}
+
+/* 14. Trust cert items: gold icon on hover */
+.trust-cert{transition:opacity .18s;cursor:default}
+.trust-cert:hover .tc-icon{stroke:var(--gold);transition:stroke .18s}
+
+/* 15. Category card: more pronounced image scale */
+.cat-card:hover .cat-bg-img{transform:scale(1.09)}
+
+/* 16. Carousel arrows: scale + shadow on hover */
+.pc-arrow{transition:all .2s cubic-bezier(.4,0,.2,1)}
+.pc-arrow:hover{
+    background:var(--canopy);color:#fff;border-color:var(--canopy);
+    transform:translateY(-50%) scale(1.1);
+    box-shadow:0 4px 16px rgba(27,67,50,.24);
+}
+
+/* 17. Footer social icons: shadow on hover */
+.footer-social:hover{
+    background:var(--gold);color:#fff;
+    transform:translateY(-3px);
+    box-shadow:0 4px 14px rgba(200,146,42,.35);
+}
+
+/* 18. About why-cards: enhanced hover border */
+.about-why-card:hover{border-color:rgba(200,146,42,.35)}
+
+/* 19. Stat bar numbers: tabular digits */
+.stat-num{font-variant-numeric:tabular-nums}
+
+/* 20. Scroll to top: ring */
+.back-to-top{border:2px solid rgba(255,255,255,.18)}
+
+/* 21. Mobile bottom nav quote: gradient */
+@media(max-width:768px){
+    .mob-nav-quote::before{
+        background:linear-gradient(135deg,var(--canopy) 0%,var(--forest) 100%);
+        box-shadow:0 2px 10px rgba(27,67,50,.3);
+    }
+}
