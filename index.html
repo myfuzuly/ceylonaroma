@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ceylon Aroma — Natural, Pure, Ceylon</title>
+<meta name="description" content="Premium quality spices, tea, coffee, oils and natural products exported from Sri Lanka to 60+ countries worldwide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════ TOKENS ══════════════════════════ */
+:root{
+  --canopy:#173C2C; --canopy-2:#204A36; --forest:#2B6248; --sage:#5D8A6C;
+  --gold:#C6862A; --gold-2:#DFA84C; --gold-pale:#F6ECD6;
+  --rust:#D97B36;
+  --cream:#FAF6EC; --paper:#FFFDF8; --surface:#FFFFFF;
+  --ink:#1C2620; --ink-2:#4B5A4F; --ink-3:#7C8A7E;
+  --line:#E7E0CF; --line-2:#EDE7D8;
+  --shadow-sm:0 2px 10px rgba(23,60,44,.06);
+  --shadow:0 10px 34px rgba(23,60,44,.10);
+  --shadow-lg:0 24px 60px rgba(23,60,44,.16);
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r-sm:8px; --r-md:14px; --r-lg:22px; --r-full:999px;
+}
+:root[data-theme="dark"]{
+  --canopy:#0C1F17; --canopy-2:#12301F; --forest:#1F4A34; --sage:#4A7458;
+  --gold:#D9A24C; --gold-2:#E8BC70; --gold-pale:#20200B;
+  --rust:#E08B48;
+  --cream:#0E1712; --paper:#111C15; --surface:#152018;
+  --ink:#E7EEE5; --ink-2:#AAB8A6; --ink-3:#748073;
+  --line:#233428; --line-2:#1C2A21;
+  --shadow-sm:0 2px 10px rgba(0,0,0,.3);
+  --shadow:0 10px 34px rgba(0,0,0,.4);
+  --shadow-lg:0 24px 60px rgba(0,0,0,.5);
+}
+
+/* ══════════════════════════ BASE ══════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;max-width:100%}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);font-size:15.5px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:var(--sans);cursor:pointer}
+ul{list-style:none}
+svg{display:block;flex-shrink:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1300px;margin:0 auto;padding:0 32px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::before{content:'';width:16px;height:1.5px;background:var(--gold)}
+.pad{padding:100px 0}
+.center{text-align:center}
+.center .eyebrow{justify-content:center}
+.center .eyebrow::before{display:none}
+.sec-head{max-width:640px;margin-bottom:52px}
+.sec-head.center{margin-left:auto;margin-right:auto}
+.sec-head h2{font-family:var(--serif);font-weight:700;font-size:38px;line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin-top:12px;text-wrap:balance}
+.sec-head p{font-size:15.5px;color:var(--ink-2);margin-top:12px;line-height:1.7}
+.btn{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:14px 26px;border-radius:var(--r-sm);border:1.5px solid transparent;transition:all .2s cubic-bezier(.4,0,.2,1);white-space:nowrap}
+.btn-solid{background:var(--canopy);color:#fff}
+.btn-solid:hover{background:var(--forest);transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--canopy);color:var(--canopy);background:var(--surface)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:var(--rust);transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn-outline-lt{background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+.btn-outline-lt:hover{background:rgba(255,255,255,.12);border-color:#fff}
+.btn-sm{padding:10px 18px;font-size:11px}
+.link-arrow{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--canopy);transition:gap .2s}
+.link-arrow:hover{gap:10px}
+[data-theme="dark"] .link-arrow{color:var(--gold-2)}
+
+/* ── icon helper sizes ── */
+.i16{width:16px;height:16px} .i18{width:18px;height:18px} .i20{width:20px;height:20px} .i22{width:22px;height:22px} .i28{width:28px;height:28px}
+
+/* ══════════════════════════ TOP BAR ══════════════════════════ */
+.topbar{background:var(--canopy);color:rgba(255,255,255,.72)}
+.topbar-inner{max-width:1300px;margin:0 auto;padding:0 32px;height:40px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.tb-msg{font-size:11.5px;font-weight:500;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-mid{display:flex;align-items:center;gap:24px}
+.tb-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;white-space:nowrap;color:rgba(255,255,255,.68)}
+.tb-item svg{color:var(--gold-2)}
+.tb-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.tb-lang{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer}
+.tb-cta{background:var(--gold);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 15px;border-radius:5px;display:flex;align-items:center;gap:7px;transition:background .2s}
+.tb-cta:hover{background:var(--rust)}
+
+/* ══════════════════════════ NAV ══════════════════════════ */
+.nav{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:200;transition:box-shadow .25s}
+.nav.scrolled{box-shadow:0 4px 24px rgba(23,60,44,.09)}
+.nav-inner{max-width:1300px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:36px}
+
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand-mark{position:relative;width:38px;height:44px;flex-shrink:0}
+.brand-mark svg{width:100%;height:100%}
+.brand-word{display:flex;flex-direction:column;line-height:.8}
+.brand-top{font-family:var(--serif);font-style:italic;font-weight:500;font-size:12.5px;color:var(--canopy);padding-left:2px}
+.brand-main{font-family:var(--serif);font-weight:700;font-size:26px;color:var(--canopy);letter-spacing:-.01em}
+.brand-tag{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;padding-left:2px}
+
+.nav-links{display:flex;align-items:center;gap:2px;margin:0 auto}
+.nav-link{display:flex;align-items:center;gap:4px;font-size:13.5px;font-weight:600;color:var(--ink-2);padding:8px 15px;border-radius:6px;transition:all .15s;position:relative}
+.nav-link:hover{color:var(--canopy);background:var(--gold-pale)}
+.nav-link.active{color:var(--canopy)}
+.nav-link.active::after{content:'';position:absolute;left:15px;right:15px;bottom:1px;height:2px;background:var(--gold)}
+
+.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.icon-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink-2);border:1px solid transparent;transition:all .18s;background:none}
+.icon-btn:hover{background:var(--gold-pale);color:var(--canopy)}
+.icon-btn.bordered{border-color:var(--line)}
+.burger{display:none}
+
+/* ══════════════════════════ HERO ══════════════════════════ */
+.hero{background:var(--cream);padding:64px 0 0}
+.hero-grid{display:grid;grid-template-columns:1fr 1.02fr;gap:64px;align-items:center}
+.hero-copy{max-width:480px}
+.hero-h{font-family:var(--serif);font-size:52px;line-height:1.14;font-weight:700;color:var(--ink);letter-spacing:-.015em;margin-bottom:20px;text-wrap:balance}
+.hero-h .accent{color:var(--rust);font-style:italic;font-weight:600}
+.hero-p{font-size:16px;line-height:1.75;color:var(--ink-2);margin-bottom:34px;max-width:420px}
+.hero-ctas{display:flex;align-items:center;gap:14px}
+
+.hero-visual{position:relative}
+.hero-photo{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:6/5.1;background:
+  radial-gradient(ellipse 60% 45% at 22% 30%,rgba(255,255,255,.10) 0%,transparent 60%),
+  linear-gradient(155deg,#3B2413 0%,#6B3E1E 28%,#8A5228 46%,#2F4E31 78%,#1B3521 100%);
+  box-shadow:var(--shadow-lg)}
+.hero-photo::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(circle at 78% 20%,rgba(43,98,72,.55) 0%,transparent 38%),
+  radial-gradient(circle at 15% 78%,rgba(198,134,42,.30) 0%,transparent 42%)}
+.hp-item{position:absolute;filter:drop-shadow(0 12px 20px rgba(0,0,0,.35))}
+.hp-cinnamon{left:6%;top:16%;width:30%;color:#B87A3E}
+.hp-coffeebag{right:14%;top:10%;width:22%;color:#0F0B08}
+.hp-oil{right:6%;bottom:14%;width:16%;color:#D9A24C}
+.hp-beans{left:10%;bottom:8%;width:24%;color:#3A2416}
+.hp-leaf{left:44%;top:6%;width:14%;color:#4E7C55;opacity:.85}
+
+.hero-seal{position:absolute;left:-8%;bottom:-9%;width:150px;height:150px;border-radius:50%;background:var(--surface);border:1.5px solid var(--gold);box-shadow:var(--shadow-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;z-index:3}
+.hero-seal-ring{position:absolute;inset:8px;border-radius:50%;border:1px dashed rgba(198,134,42,.45)}
+.hero-seal strong{font-family:var(--serif);font-size:26px;font-weight:800;color:var(--canopy);line-height:1}
+.hero-seal span{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:1.4;margin-top:6px}
+
+/* ══════════════════════════ STATS BAR ══════════════════════════ */
+.stats-wrap{padding:56px 0 0}
+.stats-bar{background:var(--canopy);border-radius:var(--r-lg);padding:30px 20px;display:flex;align-items:center;box-shadow:var(--shadow)}
+.stat{flex:1;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;position:relative}
+.stat:not(:last-child)::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:1px;height:34px;background:rgba(255,255,255,.14)}
+.stat-icon{width:38px;height:38px;border-radius:50%;background:rgba(223,168,76,.14);display:flex;align-items:center;justify-content:center;color:var(--gold-2);flex-shrink:0}
+.stat-num{font-family:var(--serif);font-size:24px;font-weight:800;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+.stat-lbl{font-size:11px;font-weight:500;color:rgba(255,255,255,.58);margin-top:3px;white-space:nowrap}
+
+/* ══════════════════════════ CATEGORIES ══════════════════════════ */
+.cat-row{display:grid;grid-template-columns:repeat(7,1fr);gap:22px}
+.cat-item{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.cat-photo{position:relative;width:104px;height:104px;border-radius:50%;box-shadow:var(--shadow-sm);border:3px solid var(--surface);outline:1px solid var(--line);transition:transform .25s,box-shadow .25s}
+.cat-item:hover .cat-photo{transform:translateY(-6px);box-shadow:var(--shadow)}
+.cat-photo.p1{background:radial-gradient(circle at 35% 30%,#C98B4C,#7A4620)}
+.cat-photo.p2{background:radial-gradient(circle at 35% 30%,#5C3A22,#1E0F06)}
+.cat-photo.p3{background:radial-gradient(circle at 35% 30%,#8FB57E,#2E5636)}
+.cat-photo.p4{background:radial-gradient(circle at 35% 30%,#E8D08A,#B8862E)}
+.cat-photo.p5{background:radial-gradient(circle at 35% 30%,#F0B860,#C9781E)}
+.cat-photo.p6{background:radial-gradient(circle at 35% 30%,#D8C49E,#8A6B3C)}
+.cat-photo.p7{background:radial-gradient(circle at 35% 30%,#C9A868,#7A5A26)}
+.cat-badge{position:absolute;right:-4px;bottom:-4px;width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--canopy);box-shadow:var(--shadow-sm)}
+.cat-name{font-size:13px;font-weight:700;color:var(--ink);line-height:1.4}
+
+/* ══════════════════════════ WHY CHOOSE (icon row) ══════════════════════════ */
+.why-strip{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.why-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.why-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;flex:1;max-width:150px}
+.why-icon{width:46px;height:46px;color:var(--forest)}
+.why-title{font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.4}
+
+/* ══════════════════════════ COLLECTIONS ══════════════════════════ */
+.coll-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.coll-card{position:relative;border-radius:var(--r-md);overflow:hidden;aspect-ratio:3/3.6;cursor:pointer;box-shadow:var(--shadow-sm);transition:box-shadow .3s,transform .3s}
+.coll-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.coll-bg{position:absolute;inset:0;transition:transform .5s}
+.coll-card:hover .coll-bg{transform:scale(1.06)}
+.coll-card:nth-child(1) .coll-bg{background:linear-gradient(155deg,#8A5228 0%,#3B2413 100%)}
+.coll-card:nth-child(2) .coll-bg{background:linear-gradient(155deg,#4A2E18 0%,#170D06 100%)}
+.coll-card:nth-child(3) .coll-bg{background:linear-gradient(155deg,#3B6244 0%,#12261A 100%)}
+.coll-card:nth-child(4) .coll-bg{background:linear-gradient(155deg,#C9A868 0%,#6B4E22 100%)}
+.coll-icon{position:absolute;top:22px;right:20px;width:42px;height:42px;color:rgba(255,255,255,.35)}
+.coll-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,14,10,.92) 0%,rgba(8,14,10,.28) 58%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.coll-title{font-family:var(--serif);font-size:21px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:9px;text-wrap:balance}
+.coll-desc{font-size:12.5px;color:rgba(255,255,255,.62);line-height:1.55;margin-bottom:16px}
+.coll-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-2);transition:gap .2s}
+.coll-card:hover .coll-link{gap:10px}
+
+/* ══════════════════════════ PRODUCTS ══════════════════════════ */
+.prod-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px}
+.prod-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.prod-tab{font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--ink-2);padding:9px 18px;border-radius:var(--r-full);border:1px solid transparent;background:none;transition:all .18s}
+.prod-tab.on{background:var(--canopy);color:#fff}
+.prod-tab:hover:not(.on){border-color:var(--line);color:var(--ink)}
+
+.prod-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.prod-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.prod-card:hover{box-shadow:var(--shadow);transform:translateY(-4px);border-color:var(--sage)}
+.prod-photo{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.prod-photo svg{width:44%;height:44%;opacity:.9}
+.prod-photo.q1{background:radial-gradient(circle at 32% 28%,#D8A868,#8A5426);color:#fff}
+.prod-photo.q2{background:radial-gradient(circle at 32% 28%,#3A2416,#120A05);color:#E8D8B8}
+.prod-photo.q3{background:radial-gradient(circle at 32% 28%,#9DC08A,#3E6B48);color:#fff}
+.prod-photo.q4{background:radial-gradient(circle at 32% 28%,#4A2E18,#1A0F08);color:#E8C888}
+.prod-photo.q5{background:radial-gradient(circle at 32% 28%,#D0956A,#8A4E28);color:#fff}
+.prod-photo.q6{background:radial-gradient(circle at 32% 28%,#C8A868,#7A5622);color:#fff}
+.prod-wish{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;color:var(--ink-2);border:none;box-shadow:var(--shadow-sm);transition:all .18s}
+.prod-wish:hover{color:var(--rust);transform:scale(1.08)}
+.prod-wish.active{color:var(--rust)}
+.prod-body{padding:15px}
+.prod-origin{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--sage);margin-bottom:8px}
+.prod-name{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.42;margin-bottom:16px;min-height:2.85em}
+.prod-btn{width:100%;padding:11px;background:var(--canopy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:7px;transition:background .2s}
+.prod-btn:hover{background:var(--forest)}
+
+/* ══════════════════════════ WHY IMPORT ══════════════════════════ */
+.imp-grid{display:grid;grid-template-columns:.85fr 2fr;gap:56px;align-items:start}
+.imp-l h2{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--ink);line-height:1.18;letter-spacing:-.01em;margin:12px 0 14px;text-wrap:balance}
+.imp-l p{font-size:14.5px;color:var(--ink-2);line-height:1.75;margin-bottom:22px}
+.imp-map{position:relative;background:linear-gradient(160deg,var(--canopy) 0%,var(--forest) 100%);border-radius:var(--r-md);padding:22px;margin-top:30px;overflow:hidden}
+.imp-map svg{width:100%;height:auto;display:block}
+.imp-pin{fill:var(--gold-2)}
+.imp-pin-label{font-size:8px;font-weight:700;fill:rgba(255,255,255,.85);letter-spacing:.03em}
+
+.imp-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.imp-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:26px 20px;text-align:center;transition:all .2s}
+.imp-card:hover{border-color:var(--gold);box-shadow:var(--shadow-sm);transform:translateY(-3px)}
+.imp-card-icon{width:44px;height:44px;color:var(--gold);margin:0 auto 16px}
+.imp-card-title{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.imp-card-desc{font-size:12px;color:var(--ink-3);line-height:1.6}
+
+/* ══════════════════════════ COFFEE BANNER ══════════════════════════ */
+.coffee{position:relative;overflow:hidden;background:linear-gradient(115deg,#140C07 0%,#3A2413 42%,#5A3A1E 68%,#2A1D10 100%)}
+.coffee::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 82% 50%,rgba(198,134,42,.22) 0%,transparent 55%)}
+.coffee-inner{position:relative;z-index:2;padding:110px 0;max-width:520px}
+.coffee-inner h2{font-family:var(--serif);font-size:46px;font-weight:700;color:#fff;line-height:1.14;letter-spacing:-.01em;margin-bottom:18px;text-wrap:balance}
+.coffee-inner h2 em{color:var(--gold-2);font-style:italic}
+.coffee-inner p{font-size:15.5px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:32px;max-width:400px}
+.coffee-cup{position:absolute;right:8%;top:50%;transform:translateY(-50%);width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#F5EDE0,#C9A468 55%,#3A2410 100%);box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.coffee-cup::after{content:'';position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle at 45% 40%,#2A1608,#0D0805)}
+
+/* ══════════════════════════ EXPORT PROCESS ══════════════════════════ */
+.proc-track{position:relative;display:flex;align-items:flex-start;margin-top:8px}
+.proc-line{position:absolute;top:39px;left:80px;right:80px;height:0;border-top:1.5px dashed var(--line)}
+.proc-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 14px;position:relative;z-index:2}
+.proc-idx{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--gold);margin-bottom:10px}
+.proc-node{width:64px;height:64px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--canopy);margin-bottom:20px;transition:all .2s}
+.proc-node.on{background:var(--canopy);border-color:var(--canopy);color:#fff;box-shadow:0 8px 22px rgba(23,60,44,.25)}
+.proc-step-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.proc-step-desc{font-size:12.5px;color:var(--ink-3);line-height:1.6;max-width:180px}
+
+/* ══════════════════════════ KNOWLEDGE ══════════════════════════ */
+.blog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.blog-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;transition:all .22s}
+.blog-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.blog-photo{aspect-ratio:16/10;position:relative;display:flex;align-items:center;justify-content:center}
+.blog-photo svg{width:34%;height:34%;color:rgba(255,255,255,.85)}
+.blog-photo.b1{background:linear-gradient(150deg,#8A5228,#2E1B0D)}
+.blog-photo.b2{background:linear-gradient(150deg,#5C8A5E,#1E3A22)}
+.blog-photo.b3{background:linear-gradient(150deg,#3E6B48,#12261A)}
+.blog-photo.b4{background:linear-gradient(150deg,#3A2413,#120A05)}
+.blog-body{padding:18px}
+.blog-cat{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.blog-title{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.5;margin-bottom:14px}
+.blog-date{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-3)}
+
+/* ══════════════════════════ FOOTER ══════════════════════════ */
+.footer{background:var(--canopy);padding-top:76px;position:relative}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.3fr;gap:44px;padding-bottom:52px;border-bottom:1px solid rgba(255,255,255,.09)}
+.f-brand{display:flex;flex-direction:column;gap:16px}
+.f-logo{display:flex;align-items:center;gap:10px}
+.f-word{display:flex;flex-direction:column;line-height:.8}
+.f-top{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--gold-2);padding-left:2px}
+.f-main{font-family:var(--serif);font-weight:700;font-size:24px;color:#fff}
+.f-tag{font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px;padding-left:2px}
+.f-desc{font-size:13px;color:rgba(255,255,255,.52);line-height:1.75;max-width:280px}
+.f-social{display:flex;gap:9px;margin-top:4px}
+.f-s{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);transition:all .2s}
+.f-s:hover{background:var(--gold);border-color:var(--gold);color:#fff;transform:translateY(-2px)}
+.f-col h4{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:20px}
+.f-col a{display:block;font-size:13px;color:rgba(255,255,255,.62);margin-bottom:12px;transition:color .15s}
+.f-col a:hover{color:#fff}
+.f-contact-item{display:flex;gap:11px;margin-bottom:16px}
+.f-contact-item svg{color:var(--gold-2);flex-shrink:0;margin-top:2px}
+.f-contact-text{font-size:13px;color:rgba(255,255,255,.62);line-height:1.55}
+.f-certs{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+.f-cert{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:6px 12px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.55)}
+.footer-bot{padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.4)}
+.footer-bot-links{display:flex;gap:24px}
+.footer-bot-links a{font-size:12px;color:rgba(255,255,255,.4);transition:color .15s}
+.footer-bot-links a:hover{color:rgba(255,255,255,.85)}
+
+.to-top{position:fixed;right:26px;bottom:26px;width:46px;height:46px;border-radius:50%;background:var(--canopy);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);border:none;opacity:0;visibility:hidden;transform:translateY(8px);transition:all .25s;z-index:300}
+.to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.to-top:hover{background:var(--forest)}
+
+/* ══════════════════════════ MOBILE MENU ══════════════════════════ */
+.mobile-menu{position:fixed;inset:0;background:var(--canopy);z-index:400;display:flex;flex-direction:column;padding:24px 28px;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.mobile-menu.open{transform:translateX(0)}
+.mm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.mm-close{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;display:flex;align-items:center;justify-content:center;border:none}
+.mm-links{display:flex;flex-direction:column;gap:4px}
+.mm-links a{font-family:var(--serif);font-size:24px;font-weight:600;color:#fff;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.mm-cta{margin-top:auto;padding-top:28px}
+
+/* ══════════════════════════ RESPONSIVE ══════════════════════════ */
+@media(max-width:1180px){
+  .cat-row{grid-template-columns:repeat(4,1fr);row-gap:32px}
+  .prod-grid{grid-template-columns:repeat(3,1fr)}
+  .imp-grid{grid-template-columns:1fr}
+  .imp-cards{grid-template-columns:repeat(4,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr 1fr;row-gap:40px}
+}
+@media(max-width:980px){
+  .topbar .tb-mid{display:none}
+  .nav-links{display:none}
+  .burger{display:flex}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-visual{order:-1;max-width:520px;margin:0 auto}
+  .hero-copy{max-width:100%}
+  .hero-h{font-size:40px}
+  .why-row{flex-wrap:wrap;justify-content:center;row-gap:28px}
+  .why-item{max-width:31%}
+  .coll-grid{grid-template-columns:repeat(2,1fr)}
+  .imp-cards{grid-template-columns:repeat(2,1fr)}
+  .blog-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-bar{flex-wrap:wrap;gap:24px 0}
+  .stat{flex:1 1 33%}
+  .stat:nth-child(3n)::after{display:none}
+}
+@media(max-width:640px){
+  .wrap{padding:0 20px}
+  .pad{padding:64px 0}
+  .topbar-inner{padding:0 20px}
+  .tb-msg{font-size:10px}
+  .nav-inner{padding:12px 20px}
+  .hero{padding-top:40px}
+  .hero-h{font-size:32px}
+  .hero-ctas{flex-direction:column;align-items:stretch}
+  .hero-seal{width:110px;height:110px;left:-6%;bottom:-6%}
+  .hero-seal strong{font-size:19px}
+  .stats-bar{padding:24px 16px}
+  .stat{flex:1 1 50%;padding:8px 6px}
+  .stat:nth-child(2n)::after{display:none}
+  .stat-lbl{white-space:normal}
+  .cat-row{grid-template-columns:repeat(3,1fr);gap:16px 10px}
+  .cat-photo{width:78px;height:78px}
+  .why-item{max-width:47%}
+  .coll-grid{grid-template-columns:1fr}
+  .prod-grid{grid-template-columns:repeat(2,1fr)}
+  .prod-toolbar{flex-direction:column;align-items:flex-start}
+  .imp-cards{grid-template-columns:1fr}
+  .blog-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;gap:36px}
+  .coffee-cup{display:none}
+  .coffee-inner{padding:72px 0}
+  .coffee-inner h2{font-size:32px}
+  .sec-head h2{font-size:28px}
+  .proc-track{flex-wrap:wrap;row-gap:32px}
+  .proc-line{display:none}
+  .proc-step{flex:1 1 45%}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ══════ TOP BAR ══════ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="tb-msg">Delivering Natural Goodness of Sri Lanka to the World</div>
+    <div class="tb-mid">
+      <div class="tb-item">
+        <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        Exporting to 60+ Countries
+      </div>
+      <div class="tb-item">
+        <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20 6 9 17l-5-5"/></svg>
+        100% Natural &amp; Pure
+      </div>
+      <div class="tb-item">
+        <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20 6 9 17l-5-5"/></svg>
+        Certified Quality
+      </div>
+    </div>
+    <div class="tb-right">
+      <div class="tb-lang">EN <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+      <a href="#contact" class="tb-cta">Export Inquiry
+        <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ NAV ══════ -->
+<header class="nav" id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 38 44" fill="none">
+          <path d="M19 4C13 10 9 16 9 23c0 6 4.5 11 10 11s10-5 10-11c0-7-4-13-10-19Z" fill="currentColor" style="color:var(--canopy)"/>
+          <path d="M19 8C15 13 12 18 12 23c0 4.5 3 8.4 7 9" stroke="var(--gold-2)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="14" cy="10" rx="4.2" ry="2.3" fill="var(--gold-2)" transform="rotate(-38 14 10)"/>
+        </svg>
+      </div>
+      <div class="brand-word">
+        <span class="brand-top">Ceylon</span>
+        <span class="brand-main">Aroma</span>
+        <span class="brand-tag">Natural · Pure · Ceylon</span>
+      </div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#" class="nav-link active">Home</a>
+      <a href="#" class="nav-link">About Us</a>
+      <a href="#" class="nav-link">Products
+        <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </a>
+      <a href="#" class="nav-link">Private Label</a>
+      <a href="#" class="nav-link">Export</a>
+      <a href="#" class="nav-link">Quality</a>
+      <a href="#" class="nav-link">Blog</a>
+      <a href="#contact" class="nav-link">Contact Us</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="Search">
+        <svg class="i20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="icon-btn bordered" id="themeToggle" aria-label="Toggle theme">
+        <svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn bordered burger" id="burgerBtn" aria-label="Open menu">
+        <svg class="i20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══════ MOBILE MENU ══════ -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-top">
+    <div class="brand-word">
+      <span class="brand-top" style="color:var(--gold-2)">Ceylon</span>
+      <span class="brand-main" style="color:#fff">Aroma</span>
+    </div>
+    <button class="mm-close" id="mmClose" aria-label="Close menu">
+      <svg class="i20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <div class="mm-links">
+    <a href="#">Home</a>
+    <a href="#">About Us</a>
+    <a href="#">Products</a>
+    <a href="#">Private Label</a>
+    <a href="#">Export</a>
+    <a href="#">Quality</a>
+    <a href="#">Blog</a>
+    <a href="#contact">Contact Us</a>
+  </div>
+  <div class="mm-cta"><a href="#contact" class="btn btn-gold" style="width:100%;justify-content:center">Export Inquiry</a></div>
+</div>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow" style="margin-bottom:18px">Sri Lanka's Finest Export</div>
+        <h1 class="hero-h">Delivering the <span class="accent">Natural Taste &amp; Aroma</span> of Sri Lanka to the World</h1>
+        <p class="hero-p">Premium quality spices, tea, coffee, oils and natural products sourced from the rich lands of Sri Lanka — for a healthier and better tomorrow.</p>
+        <div class="hero-ctas">
+          <a href="#products" class="btn btn-solid">Explore Products
+            <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-ghost">Export Inquiry
+            <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-photo">
+          <svg class="hp-item hp-cinnamon" viewBox="0 0 100 60" fill="none"><g stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><ellipse cx="20" cy="8" rx="9" ry="6"/><line x1="20" y1="14" x2="20" y2="52"/><ellipse cx="42" cy="10" rx="8" ry="5.5"/><line x1="42" y1="15" x2="40" y2="50"/><ellipse cx="62" cy="12" rx="7.5" ry="5"/><line x1="62" y1="17" x2="60" y2="48"/></g></svg>
+          <svg class="hp-item hp-coffeebag" viewBox="0 0 100 120" fill="currentColor"><path d="M15 30h70l-6 78a8 8 0 0 1-8 8H29a8 8 0 0 1-8-8L15 30Z" opacity=".95"/><rect x="30" y="14" width="40" height="20" rx="4"/><circle cx="50" cy="70" r="16" fill="none" stroke="#fff" stroke-width="2" opacity=".7"/></svg>
+          <svg class="hp-item hp-oil" viewBox="0 0 60 100" fill="currentColor"><path d="M20 8h20v14l8 10v55a6 6 0 0 1-6 6H18a6 6 0 0 1-6-6V32l8-10V8Z" opacity=".9"/></svg>
+          <svg class="hp-item hp-beans" viewBox="0 0 100 60" fill="currentColor"><g opacity=".92"><ellipse cx="20" cy="30" rx="11" ry="8" transform="rotate(20 20 30)"/><ellipse cx="42" cy="22" rx="11" ry="8" transform="rotate(-15 42 22)"/><ellipse cx="64" cy="32" rx="11" ry="8" transform="rotate(30 64 32)"/><ellipse cx="84" cy="20" rx="10" ry="7" transform="rotate(-10 84 20)"/><ellipse cx="32" cy="42" rx="10" ry="7" transform="rotate(10 32 42)"/><ellipse cx="56" cy="46" rx="10" ry="7" transform="rotate(-20 56 46)"/></g></svg>
+          <svg class="hp-item hp-leaf" viewBox="0 0 60 40" fill="currentColor"><path d="M4 36C4 18 20 4 40 4c4 14-8 28-26 28-4 0-8-2-10-4Z"/></svg>
+        </div>
+        <div class="hero-seal">
+          <div class="hero-seal-ring"></div>
+          <strong>100%</strong>
+          <span>Pure Ceylon<br>Goodness</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ STATS ══════ -->
+<div class="stats-wrap wrap">
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-icon"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+      <div><div class="stat-num">60+</div><div class="stat-lbl">Countries Exported</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v9l9 5 9-5V8"/><path d="M12 13v9"/></svg></div>
+      <div><div class="stat-num">500+</div><div class="stat-lbl">Premium Products</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-2 7 5.5-3 5.5 3-2-7"/></svg></div>
+      <div><div class="stat-num">15+</div><div class="stat-lbl">Years of Excellence</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3C8 7 5 11 5 15a7 7 0 0 0 14 0c0-4-3-8-7-12Z"/></svg></div>
+      <div><div class="stat-num">100%</div><div class="stat-lbl">Natural &amp; Pure</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <div><div class="stat-num">Certified</div><div class="stat-lbl">Quality Assured</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ CATEGORIES ══════ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Browse by Category</div>
+      <h2>Our Product Categories</h2>
+      <p>A wide range of natural products from Sri Lanka</p>
+    </div>
+    <div class="cat-row">
+      <a href="#" class="cat-item">
+        <div class="cat-photo p1"><div class="cat-badge"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg></div></div>
+        <div class="cat-name">Ceylon Spices</div>
+      </a>
+      <a href="#" class="cat-item">
+        <div class="cat-photo p2"><div class="cat-badge"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10h13v4a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6v-2Z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 1.5-1.5 1.5-1.5 3M12 3c0 1.5-1.5 1.5-1.5 3"/></svg></div></div>
+        <div class="cat-name">Ceylon Coffee</div>
+      </a>
+      <a href="#" class="cat-item">
+        <div class="cat-photo p3"><div class="cat-badge"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg></div></div>
+        <div class="cat-name">Ceylon Tea</div>
+      </a>
+      <a href="#" class="cat-item">
+        <div class="cat-photo p4"><div class="cat-badge"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6l2 6-2 3v7a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-7L7 9l2-6Z"/></svg></div></div>
+        <div class="cat-name">Aromatic Oils</div>
+      </a>
+      <a href="#" class="cat-item">
+        <div class="cat-photo p5"><div class="cat-badge"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M8 12h8M12 8v8"/></svg></div></div>
+        <div class="cat-name">Frozen Pulp</div>
+      </a>
+      <a href="#" class="cat-item">
+        <div class="cat-photo p6"><div class="cat-badge"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div></div>
+        <div class="cat-name">Dehydrated Products</div>
+      </a>
+      <a href="#" class="cat-item">
+        <div class="cat-photo p7"><div class="cat-badge"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="9" r="4"/><circle cx="16" cy="9" r="4"/><circle cx="12" cy="16" r="4"/></svg></div></div>
+        <div class="cat-name">Nuts &amp; Natural Foods</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ WHY CHOOSE ══════ -->
+<section class="why-strip pad-sm" style="padding:56px 0">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:38px">
+      <div class="eyebrow">The Ceylon Aroma Standard</div>
+      <h2 style="font-size:30px">Why Choose Ceylon Aroma?</h2>
+    </div>
+    <div class="why-row">
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3C8 7 5 11 5 15a7 7 0 0 0 14 0c0-4-3-8-7-12Z"/><path d="M12 8v9"/></svg>
+        <div class="why-title">Sri Lankan<br>Origin</div>
+      </div>
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <div class="why-title">Export<br>Quality</div>
+      </div>
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11M16 4c2 3 2 7-1 10"/></svg>
+        <div class="why-title">Sustainable<br>Sourcing</div>
+      </div>
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v9l9 5 9-5V8"/><path d="M12 13v9"/></svg>
+        <div class="why-title">Premium<br>Packaging</div>
+      </div>
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        <div class="why-title">Global<br>Delivery</div>
+      </div>
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="8" r="3.4"/><path d="M3.5 20c1-3.8 3.2-6 5.5-6s4.5 2.2 5.5 6"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15.2 13.2c2.3.4 4 2.4 4.8 5.6"/></svg>
+        <div class="why-title">Direct Farmer<br>Network</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ COLLECTIONS ══════ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Handpicked by Our Export Partners</div>
+      <h2>Featured Export Collections</h2>
+    </div>
+    <div class="coll-grid">
+      <div class="coll-card">
+        <div class="coll-bg"></div>
+        <svg class="coll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg>
+        <div class="coll-ov">
+          <div class="coll-title">Premium Ceylon<br>Cinnamon</div>
+          <div class="coll-desc">The finest true cinnamon from Sri Lanka.</div>
+          <a href="#" class="coll-link">Explore Now <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="coll-card">
+        <div class="coll-bg"></div>
+        <svg class="coll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 10h13v4a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6v-2Z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/></svg>
+        <div class="coll-ov">
+          <div class="coll-title">Ceylon Coffee<br>Collection</div>
+          <div class="coll-desc">Rich aroma, bold taste. 100% Pure Ceylon.</div>
+          <a href="#" class="coll-link">Explore Now <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="coll-card">
+        <div class="coll-bg"></div>
+        <svg class="coll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg>
+        <div class="coll-ov">
+          <div class="coll-title">Ceylon Tea<br>Collection</div>
+          <div class="coll-desc">Pure leaves, rich flavour from our tea gardens.</div>
+          <a href="#" class="coll-link">Explore Now <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="coll-card">
+        <div class="coll-bg"></div>
+        <svg class="coll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 3h6l2 6-2 3v7a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-7L7 9l2-6Z"/></svg>
+        <div class="coll-ov">
+          <div class="coll-title">Aromatic<br>Essential Oils</div>
+          <div class="coll-desc">Natural oils for wellness and industry.</div>
+          <a href="#" class="coll-link">Explore Now <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PRODUCTS ══════ -->
+<section class="pad" id="products" style="background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Curated for Export</div>
+      <h2>Our Products</h2>
+    </div>
+    <div class="prod-toolbar">
+      <div class="prod-tabs" role="tablist">
+        <button class="prod-tab on" onclick="switchTab(this)">Latest</button>
+        <button class="prod-tab" onclick="switchTab(this)">Featured</button>
+        <button class="prod-tab" onclick="switchTab(this)">Best Seller</button>
+        <button class="prod-tab" onclick="switchTab(this)">New Arrival</button>
+        <button class="prod-tab" onclick="switchTab(this)">Export Ready</button>
+      </div>
+      <a href="#" class="link-arrow">View All Products <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="prod-grid">
+      <div class="prod-card">
+        <div class="prod-photo q1"><svg viewBox="0 0 100 60" fill="none"><g stroke="currentColor" stroke-width="3" stroke-linecap="round"><ellipse cx="30" cy="10" rx="10" ry="6.5"/><line x1="30" y1="16" x2="30" y2="54"/></g></svg></div>
+        <button class="prod-wish" aria-label="Save"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9Z"/></svg></button>
+        <div class="prod-body">
+          <div class="prod-origin"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>From Sri Lanka</div>
+          <div class="prod-name">Ceylon Cinnamon Quills (Alba)</div>
+          <button class="prod-btn">Request Quote <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-photo q2"><svg viewBox="0 0 60 60" fill="currentColor"><circle cx="14" cy="16" r="6"/><circle cx="32" cy="12" r="6"/><circle cx="24" cy="30" r="6"/><circle cx="44" cy="26" r="6"/><circle cx="16" cy="40" r="6"/><circle cx="38" cy="44" r="6"/></svg></div>
+        <button class="prod-wish" aria-label="Save"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9Z"/></svg></button>
+        <div class="prod-body">
+          <div class="prod-origin"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>From Sri Lanka</div>
+          <div class="prod-name">Black Pepper Whole 550G/L</div>
+          <button class="prod-btn">Request Quote <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-photo q3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg></div>
+        <button class="prod-wish" aria-label="Save"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9Z"/></svg></button>
+        <div class="prod-body">
+          <div class="prod-origin"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>From Sri Lanka</div>
+          <div class="prod-name">Ceylon Green Tea Gun Powder</div>
+          <button class="prod-btn">Request Quote <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-photo q4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10h13v4a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6v-2Z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/></svg></div>
+        <button class="prod-wish" aria-label="Save"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9Z"/></svg></button>
+        <div class="prod-body">
+          <div class="prod-origin"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>From Sri Lanka</div>
+          <div class="prod-name">Instant Coffee Powder</div>
+          <button class="prod-btn">Request Quote <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-photo q5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10Z"/></svg></div>
+        <button class="prod-wish" aria-label="Save"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9Z"/></svg></button>
+        <div class="prod-body">
+          <div class="prod-origin"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>From Sri Lanka</div>
+          <div class="prod-name">Clove Whole</div>
+          <button class="prod-btn">Request Quote <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-photo q6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="7"/></svg></div>
+        <button class="prod-wish" aria-label="Save"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9Z"/></svg></button>
+        <div class="prod-body">
+          <div class="prod-origin"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>From Sri Lanka</div>
+          <div class="prod-name">Nutmeg Whole</div>
+          <button class="prod-btn">Request Quote <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ WHY IMPORT ══════ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="imp-grid">
+      <div class="imp-l">
+        <div class="eyebrow">The Source Advantage</div>
+        <h2>Why Import From Sri Lanka?</h2>
+        <p>Sri Lanka offers some of the world's finest agricultural products with unmatched quality and consistency.</p>
+        <a href="#" class="btn btn-solid btn-sm">Discover More
+          <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <div class="imp-map">
+          <svg viewBox="0 0 200 260">
+            <path d="M100 6c30 4 46 34 50 66 4 34-6 58-4 84 2 24 18 40 12 62-6 22-30 34-56 32-28-2-46-22-52-48-6-28 6-46 2-72-4-28-24-46-20-76 4-28 34-52 68-48Z" fill="rgba(255,255,255,.09)" stroke="rgba(223,168,76,.4)" stroke-width="1.2"/>
+            <circle class="imp-pin" cx="86" cy="58" r="4"/>
+            <text class="imp-pin-label" x="96" y="61">Anuradhapura</text>
+            <circle class="imp-pin" cx="98" cy="118" r="4"/>
+            <text class="imp-pin-label" x="108" y="121">Kandy</text>
+            <circle class="imp-pin" cx="84" cy="150" r="4"/>
+            <text class="imp-pin-label" x="94" y="153">Cinnamon Belt</text>
+            <circle class="imp-pin" cx="92" cy="216" r="4"/>
+            <text class="imp-pin-label" x="102" y="219">Galle</text>
+          </svg>
+        </div>
+      </div>
+      <div class="imp-cards">
+        <div class="imp-card">
+          <svg class="imp-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><g stroke-linecap="round"><ellipse cx="12" cy="6" rx="7.5" ry="5"/><line x1="12" y1="10" x2="12" y2="21"/></g></svg>
+          <div class="imp-card-title">Finest Ceylon Cinnamon</div>
+          <div class="imp-card-desc">The best quality cinnamon in the world</div>
+        </div>
+        <div class="imp-card">
+          <svg class="imp-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+          <div class="imp-card-title">Rich Tropical Climate</div>
+          <div class="imp-card-desc">Ideal for growing premium products</div>
+        </div>
+        <div class="imp-card">
+          <svg class="imp-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg>
+          <div class="imp-card-title">Sustainable Farming</div>
+          <div class="imp-card-desc">Environment-friendly farming practices</div>
+        </div>
+        <div class="imp-card">
+          <svg class="imp-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <div class="imp-card-title">Export Standards</div>
+          <div class="imp-card-desc">Comply with global quality standards</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ COFFEE CTA ══════ -->
+<section class="coffee">
+  <div class="wrap">
+    <div class="coffee-inner">
+      <div class="eyebrow" style="margin-bottom:18px">Highland Grown · Small Batch</div>
+      <h2>Discover Authentic <em>Ceylon Coffee</em></h2>
+      <p>Grown in the misty highlands of Sri Lanka. Rich flavour, smooth taste — a coffee unlike any other in the world.</p>
+      <a href="#" class="btn btn-gold">Discover Coffee
+        <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="coffee-cup"></div>
+  </div>
+</section>
+
+<!-- ══════ EXPORT PROCESS ══════ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">From Our Farms to Your Hands</div>
+      <h2>Our Export Process</h2>
+      <p>With care and quality at every step of the journey</p>
+    </div>
+    <div class="proc-track">
+      <div class="proc-line"></div>
+      <div class="proc-step">
+        <div class="proc-idx">01</div>
+        <div class="proc-node on"><svg class="i22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg></div>
+        <div class="proc-step-title">Sourcing</div>
+        <div class="proc-step-desc">Carefully selected from trusted farmers</div>
+      </div>
+      <div class="proc-step">
+        <div class="proc-idx">02</div>
+        <div class="proc-node"><svg class="i22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v6H4zM6 10v10h12V10"/></svg></div>
+        <div class="proc-step-title">Processing</div>
+        <div class="proc-step-desc">Cleaned and processed with modern technology</div>
+      </div>
+      <div class="proc-step">
+        <div class="proc-idx">03</div>
+        <div class="proc-node"><svg class="i22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="proc-step-title">Quality Check</div>
+        <div class="proc-step-desc">Strict quality control to ensure purity</div>
+      </div>
+      <div class="proc-step">
+        <div class="proc-idx">04</div>
+        <div class="proc-node"><svg class="i22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v9l9 5 9-5V8"/><path d="M12 13v9"/></svg></div>
+        <div class="proc-step-title">Packaging</div>
+        <div class="proc-step-desc">Hygienic &amp; premium packaging solutions</div>
+      </div>
+      <div class="proc-step">
+        <div class="proc-idx">05</div>
+        <div class="proc-node"><svg class="i22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h13M11 6l6 6-6 6"/><path d="M16 6h2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-2"/></svg></div>
+        <div class="proc-step-title">Export</div>
+        <div class="proc-step-desc">Delivered to your country safely &amp; on time</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ KNOWLEDGE CENTER ══════ -->
+<section class="pad" style="padding-top:0">
+  <div class="wrap">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:36px;flex-wrap:wrap">
+      <div>
+        <div class="eyebrow">Knowledge Center</div>
+        <h2 style="font-family:var(--serif);font-size:30px;font-weight:700;margin-top:10px">Insights &amp; Guides</h2>
+      </div>
+      <a href="#" class="btn btn-ghost btn-sm">View All Articles
+        <svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="blog-photo b1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+        <div class="blog-body">
+          <div class="blog-cat">Import Guide</div>
+          <div class="blog-title">How to Start Import Business from Sri Lanka</div>
+          <div class="blog-date"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>May 18, 2024</div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-photo b2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3C8 7 5 11 5 15a7 7 0 0 0 14 0c0-4-3-8-7-12Z"/></svg></div>
+        <div class="blog-body">
+          <div class="blog-cat">Health &amp; Wellness</div>
+          <div class="blog-title">Health Benefits of Ceylon Cinnamon You Should Know</div>
+          <div class="blog-date"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>May 10, 2024</div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-photo b3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20c8-1 12-6 12-14M4 20c1-6 4-9 8-11"/></svg></div>
+        <div class="blog-body">
+          <div class="blog-cat">Tea Culture</div>
+          <div class="blog-title">Ceylon Tea vs Other Tea: What Makes It Special?</div>
+          <div class="blog-date"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>May 05, 2024</div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-photo b4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10h13v4a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6v-2Z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/></svg></div>
+        <div class="blog-body">
+          <div class="blog-cat">Coffee Guide</div>
+          <div class="blog-title">Coffee Buying Guide: How to Choose the Best Ceylon Coffee</div>
+          <div class="blog-date"><svg class="i16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Apr 28, 2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="footer" id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="f-brand">
+        <div class="f-logo">
+          <div class="brand-mark">
+            <svg viewBox="0 0 38 44" fill="none">
+              <path d="M19 4C13 10 9 16 9 23c0 6 4.5 11 10 11s10-5 10-11c0-7-4-13-10-19Z" fill="var(--gold)"/>
+              <path d="M19 8C15 13 12 18 12 23c0 4.5 3 8.4 7 9" stroke="var(--canopy)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="f-word">
+            <span class="f-top">Ceylon</span>
+            <span class="f-main">Aroma</span>
+            <span class="f-tag">Natural · Pure · Ceylon</span>
+          </div>
+        </div>
+        <p class="f-desc">We are a leading exporter of premium quality spices, tea, coffee, oils and natural products from Sri Lanka.</p>
+        <div class="f-social">
+          <a href="#" class="f-s" aria-label="Facebook"><svg class="i18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2 0-3.5 1.5-3.5 3.5V11H8v3h2.5v7h3v-7H16l.5-3h-3v-1.2c0-.6.4-.8.5-.8Z"/></svg></a>
+          <a href="#" class="f-s" aria-label="Instagram"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+          <a href="#" class="f-s" aria-label="LinkedIn"><svg class="i18" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="12"/><circle cx="5" cy="5" r="2.2"/><path d="M11 9h4v2c1-1.5 2.4-2.3 4.2-2.3 3 0 4.8 2 4.8 5.6V21h-4v-6c0-1.6-.6-2.7-2-2.7-1.1 0-1.8.8-2.1 1.5-.1.3-.1.7-.1 1.1V21h-4V9Z"/></svg></a>
+          <a href="#" class="f-s" aria-label="YouTube"><svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="6" width="19" height="12" rx="3"/><path d="M10.5 9.5 14.5 12l-4 2.5v-5Z" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+
+      <div class="f-col">
+        <h4>Products</h4>
+        <a href="#">Ceylon Spices</a>
+        <a href="#">Ceylon Coffee</a>
+        <a href="#">Ceylon Tea</a>
+        <a href="#">Aromatic Oils</a>
+        <a href="#">Frozen Pulp</a>
+        <a href="#">Dehydrated Products</a>
+        <a href="#">Nuts &amp; Natural Foods</a>
+      </div>
+
+      <div class="f-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Our Story</a>
+        <a href="#">Quality Assurance</a>
+        <a href="#">Our Certificates</a>
+        <a href="#">Sustainability</a>
+        <a href="#">Careers</a>
+      </div>
+
+      <div class="f-col">
+        <h4>Export</h4>
+        <a href="#">Export Process</a>
+        <a href="#">Why Sri Lanka</a>
+        <a href="#">Shipping &amp; Delivery</a>
+        <a href="#">Private Label</a>
+        <a href="#">Terms &amp; Conditions</a>
+      </div>
+
+      <div class="f-col">
+        <h4>Contact Us</h4>
+        <div class="f-contact-item">
+          <svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <div class="f-contact-text">18/1, Damsdeniya Road, Pamunugama, Sri Lanka</div>
+        </div>
+        <div class="f-contact-item">
+          <svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5c0 8.5 6.5 15 15 15l3-4-6-3-2 2c-2.5-1.2-4.5-3.2-5.7-5.7l2-2-3-6-4 3Z"/></svg>
+          <div class="f-contact-text">+94 77 123 4567</div>
+        </div>
+        <div class="f-contact-item">
+          <svg class="i18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <div class="f-contact-text">info@ceylonaroma.com</div>
+        </div>
+        <div class="f-certs">
+          <div class="f-cert">USDA</div>
+          <div class="f-cert">ISO</div>
+          <div class="f-cert">HACCP</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bot">
+      <div class="footer-copy">© 2026 Ceylon Aroma (Pvt) Ltd. All Rights Reserved.</div>
+      <div class="footer-bot-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg class="i20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+// Theme toggle
+const root = document.documentElement;
+const themeBtn = document.getElementById('themeToggle');
+function setTheme(d){ root.dataset.theme = d ? 'dark' : 'light'; }
+let dark = root.dataset.theme === 'dark';
+themeBtn.addEventListener('click', () => { dark = !dark; setTheme(dark); });
+
+// Sticky nav shadow
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 8);
+  document.getElementById('toTop').classList.toggle('show', window.scrollY > 500);
+}, { passive: true });
+
+// Mobile menu
+const mm = document.getElementById('mobileMenu');
+document.getElementById('burgerBtn').addEventListener('click', () => mm.classList.add('open'));
+document.getElementById('mmClose').addEventListener('click', () => mm.classList.remove('open'));
+mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mm.classList.remove('open')));
+
+// Product tabs
+function switchTab(btn){
+  document.querySelectorAll('.prod-tab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// Wishlist toggle
+document.querySelectorAll('.prod-wish').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    btn.classList.toggle('active');
+  });
+});
+
+// Back to top
+document.getElementById('toTop').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>
