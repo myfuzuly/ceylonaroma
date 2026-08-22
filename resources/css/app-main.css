@@ -2314,3 +2314,98 @@ button.mob-nav-item:active{background:var(--forest)}
         box-shadow:0 2px 10px rgba(27,67,50,.3);
     }
 }
+
+/* ══════════════════════════════════════════
+   TYPOGRAPHY & READABILITY IMPROVEMENTS — Aug 2026
+   Targets: body rhythm, card text, section subs,
+   product/blog/KCP copy, footer, buttons
+   ══════════════════════════════════════════ */
+
+/* Base rhythm */
+p{line-height:1.8}
+h2{letter-spacing:-.026em}
+h3{letter-spacing:-.018em}
+
+/* Section subtitles — up from .95rem → 1.05rem */
+.section-sub{font-size:1.05rem;line-height:1.8;max-width:58ch}
+.section-head.center .section-sub,.section-header-center .section-sub{max-width:52ch}
+.section-label{font-size:.7rem;letter-spacing:.13em}
+
+/* Hero description */
+.hero-desc{font-size:1.05rem;line-height:1.82}
+
+/* Buttons — up from .8rem */
+.btn{font-size:.875rem}
+.btn-sm{font-size:.75rem}
+.btn-lg{font-size:1rem}
+
+/* Product cards — name .92→1rem, desc .8→.9rem, origin .62→.68rem */
+.product-name{font-size:1rem;line-height:1.4}
+.product-desc{font-size:.9rem;line-height:1.65}
+.product-category{font-size:.63rem}
+.product-origin{font-size:.68rem}
+.product-quote-btn{font-size:.75rem}
+
+/* Why Choose cards */
+.wyc-card-title{font-size:1rem;line-height:1.35}
+.wyc-card-desc{font-size:.875rem;line-height:1.72}
+
+/* Export process steps */
+.process-desc{font-size:.875rem;line-height:1.72}
+
+/* KCP (homepage blog preview) */
+.kcp-post-title{font-size:1.05rem;line-height:1.35}
+.kcp-excerpt{font-size:.9rem;line-height:1.7}
+.kcp-date{font-size:.7rem}
+.kcp-cat{font-size:.63rem}
+.kcp-read-more{font-size:.7rem}
+
+/* Blog listing cards */
+.blog-title{font-size:1.05rem;line-height:1.38}
+.blog-excerpt{font-size:.9rem;line-height:1.7}
+.blog-featured .blog-title{font-size:1.45rem}
+
+/* Ceylon Coffee CTA section */
+.ccta-desc{font-size:.95rem;line-height:1.78}
+.ccta-feat{font-size:.875rem}
+.ccta-btn-primary,.ccta-btn-secondary{font-size:.82rem}
+
+/* Testimonials */
+.testi-quote{font-size:.95rem;line-height:1.72}
+.testi-name{font-size:.88rem}
+.testi-role{font-size:.76rem}
+
+/* Trust bar */
+.trust-cert{font-size:.78rem}
+
+/* About pages */
+.about-hero-sub{font-size:1.05rem;line-height:1.8}
+.about-intro-body{font-size:1.05rem;line-height:1.82}
+
+/* Footer */
+.footer-tagline{font-size:.875rem;line-height:1.72}
+.footer-links a{font-size:.875rem}
+.footer-contact-item{font-size:.875rem}
+.footer-cta-text p{font-size:.95rem}
+
+/* Blog post body */
+.blog-post-excerpt{font-size:1.2rem;line-height:1.7}
+
+/* Cart & checkout — improve readability */
+.cart-summary-row{font-size:.95rem}
+.checkout-item-row{font-size:.95rem}
+
+/* Auth pages */
+.auth-subtitle{font-size:.95rem}
+.auth-footer-text{font-size:.9rem}
+
+/* Mobile responsiveness — keep proportions on small screens */
+@media(max-width:768px){
+  .section-sub{font-size:1rem}
+  .hero-desc{font-size:1rem}
+  .product-name{font-size:.95rem}
+  .kcp-post-title{font-size:1rem}
+  .blog-title{font-size:1rem}
+  .wyc-card-desc{font-size:.875rem}
+  .process-desc{font-size:.875rem}
+}
