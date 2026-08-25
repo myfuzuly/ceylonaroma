@@ -163,5 +163,38 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('/sw.js').catch(function(){});
 }
 </script>
+
+{{-- ── Cookie Consent Banner ── --}}
+<div id="cookie-banner" class="cookie-banner" aria-live="polite" aria-label="Cookie consent" role="dialog" aria-modal="false" hidden>
+    <div class="cookie-banner-inner">
+        <div class="cookie-banner-text">
+            <svg class="cb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+            <p>We use essential cookies to keep the site secure and remember your preferences. By continuing, you agree to our <a href="{{ route('privacy') }}" class="cb-link">Privacy Policy</a>.</p>
+        </div>
+        <div class="cookie-banner-actions">
+            <button id="cb-accept" class="cb-btn-accept" type="button">Accept All</button>
+            <button id="cb-necessary" class="cb-btn-necessary" type="button">Necessary Only</button>
+        </div>
+        <button id="cb-close" class="cb-close" type="button" aria-label="Close cookie notice">&times;</button>
+    </div>
+</div>
+<script>
+(function(){
+    var KEY = 'ca_cookie_consent';
+    var banner = document.getElementById('cookie-banner');
+    if(!banner || localStorage.getItem(KEY)) return;
+    var t = setTimeout(function(){ banner.removeAttribute('hidden'); banner.classList.add('cb-visible'); }, 900);
+    function dismiss(val){
+        clearTimeout(t);
+        localStorage.setItem(KEY, val);
+        banner.classList.remove('cb-visible');
+        banner.classList.add('cb-hiding');
+        setTimeout(function(){ banner.setAttribute('hidden',''); }, 350);
+    }
+    document.getElementById('cb-accept').addEventListener('click', function(){ dismiss('all'); });
+    document.getElementById('cb-necessary').addEventListener('click', function(){ dismiss('necessary'); });
+    document.getElementById('cb-close').addEventListener('click', function(){ dismiss('necessary'); });
+})();
+</script>
 </body>
 </html>
