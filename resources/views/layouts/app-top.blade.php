@@ -69,6 +69,10 @@
         "@type": "PostalAddress",
         "addressCountry": "LK"
       },
+      "hasCredential": [
+        { "@type": "EducationalOccupationalCredential", "credentialCategory": "certification", "name": "ISO 22000:2018 Food Safety Management" },
+        { "@type": "EducationalOccupationalCredential", "credentialCategory": "certification", "name": "HACCP Certified" }
+      ],
       "sameAs": [
         @if(!empty($settings['facebook_url']))"{{ $settings['facebook_url'] }}"@endif
         @if(!empty($settings['facebook_url']) && !empty($settings['linkedin_url'])),@endif

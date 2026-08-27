@@ -3,9 +3,13 @@
 @section('title', $product->name)
 @section('meta_description', $product->short_description ?: 'Buy ' . $product->name . ' — premium quality from Sri Lanka. Wholesale export available worldwide.')
 
-@push('schema')
 @php
 $schemaImg = $product->image ? asset('storage/'.$product->image) : 'https://ceylonaroma.com/images/spice-flatlay.png';
+@endphp
+@section('og_image', $schemaImg)
+
+@push('schema')
+@php
 $schemaDesc = addslashes($product->short_description ?: $product->name . ' — premium export quality from Sri Lanka.');
 $schemaPrice = $product->price ? number_format($product->price, 2, '.', '') : null;
 $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
