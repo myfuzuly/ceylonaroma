@@ -20,25 +20,25 @@
         @csrf
         @if($user) @method('PUT') @endif
 
-        <div class="form-group">
-            <label>Full Name *</label>
+        <div class="f-group">
+            <label class="f-label">Full Name *</label>
             <input type="text" name="name" value="{{ old('name', $user?->name) }}" required
-                   class="form-control" placeholder="Admin name">
+                   class="f-control" placeholder="Admin name">
         </div>
-        <div class="form-group">
-            <label>Email Address *</label>
+        <div class="f-group">
+            <label class="f-label">Email Address *</label>
             <input type="email" name="email" value="{{ old('email', $user?->email) }}" required
-                   class="form-control" placeholder="admin@ceylonaroma.com">
+                   class="f-control" placeholder="admin@ceylonaroma.com">
         </div>
-        <div class="form-group">
-            <label>{{ $user ? 'New Password (leave blank to keep current)' : 'Password *' }}</label>
+        <div class="f-group">
+            <label class="f-label">{{ $user ? 'New Password (leave blank to keep current)' : 'Password *' }}</label>
             <input type="password" name="password" {{ $user ? '' : 'required' }} minlength="8"
-                   class="form-control" placeholder="Min 8 characters" autocomplete="new-password">
+                   class="f-control" placeholder="Min 8 characters" autocomplete="new-password">
         </div>
-        <div class="form-group">
-            <label>{{ $user ? 'Confirm New Password' : 'Confirm Password *' }}</label>
+        <div class="f-group">
+            <label class="f-label">{{ $user ? 'Confirm New Password' : 'Confirm Password *' }}</label>
             <input type="password" name="password_confirmation" {{ $user ? '' : 'required' }}
-                   class="form-control" placeholder="Repeat password" autocomplete="new-password">
+                   class="f-control" placeholder="Repeat password" autocomplete="new-password">
         </div>
         <div style="display:flex;gap:.6rem;margin-top:1.25rem">
             <button type="submit" class="a-btn a-btn-primary">{{ $user ? 'Save Changes' : 'Create Admin' }}</button>

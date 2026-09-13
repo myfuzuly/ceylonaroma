@@ -49,7 +49,7 @@
                         <img id="img-preview" class="img-preview" style="display:none">
                     @endif
                     <input type="file" name="image" accept="image/*" data-preview="img-preview" style="margin-top:.5rem;font-size:.8rem;color:var(--a-muted)">
-                    <span class="f-hint">JPG, PNG, WebP — max 2MB</span>
+                    <span class="f-hint">JPG, PNG, WebP — max 4MB, auto-converted to WebP</span>
                 </div>
             </div>
 

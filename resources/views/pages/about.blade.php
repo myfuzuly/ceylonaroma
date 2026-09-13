@@ -7,8 +7,8 @@
 <div class="about-hero">
     <div class="container">
         <span class="section-label about-hero-label">Our Story</span>
-        <h1 class="about-hero-title">Delivering the Natural<br><em>Taste &amp; Aroma</em><br>of Sri Lanka to the World.</h1>
-        <p class="about-hero-sub">Ceylon Aroma Commodities — trusted by importers in 60+ countries.</p>
+        <h1 class="about-hero-title">Sri Lanka's B2B<br><em>Spice Export Specialists.</em></h1>
+        <p class="about-hero-sub">ISO 22000 certified. Direct from source. Supplying food businesses in 60+ countries for over 25 years.</p>
     </div>
 </div>
 
@@ -18,15 +18,15 @@
         <div class="about-intro-grid">
             <div>
                 <span class="section-label">Who We Are</span>
-                <h2 class="section-title">About Ceylon Aroma<br>Commodities</h2>
+                <h2 class="section-title">About Ceylon Aroma</h2>
                 <p class="about-intro-body">
-                    Ceylon Aroma Commodities is a Sri Lankan export company dedicated to supplying premium spices, natural aromatic products, and value-added agricultural commodities to global markets. Built on Sri Lanka's rich agricultural heritage and world-renowned spice tradition, we bring authentic island-grown products to customers worldwide.
+                    Ceylon Aroma is a Kegalle-based spice, tea, and coffee exporter supplying food manufacturers, importers, wholesalers, and private label brands worldwide. We are not a trading company — we work directly with growers and processors in Sri Lanka's agricultural communities, buying at source, processing in our own ISO 22000-certified facility, and exporting under our own documentation.
                 </p>
                 <p class="about-intro-body">
-                    We collaborate closely with local farmers and trusted sourcing partners to select the finest raw materials cultivated in Sri Lanka's fertile landscapes. Every product is carefully processed, quality controlled, and packed to preserve its natural aroma, freshness, purity, and distinctive flavor.
+                    That direct relationship gives you cleaner supply chain traceability, more competitive pricing, and faster response times than buying through intermediaries. We work exclusively B2B — our pricing, documentation, and logistics are structured around commercial buyers, not retail customers.
                 </p>
                 <p class="about-intro-body">
-                    Our mission is to share the authentic essence of Ceylon with international and local markets while promoting sustainable sourcing, empowering rural communities, and maintaining the highest standards of quality and reliability.
+                    For over 25 years, we have built what we believe is the most commercially rigorous spice export operation in Sri Lanka — because the buyers who have worked with us for a decade know: the moment a shipment clears EU customs without a single query, that is where reputation is made.
                 </p>
                 <div class="about-intro-cta">
                     <a href="{{ route('products.index') }}" class="btn btn-primary">Explore Products</a>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="about-img-col">
-                <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma Spices" class="about-main-img">
+                <img src="/images/ceylonaroma4.png" alt="Ceylon Aroma Spices" class="about-main-img">
                 <div class="about-stat-pill">
                     <span class="about-stat-num">60+</span>
                     <span class="about-stat-lbl">Countries Exported</span>
@@ -55,12 +55,12 @@
         </div>
         <div class="wyc-grid">
             @foreach([
-                ['<path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/>','Sri Lankan Origin','Sourced exclusively from pristine highlands and fertile lands of Sri Lanka.'],
-                ['<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>','Export Quality','Every batch tested and certified to meet international export standards.'],
-                ['<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>','Sustainable Sourcing','Ethical farming practices that protect the environment and local communities.'],
-                ['<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>','Premium Packaging','Custom hygienic packaging tailored to your specific market requirements.'],
-                ['<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>','Global Delivery','Reliable logistics to 60+ countries with full documentation and compliance.'],
-                ['<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>','Direct Farmer Network','Direct partnerships — no middlemen, fresher products, and better pricing.'],
+                ['<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>','Certified at Source','ISO 22000:2018 and HACCP certification cover our entire supply chain, audited annually by an IAF-accredited third-party body. Certificates available before you place an order.'],
+                ['<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>','Complete Documentation','Every shipment includes Certificate of Origin, Phytosanitary Certificate, multi-residue pesticide analysis (250+ compounds), aflatoxin and heavy metals report. Your customs broker will not be chasing us for paperwork.'],
+                ['<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>','Transparent Pricing','We quote FOB Colombo, CIF your port, or DAP your warehouse. No brokerage markups. No undisclosed handling fees. The price on the quotation is the price on the invoice.'],
+                ['<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>','Sample Orders Welcome','Sample orders from 25 kg with full Certificate of Analysis. Charged at commercial rates — you need to evaluate the actual product you\'ll buy at scale. Sample cost credited against your first commercial order.'],
+                ['<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>','Flexible MOQs','Commercial shipments from 500 kg LCL. Full 20-foot FCL from 5,000 kg. Private label from 500 retail units. We scale with your business — first order or full container programme.'],
+                ['<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>','Dedicated Account Manager','Every commercial client is assigned a named account manager — one contact for quotes, documents, shipping updates, and reorders. No call centres. Direct WhatsApp available.'],
             ] as [$svg, $title, $desc])
             <div class="wyc-card">
                 <div class="wyc-card-icon">
@@ -80,15 +80,15 @@
         <div class="section-head center">
             <span class="section-label">Our Values</span>
             <h2 class="section-title">What We Stand For</h2>
-            <p class="section-sub">At Ceylon Aroma, we stand for authenticity, sustainability, and the timeless heritage of Sri Lanka. Every product we export carries the island's soul — from the misty tea plantations to the spice gardens, tropical orchards, and traditional kitchens.</p>
+            <p class="section-sub">We built this company on making the unglamorous things — testing, certification, documentation, chain of custody — completely reliable. The premium products are the easy part. Sri Lanka grows the finest cinnamon on earth. Our job is to make sure it reaches your facility exactly as specified, with documentation your procurement team can sign off without a second read.</p>
         </div>
         <div class="about-values-grid">
             @foreach([
-                ['<path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/>','Authenticity','100% Sri Lankan origin, rooted in centuries-old traditions.'],
-                ['<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>','Purity','No preservatives, no MSG, no artificial additives — only nature\'s finest.'],
-                ['<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>','Sustainability','Eco-conscious packaging and responsible sourcing that respect the environment.'],
-                ['<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>','Quality','Export-ready standards with small-batch consistency and freshness.'],
-                ['<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>','Trust','Transparent processes and a brand promise backed by integrity.'],
+                ['<path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/>','Quality Without Compromise','We reject non-conforming lots at source. Our customers never receive a consignment that did not pass internal QC before independent laboratory analysis was ordered.'],
+                ['<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>','Transparent Trade','Our pricing is open-book. Our documentation is complete. We do not make margin on certificate markups or inflated freight quotes.'],
+                ['<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>','Long-Term Partnerships','We do not chase single orders. Our model is built on supply programmes with regular buyers. The better we understand your business, the better we can serve it.'],
+                ['<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>','Direct from Source','No intermediaries, no trading-company markups. We source directly from registered farms and process in our own ISO 22000-certified facility.'],
+                ['<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>','Buyer-First Documentation','Complete pre-shipment documentation pack — CoO, Phyto, pesticide analysis, aflatoxin, heavy metals, ISO cert — delivered within 48 hours of container departure.'],
             ] as [$icon, $title, $desc])
             <div class="about-value-card">
                 <div class="about-value-icon">

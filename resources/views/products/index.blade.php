@@ -1,27 +1,16 @@
 @extends('layouts.app')
 
-@section('title', (request('category') ? ucwords(str_replace('-', ' ', request('category'))).' — ' : '') . (request('search') ? '"'.request('search').'" — ' : '') . 'Products' . ($products->currentPage() > 1 ? ' | Page '.$products->currentPage() : ''))
+@section('title', ($category ? $category->name.' — ' : '') . (request('search') ? '"'.request('search').'" — ' : '') . 'Products' . ($products->currentPage() > 1 ? ' | Page '.$products->currentPage() : ''))
 
 @section('content')
 
 <div class="products-hero">
     <div class="container">
-        @php
-        $activeCatName = null;
-        if(request('category')) {
-            foreach($categories as $c) {
-                if($c->slug === request('category')) { $activeCatName = $c->name; break; }
-                foreach($c->children as $ch) {
-                    if($ch->slug === request('category')) { $activeCatName = $ch->name; break 2; }
-                }
-            }
-        }
-        @endphp
-        <h1>{{ $activeCatName ? $activeCatName : 'Our Products' }}</h1>
+        <h1>{{ $category ? $category->name : 'Our Products' }}</h1>
         @if(request('search'))
             <p>Showing results for "<strong>{{ request('search') }}</strong>"</p>
-        @elseif($activeCatName)
-            <p>Premium quality {{ $activeCatName }} sourced direct from Sri Lankan farms.</p>
+        @elseif($category)
+            <p>Premium quality {{ $category->name }} sourced direct from Sri Lankan farms.</p>
         @else
             <p>Premium quality natural products sourced direct from Sri Lankan farms and plantations.</p>
         @endif
@@ -45,15 +34,15 @@
                 <div class="sidebar-card">
                     <h4>Categories</h4>
                     <div class="sidebar-cats">
-                        <a href="{{ route('products.index') }}" class="sidebar-cat {{ !request('category') ? 'active' : '' }}">
+                        <a href="{{ route('products.index') }}" class="sidebar-cat {{ !$category ? 'active' : '' }}">
                             All Products
                         </a>
                         @foreach($categories as $cat)
                         @php
                             $childSlugs = $cat->children->pluck('slug')->toArray();
-                            $parentActive = request('category') === $cat->slug || in_array(request('category'), $childSlugs);
+                            $parentActive = $category && ($category->slug === $cat->slug || in_array($category->slug, $childSlugs));
                         @endphp
-                        <a href="{{ route('products.index', ['category' => $cat->slug]) }}"
+                        <a href="{{ route('products.category', $cat->slug) }}"
                            class="sidebar-cat sidebar-cat-parent {{ $parentActive ? 'active' : '' }}">
                             {{ $cat->name }}
                             @if($cat->children->count())
@@ -63,8 +52,8 @@
                         @if($cat->children->count())
                         <div class="sidebar-subcats {{ $parentActive ? 'open' : '' }}">
                             @foreach($cat->children as $sub)
-                            <a href="{{ route('products.index', ['category' => $sub->slug]) }}"
-                               class="sidebar-cat sidebar-subcat {{ request('category') === $sub->slug ? 'active' : '' }}">
+                            <a href="{{ route('products.category', $sub->slug) }}"
+                               class="sidebar-cat sidebar-subcat {{ $category && $category->slug === $sub->slug ? 'active' : '' }}">
                                 {{ $sub->name }}
                             </a>
                             @endforeach

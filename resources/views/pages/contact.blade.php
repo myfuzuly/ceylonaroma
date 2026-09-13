@@ -89,11 +89,13 @@
                         <textarea id="message" name="message" class="form-control" rows="5" required placeholder="Describe the products you need, quantities, packaging requirements, destination…">{{ old('message') }}</textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-submit-full"
-                        onclick="this.classList.add('btn-loading');this.disabled=true;this.form.submit()">
+                    <input type="hidden" name="recaptcha_token" id="recaptcha_token">
+
+                    <button type="submit" class="btn btn-primary btn-submit-full" id="inquiry-submit-btn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                         Send Inquiry
                     </button>
+                    <p class="recaptcha-notice">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
                 </form>
             </div>
 
@@ -182,5 +184,29 @@
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('recaptcha.site_key') }}"></script>
+<script>
+(function(){
+    var form = document.getElementById('inquiry-form');
+    var btn = document.getElementById('inquiry-submit-btn');
+    if (!form) return;
+    form.addEventListener('submit', function(e){
+        if (form.dataset.recaptchaDone === '1') return; // token already attached, let it submit
+        e.preventDefault();
+        btn.classList.add('btn-loading');
+        btn.disabled = true;
+        grecaptcha.ready(function(){
+            grecaptcha.execute('{{ config('recaptcha.site_key') }}', {action: 'inquiry'}).then(function(token){
+                document.getElementById('recaptcha_token').value = token;
+                form.dataset.recaptchaDone = '1';
+                form.submit();
+            });
+        });
+    });
+})();
+</script>
+@endpush
 
 @endsection

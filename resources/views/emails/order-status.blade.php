@@ -28,7 +28,7 @@ p{line-height:1.65;color:#3a4a3e;margin:0 0 1rem;font-size:.93rem}
 <body>
 <div class="wrap">
     <div class="header">
-        <img src="https://ceylonaroma.com/images/ceylonaroma3.png" alt="Ceylon Aroma">
+        <img src="https://ceylonaroma.com/images/ceylonaroma4.png" alt="Ceylon Aroma">
     </div>
     <div class="status-band status-{{ $order->status }}">
         @php
@@ -76,7 +76,7 @@ p{line-height:1.65;color:#3a4a3e;margin:0 0 1rem;font-size:.93rem}
         </div>
 
         <p style="text-align:center">
-            <a href="{{ url('/account/orders/'.$order->order_number) }}" class="btn">View Order</a>
+            <a href="{{ $trackUrl }}" class="btn">View Order</a>
         </p>
         <p>If you have any questions, reply to this email or reach us at <a href="mailto:info@ceylonaroma.com" style="color:#2d6a4f">info@ceylonaroma.com</a>.</p>
     </div>

@@ -1,4 +1,4 @@
-const CACHE = 'ca-v1';
+const CACHE = 'ca-v2';
 const STATIC = [
   '/',
   '/products',
@@ -37,7 +37,10 @@ self.addEventListener('fetch', e => {
       caches.open(CACHE).then(c =>
         c.match(request).then(cached => {
           if (cached) return cached;
-          return fetch(request).then(res => { c.put(request, res.clone()); return res; });
+          return fetch(request).then(res => {
+            if (res.ok) c.put(request, res.clone());
+            return res;
+          });
         })
       )
     );

@@ -1,5 +1,3 @@
-import Alpine from 'alpinejs';
-
 // ── Nav scroll shadow
 const nav = document.querySelector('.nav');
 if (nav) {
@@ -83,7 +81,7 @@ function updateWishBadge() {
     const count = getWish().length;
     document.querySelectorAll('.nav-wish-badge').forEach(b => {
         b.textContent = count || '';
-        b.style.display = count ? '' : 'none';
+        b.style.display = count ? 'flex' : 'none';
     });
 }
 updateWishBadge();
@@ -96,5 +94,35 @@ document.querySelectorAll('.alert').forEach(el => {
     setTimeout(() => el.remove(), 4500);
 });
 
-window.Alpine = Alpine;
-Alpine.start();
+// ── Scroll reveal
+if (document.documentElement.classList.contains('js-reveal') && 'IntersectionObserver' in window) {
+    const revealGroups = [
+        '.section-head',
+        '.product-card',
+        '.cat-card',
+        '.blog-card',
+        '.testimonial-card',
+        '.wyc-card',
+        '.process-step',
+        '.trust-cert',
+    ];
+    revealGroups.forEach(selector => {
+        const els = document.querySelectorAll(selector);
+        els.forEach((el, i) => {
+            el.classList.add('reveal');
+            el.style.setProperty('--reveal-delay', Math.min(i % 4, 3) * 0.08 + 's');
+        });
+    });
+
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+}
+

@@ -2,6 +2,8 @@
 
 @section('title', 'Order ' . $order->order_number)
 
+@section('breadcrumb')<span>Orders</span> <span>/</span> <span>{{ $order->order_number }}</span>@endsection
+
 @section('content')
 <div class="admin-page-head">
     <div>
@@ -39,14 +41,14 @@
         {{-- Update Status --}}
         <div class="order-status-form">
             <h4>Update Status</h4>
-            <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="d-flex gap-2">
+            <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="order-status-inline">
                 @csrf @method('PATCH')
-                <select name="status" class="form-control">
+                <select name="status" class="f-select">
                     @foreach(['pending','confirmed','processing','shipped','delivered','cancelled'] as $s)
                         <option value="{{ $s }}" {{ $order->status === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-gold">Update</button>
+                <button type="submit" class="a-btn a-btn-primary">Update</button>
             </form>
             @if(session('success'))
                 <p class="form-success mt-2">{{ session('success') }}</p>

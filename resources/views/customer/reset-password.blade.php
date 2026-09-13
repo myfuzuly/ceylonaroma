@@ -7,7 +7,7 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-logo">
-                <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma" class="auth-logo-img">
+                <img src="/images/ceylonaroma4.png" alt="Ceylon Aroma" class="auth-logo-img">
             </div>
             <h1 class="auth-title">Set New Password</h1>
             <p class="auth-subtitle">Choose a strong password for your account.</p>

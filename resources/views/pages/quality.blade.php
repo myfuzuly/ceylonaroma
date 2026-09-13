@@ -9,8 +9,8 @@
 <div class="export-hero">
     <div class="container">
         <span class="section-label export-hero-label">Standards & Compliance</span>
-        <h1>Quality & Certifications</h1>
-        <p>Every product we export meets internationally recognised food safety standards, backed by third-party laboratory testing and certified by accredited bodies.</p>
+        <h1>Quality &amp; Certifications</h1>
+        <p>Every product we export meets internationally recognised food safety standards, backed by third-party laboratory testing and certified by accredited bodies. All certification documentation is available on request — included in every pre-contract documentation pack.</p>
         <a href="{{ route('contact') }}" class="btn btn-gold">Request Certificate of Analysis
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -82,8 +82,8 @@
     <div class="container">
         <div class="section-header-center">
             <span class="section-label">Quality Control</span>
-            <h2>Our QC Process</h2>
-            <p>Six-stage quality assurance from field to shipment — with documentation at every step.</p>
+            <h2>Quality Starts at the Farm, Not the Laboratory</h2>
+            <p>Most spice exporters test their product before shipping and call that quality control. We disagree. By the time a product reaches the lab, the decision to buy it has already been made. Our quality programme begins at procurement — visual and sensory assessment at grower level, moisture testing at intake, lot segregation before processing. The laboratory confirms what we already know.</p>
         </div>
         <div class="export-steps">
             <div class="export-step">
@@ -127,8 +127,8 @@
             <div class="export-doc-text">
                 <span class="section-label">Laboratory Analysis</span>
                 <h2>Certificate of Analysis Parameters</h2>
-                <p>Our COA covers the following standard parameters. Additional testing (e.g. radioactivity, specific pesticide residues, aflatoxins) is arranged on buyer request at cost.</p>
-                <p>COA reports are available in PDF before shipment. Wet-chemistry originals dispatched with the commercial documents.</p>
+                <p>Our CoA covers the following standard parameters. Multi-residue pesticide screening covers 250+ active compounds to EU Regulation (EC) 396/2005 MRL values. Aflatoxin testing meets EU Regulation (EC) 1881/2006 limits (10 µg/kg total).</p>
+                <p>CoA reports in PDF are available before shipment is confirmed. Wet-chemistry originals are dispatched with the full commercial documentation pack.</p>
                 <a href="{{ route('contact') }}" class="btn btn-gold mt-3">Request Sample COA</a>
             </div>
             <div class="export-doc-list">
@@ -173,8 +173,8 @@
 <section class="export-cta-section">
     <div class="container">
         <div class="export-cta-inner">
-            <h2>Need Specific Certification Documentation?</h2>
-            <p>Contact our export team with your import country requirements and we'll confirm which certificates apply.</p>
+            <h2>Request Our Certification Documents</h2>
+            <p>Send us your import country and product category. We will confirm which certificates apply and dispatch the full documentation pack within 24 hours — at no obligation to proceed with an order.</p>
             <a href="{{ route('contact') }}" class="btn btn-gold btn-lg">Contact Our Export Team
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>

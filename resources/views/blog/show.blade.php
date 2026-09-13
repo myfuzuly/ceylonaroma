@@ -5,8 +5,11 @@
 @section('og_type', 'article')
 
 @php
-$postImg = $blog_post->image
-    ? asset('storage/'.$blog_post->image)
+$blogImgUrl = $blog_post->image
+    ? (\Illuminate\Support\Str::startsWith($blog_post->image, ['http', '/']) ? $blog_post->image : asset('storage/'.$blog_post->image))
+    : null;
+$postImg = $blogImgUrl
+    ? $blogImgUrl
     : match(true) {
         str_contains($blog_post->slug, 'tea')    => 'https://ceylonaroma.com/images/blog-tea.jpg',
         str_contains($blog_post->slug, 'coffee') => 'https://ceylonaroma.com/images/blog-coffee.webp',
@@ -54,6 +57,21 @@ $postFaqs = [
     ['q'=>'What is the flavour profile of Ceylon Arabica coffee?','a'=>'High-grown Ceylon Arabica (1,000–1,500m elevation from Kandy, Nuwara Eliya, and Badulla) produces a medium-bodied cup with mild acidity, subtle chocolate and dried-fruit notes, and a clean, sweet finish.'],
     ['q'=>'What is the minimum order for Ceylon coffee private label?','a'=>'Minimum order is 50 kg for roasted private label (whole bean or ground) and 200 kg for green bean export. We supply branded retail bags (100g–1kg), capsule filling, and bulk green bean to specification.'],
     ['q'=>'Do you supply green coffee beans from Sri Lanka?','a'=>'Yes, Ceylon Aroma exports unroasted green Arabica and Robusta beans from Sri Lanka. Green bean is available for buyers who roast in their own facility or partner roastery. Minimum 200 kg.'],
+  ],
+  'ceylon-cloves-grades-moc-wholesale-export-guide' => [
+    ['q'=>'What are the grades of Ceylon cloves?','a'=>'Ceylon cloves are traded in three main grades: HPS (Hand-Picked Select) — whole buds, moisture ≤12%, volatile oil ≥15%, stems <2%, the premium export grade; FAQ (Fair Average Quality) — whole buds with up to 5% stems, the most commonly traded bulk grade; and Broken/Stemmy for oleoresin and oil extraction.'],
+    ['q'=>'What is the MOC specification for Ceylon cloves?','a'=>'MOC (Moisture on Commodity) for whole Ceylon cloves is maximum 12% under Sri Lanka\'s SLS 37 standard. EU buyers typically specify ≤10% in contracts to allow for transit moisture gain without breaching import limits on arrival.'],
+    ['q'=>'What is the minimum order quantity for Ceylon cloves wholesale?','a'=>'Ceylon Aroma accepts sample orders from 25 kg HPS whole cloves. Commercial bulk shipments start from 500 kg (LCL), with full 20-foot FCL containers holding approximately 14,000–15,000 kg for the best per-kilogram rate.'],
+  ],
+  'eu-spice-import-regulations-compliance-guide' => [
+    ['q'=>'What are the EU aflatoxin limits for spices?','a'=>'Under EU Regulation (EC) No 1881/2006, the maximum permitted level of aflatoxin B1 in spices is 5 µg/kg, and total aflatoxins (B1+B2+G1+G2) must not exceed 10 µg/kg. This is among the most common causes of spice shipment rejections at EU borders.'],
+    ['q'=>'What food safety certificates must a Sri Lankan spice supplier hold for EU export?','a'=>'EU-destined spice shipments require: ISO 22000:2018 or FSSC 22000 certificate, HACCP plan documentation, an ISO 17025-accredited multi-residue pesticide test report (≥200 compounds), aflatoxin and heavy metals analysis, Phytosanitary Certificate, and a Certificate of Origin (Form A for GSP).'],
+    ['q'=>'How do I check if a product is on the EU enhanced import controls list?','a'=>'Check the current Annex II of Commission Implementing Regulation (EU) 2019/1793 via the EU TRACES NT system and the RASFF consumer portal. Enhanced controls require additional official certification and increased border sampling, adding cost and clearance time. Verify before every new supply contract.'],
+  ],
+  'ceylon-cinnamon-oil-bark-vs-leaf-buyers-guide' => [
+    ['q'=>'What is the difference between cinnamon bark oil and cinnamon leaf oil?','a'=>'Ceylon cinnamon bark oil is dominated by trans-cinnamaldehyde (55–75%), giving it an intense sweet-spicy cinnamon character and commanding a price premium of 8–12× over leaf oil. Cinnamon leaf oil is dominated by eugenol (70–90%), has a warmer clove-like fragrance, and is suited to soap, cleaning, dental, and aromatherapy applications.'],
+    ['q'=>'Can cinnamon leaf oil be substituted for bark oil in formulations?','a'=>'No. The two oils have fundamentally different chemical profiles and sensory characters. Substituting leaf oil (eugenol-dominant) into a recipe formulated for bark oil (cinnamaldehyde-dominant) will produce a noticeably different flavour, fragrance, and biological activity. They are not drop-in substitutes.'],
+    ['q'=>'What are the IFRA limits for cinnamon bark oil in cosmetics?','a'=>'Under IFRA\'s 49th Amendment, cinnamon bark oil (cinnamaldehyde >50%) has a maximum use level of 0.05% in Category 4 leave-on fine fragrance products and 0.2% in Category 9 rinse-off products. Cinnamon leaf oil (eugenol >70%) has higher permitted levels: 0.5% leave-on and 1.6% rinse-off. Both require SDS and IFRA conformance certificates for EU cosmetic registration.'],
   ],
 ];
 $currentFaqs = $postFaqs[$blog_post->slug] ?? [];
@@ -124,7 +142,7 @@ $currentFaqs = $postFaqs[$blog_post->slug] ?? [];
         <article>
             @if($blog_post->image)
             <div class="blog-post-img">
-                <img src="{{ asset('storage/'.$blog_post->image) }}" alt="{{ $blog_post->title }}">
+                <img src="{{ $blogImgUrl }}" alt="{{ $blog_post->title }}">
             </div>
             @else
             <div class="blog-post-img-placeholder"></div>
@@ -134,7 +152,11 @@ $currentFaqs = $postFaqs[$blog_post->slug] ?? [];
                 @if($blog_post->excerpt)
                 <p class="blog-post-excerpt">{{ $blog_post->excerpt }}</p>
                 @endif
-                {!! $blog_post->content !!}
+                {!! preg_replace(
+                    ['/<script\b[^>]*>[\s\S]*?<\/script>/i','/\s+on[a-z]+\s*=\s*(?:"[^"]*"|\'[^\']*\')/i','/href\s*=\s*"javascript:[^"]*"/i'],
+                    ['','','href="#"'],
+                    $blog_post->content ?? ''
+                ) !!}
             </div>
 
             <div class="blog-post-foot">

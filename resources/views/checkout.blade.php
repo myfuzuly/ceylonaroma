@@ -7,9 +7,11 @@
     <div class="container">
         <h1 class="page-title">Submit Inquiry</h1>
 
-        @if(session('error'))
-            <div class="auth-alert auth-alert-error">{{ session('error') }}</div>
-        @endif
+        <div class="checkout-trust-strip">
+            <span>✓ No payment required to inquire</span>
+            <span>✓ Response within 24 hours</span>
+            <span>✓ ISO 22000 · HACCP certified</span>
+        </div>
 
         <div class="checkout-layout">
             {{-- Form --}}
@@ -42,7 +44,7 @@
                     <div class="form-row-2">
                         <div class="form-group">
                             <label for="co-phone">Phone</label>
-                            <input type="text" id="co-phone" name="phone" value="{{ old('phone', $customer?->phone) }}" autocomplete="tel"
+                            <input type="tel" id="co-phone" name="phone" value="{{ old('phone', $customer?->phone) }}" autocomplete="tel"
                                    class="form-control" placeholder="+1 234 567 8900">
                         </div>
                         <div class="form-group">
@@ -66,12 +68,13 @@
                     <div class="form-group">
                         <label for="co-notes">Order Notes / Specifications</label>
                         <textarea id="co-notes" name="notes" rows="3" class="form-control" placeholder="Packaging requirements, certifications needed, delivery window, etc.">{{ old('notes') }}</textarea>
+                        <small class="form-hint">Optional — the more detail here, the faster we can quote accurately.</small>
                     </div>
 
                     {{-- Payment Method (PayHere hidden — inquiry only for now) --}}
                     <input type="hidden" name="payment_method" value="inquiry">
 
-                    <div id="checkout-error" style="display:none;margin-top:.75rem;padding:.75rem 1rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;color:#b91c1c;font-size:.875rem"></div>
+                    <div id="checkout-error" class="checkout-error-box"></div>
                     <button type="submit" class="btn btn-gold btn-block mt-4" id="submit-btn">
                         Submit Inquiry
                     </button>

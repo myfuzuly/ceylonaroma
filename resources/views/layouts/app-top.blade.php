@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>document.documentElement.classList.add('js-reveal');</script>
+
+{{-- Google tag (gtag.js) --}}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H63JBCQSSV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-H63JBCQSSV');
+</script>
 
 @php
   $siteName    = $settings['site_name']    ?? 'Ceylon Aroma';
@@ -12,7 +23,9 @@
   $metaDesc    = View::yieldContent('meta_description')
                  ?: ($settings['meta_description'] ?? 'Ceylon Aroma exports premium Ceylon cinnamon, spices, tea, coffee and natural products from Sri Lanka to 60+ countries. ISO certified. Request a wholesale quote today.');
   $metaImage   = View::yieldContent('og_image') ?: $siteUrl . '/images/spice-flatlay.png';
-  $canonicalUrl = $siteUrl . request()->getPathInfo();
+  $canonicalParts = [];
+  if (request()->query('page') && (int)request()->query('page') > 1) $canonicalParts[] = 'page=' . (int)request()->query('page');
+  $canonicalUrl = $siteUrl . request()->getPathInfo() . ($canonicalParts ? '?' . implode('&', $canonicalParts) : '');
 @endphp
 
 <title>{{ $metaTitle }}</title>
@@ -23,6 +36,12 @@
 <link rel="alternate" hreflang="en" href="{{ $canonicalUrl }}">
 <link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl }}">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 {{-- Open Graph --}}
 <meta property="og:type"        content="@yield('og_type', 'website')">
@@ -37,6 +56,7 @@
 
 {{-- Twitter Card --}}
 <meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:site"        content="@CeylonAroma">
 <meta name="twitter:title"       content="{{ $metaTitle }}">
 <meta name="twitter:description" content="{{ $metaDesc }}">
 <meta name="twitter:image"       content="{{ $metaImage }}">
@@ -103,7 +123,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/images/ceylonaroma4.png" fetchpriority="high">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 @vite(['resources/css/bundle.css', 'resources/js/app.js'])
 @stack('head')
 </head>
@@ -119,19 +141,19 @@
                 Delivering Natural Goodness of Sri Lanka to the World
             </span>
             <span class="topbar-usp">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                Exporting to 60+ Countries
-            </span>
-            <span class="topbar-usp">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 100% Natural &amp; Pure
             </span>
-            <span class="topbar-usp">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Certified Quality
-            </span>
         </div>
         <div class="topbar-right">
+            <a href="{{ route('blog.index') }}" class="topbar-usp topbar-link">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Blog
+            </a>
+            <a href="{{ route('contact') }}" class="topbar-usp topbar-link">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Contact
+            </a>
             <div class="topbar-lang">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
                 <span aria-label="Language: English">EN</span>
@@ -147,7 +169,7 @@
 <nav class="nav" role="navigation">
     <div class="nav-inner">
         <a href="{{ route('home') }}" class="logo" aria-label="Ceylon Aroma Home">
-            <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma" class="logo-img">
+            <img src="/images/ceylonaroma4.png" alt="Ceylon Aroma" class="logo-img">
         </a>
 
         <div class="nav-links">
@@ -182,16 +204,16 @@
                         <div class="nav-mega-grid">
                             @foreach($navCategories ?? [] as $cat)
                             <div class="nav-mega-col">
-                                <a href="{{ route('products.index', ['category' => $cat->slug]) }}"
-                                   class="nav-mega-cat {{ request()->is('products*') && request('category') === $cat->slug ? 'active' : '' }}">
+                                <a href="{{ route('products.category', $cat->slug) }}"
+                                   class="nav-mega-cat {{ optional(request()->route('category'))->slug === $cat->slug ? 'active' : '' }}">
                                     {{ $cat->name }}
                                 </a>
                                 @if($cat->children->isNotEmpty())
                                 <ul class="nav-mega-subs">
                                     @foreach($cat->children as $sub)
                                     <li>
-                                        <a href="{{ route('products.index', ['category' => $sub->slug]) }}"
-                                           class="{{ request()->is('products*') && request('category') === $sub->slug ? 'active' : '' }}">
+                                        <a href="{{ route('products.category', $sub->slug) }}"
+                                           class="{{ optional(request()->route('category'))->slug === $sub->slug ? 'active' : '' }}">
                                             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                                             {{ $sub->name }}
                                         </a>
@@ -206,17 +228,23 @@
                 </div>
             </div>
             <a href="{{ route('export') }}" class="nav-link {{ request()->routeIs('export') ? 'active' : '' }}">Export</a>
+            <a href="{{ route('wholesale-prices.index') }}" class="nav-link {{ request()->routeIs('wholesale-prices.*') ? 'active' : '' }}">Wholesale Prices</a>
             <a href="{{ route('quality') }}" class="nav-link {{ request()->routeIs('quality') ? 'active' : '' }}">Quality</a>
             <a href="{{ route('private-label') }}" class="nav-link {{ request()->routeIs('private-label') ? 'active' : '' }}">Private Label</a>
-            <a href="{{ route('blog.index') }}" class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">Blog</a>
-            <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contact Us</a>
         </div>
+
+        <form method="GET" action="{{ route('products.index') }}" class="nav-search-form" role="search" autocomplete="off">
+            <label for="nav-search-input" class="sr-only">Search products</label>
+            <svg class="nav-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="nav-search-input" name="search" value="{{ request('search') }}" placeholder="Search products…" class="nav-search-input" autocomplete="off">
+            <div class="nav-search-suggest" id="nav-search-suggest"></div>
+        </form>
 
         <div class="nav-actions">
             {{-- Wishlist icon --}}
             <a href="{{ route('wishlist') }}" class="nav-wish-btn" aria-label="Wishlist" id="nav-wish-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-                <span class="nav-badge nav-wish-badge" style="display:none">0</span>
+                <span class="nav-badge nav-wish-badge">0</span>
             </a>
             {{-- Cart icon --}}
             <a href="{{ route('cart.index') }}" class="nav-cart-btn" aria-label="Cart" id="nav-cart-icon">
@@ -254,10 +282,6 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </a>
             @endif
-            <a href="{{ route('contact') }}" class="btn btn-primary btn-sm nav-cta-btn">
-                Request Quote
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
         </div>
 
         <button type="button" class="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -271,12 +295,17 @@
 <div class="mobile-nav" role="dialog" aria-label="Mobile menu" aria-modal="true">
     <div class="mobile-nav-header">
         <a href="{{ route('home') }}" class="logo" aria-label="Ceylon Aroma Home">
-            <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma" class="logo-img">
+            <img src="/images/ceylonaroma4.png" alt="Ceylon Aroma" class="logo-img">
         </a>
         <button type="button" class="mobile-close" aria-label="Close menu">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
     </div>
+    <form method="GET" action="{{ route('products.index') }}" class="mobile-search-form" role="search">
+        <label for="mobile-search-input" class="sr-only">Search products</label>
+        <svg class="mobile-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="mobile-search-input" name="search" value="{{ request('search') }}" placeholder="Search products…" class="mobile-search-input">
+    </form>
     <div class="mobile-links">
         <a href="{{ route('home') }}"          class="mobile-link">Home</a>
         <a href="{{ route('about') }}"         class="mobile-link">About Us</a>
@@ -297,20 +326,21 @@
                         <svg class="mob-cat-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
                     <div class="mobile-cat-acc-body" id="mob-cat-{{ $cat->slug }}">
-                        <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="mobile-sub-link mobile-sub-sub">All {{ $cat->name }}</a>
+                        <a href="{{ route('products.category', $cat->slug) }}" class="mobile-sub-link mobile-sub-sub">All {{ $cat->name }}</a>
                         @foreach($cat->children as $sub)
-                        <a href="{{ route('products.index', ['category' => $sub->slug]) }}" class="mobile-sub-link mobile-sub-sub">↳ {{ $sub->name }}</a>
+                        <a href="{{ route('products.category', $sub->slug) }}" class="mobile-sub-link mobile-sub-sub">↳ {{ $sub->name }}</a>
                         @endforeach
                     </div>
                 </div>
                 @else
-                <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="mobile-sub-link mobile-sub-cat">{{ $cat->name }}</a>
+                <a href="{{ route('products.category', $cat->slug) }}" class="mobile-sub-link mobile-sub-cat">{{ $cat->name }}</a>
                 @endif
                 @endforeach
             </div>
         </div>
 
         <a href="{{ route('export') }}"         class="mobile-link">Export Services</a>
+        <a href="{{ route('wholesale-prices.index') }}" class="mobile-link">Wholesale Prices</a>
         <a href="{{ route('quality') }}"        class="mobile-link">Quality & Certs</a>
         <a href="{{ route('private-label') }}"  class="mobile-link">Private Label</a>
         <a href="{{ route('blog.index') }}"     class="mobile-link">Blog</a>
@@ -420,6 +450,80 @@
   window.addEventListener('resize', positionMega, {passive:true});
 })();
 (function(){
+  /* ── Nav search live suggestions ── */
+  var input = document.getElementById('nav-search-input');
+  var box   = document.getElementById('nav-search-suggest');
+  if(!input || !box) return;
+  var timer = null, activeIdx = -1, items = [];
+
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function highlight(name, q){
+    var i = name.toLowerCase().indexOf(q.toLowerCase());
+    if(i === -1) return escapeHtml(name);
+    return escapeHtml(name.slice(0,i)) + '<mark>' + escapeHtml(name.slice(i,i+q.length)) + '</mark>' + escapeHtml(name.slice(i+q.length));
+  }
+  function render(list, q){
+    items = list;
+    activeIdx = -1;
+    if(!list.length){ box.innerHTML = ''; box.classList.remove('open'); return; }
+    box.innerHTML = list.map(function(p, i){
+      var img = p.image
+        ? '<img src="'+p.image+'" alt="" loading="lazy">'
+        : '<span class="nav-suggest-noimg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C7 2 3 7 4 13c.8 4.5 4.5 8 8 9 3.5-1 7.2-4.5 8-9 1-6-3-11-8-11z"/></svg></span>';
+      return '<a href="'+p.url+'" class="nav-suggest-item" data-idx="'+i+'">'
+           + img
+           + '<span class="nav-suggest-text"><span class="nav-suggest-name">'+highlight(p.name, q)+'</span>'
+           + (p.category ? '<span class="nav-suggest-cat">'+escapeHtml(p.category)+'</span>' : '')
+           + '</span></a>';
+    }).join('') + '<a href="{{ route('products.index') }}?search='+encodeURIComponent(q)+'" class="nav-suggest-viewall">View all results for &ldquo;'+escapeHtml(q)+'&rdquo;</a>';
+    box.classList.add('open');
+  }
+  function close(){ box.classList.remove('open'); box.innerHTML=''; items=[]; activeIdx=-1; }
+
+  input.addEventListener('input', function(){
+    var q = input.value.trim();
+    clearTimeout(timer);
+    if(q.length < 2){ close(); return; }
+    timer = setTimeout(function(){
+      fetch('{{ route('products.suggestions') }}?q=' + encodeURIComponent(q))
+        .then(function(r){ return r.json(); })
+        .then(function(data){ if(input.value.trim() === q) render(data, q); })
+        .catch(function(){});
+    }, 220);
+  });
+
+  input.addEventListener('keydown', function(e){
+    var links = box.querySelectorAll('.nav-suggest-item');
+    if(!links.length) return;
+    if(e.key === 'ArrowDown'){
+      e.preventDefault();
+      activeIdx = Math.min(activeIdx + 1, links.length - 1);
+    } else if(e.key === 'ArrowUp'){
+      e.preventDefault();
+      activeIdx = Math.max(activeIdx - 1, 0);
+    } else if(e.key === 'Enter' && activeIdx > -1){
+      e.preventDefault();
+      window.location.href = links[activeIdx].href;
+      return;
+    } else if(e.key === 'Escape'){
+      close();
+      return;
+    } else {
+      return;
+    }
+    links.forEach(function(l,i){ l.classList.toggle('active', i === activeIdx); });
+    links[activeIdx].scrollIntoView({block:'nearest'});
+  });
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.nav-search-form')) close();
+  });
+})();
+(function(){
   /* ── Account dropdown ── */
   var aw = document.querySelector('.nav-account-wrap');
   if(!aw) return;
@@ -436,7 +540,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(!rev.length) return;
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+      if(e.isIntersecting){ e.target.classList.add('visible','in-view'); io.unobserve(e.target); }
     });
   }, {threshold:0.1});
   rev.forEach(function(el){ io.observe(el); });

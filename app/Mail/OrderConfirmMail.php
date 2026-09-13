@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class OrderConfirmMail extends Mailable
 {
@@ -21,6 +22,11 @@ class OrderConfirmMail extends Mailable
 
     public function content(): Content
     {
-        return new Content(view: 'emails.order-confirm');
+        return new Content(
+            view: 'emails.order-confirm',
+            with: [
+                'trackUrl' => URL::signedRoute('order.confirmation', ['orderNumber' => $this->order->order_number]),
+            ],
+        );
     }
 }

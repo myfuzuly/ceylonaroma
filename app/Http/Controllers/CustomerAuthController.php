@@ -287,9 +287,10 @@ class CustomerAuthController extends Controller
     }
 
     /* ── Logout ── */
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget(['customer_id','customer_name','customer_email','customer_avatar','cart']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('home')->with('success', 'Logged out successfully.');
     }
 

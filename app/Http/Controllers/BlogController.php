@@ -9,9 +9,14 @@ class BlogController extends Controller
 {
     public function index(Request $request)
     {
+        $request->validate([
+            'category' => 'nullable|string|max:100',
+            'page'     => 'nullable|integer|min:1|max:9999',
+        ]);
+
         $query = BlogPost::where('status', true)->orderByDesc('published_at');
         if ($request->category) {
-            $query->where('category', $request->category);
+            $query->where('category', substr(trim($request->category), 0, 100));
         }
         $posts = $query->paginate(9)->withQueryString();
         $categories = BlogPost::where('status', true)->distinct()->pluck('category')->filter();

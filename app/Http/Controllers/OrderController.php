@@ -74,6 +74,7 @@ class OrderController extends Controller
         }
 
         session()->forget('cart');
+        session(['last_order_number' => $orderNumber]);
 
         try {
             Mail::to($order->email)->send(new OrderConfirmMail($order));
@@ -84,9 +85,18 @@ class OrderController extends Controller
         return redirect()->route('order.confirmation', $order->order_number);
     }
 
-    public function confirmation(string $orderNumber)
+    public function confirmation(Request $request, string $orderNumber)
     {
         $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
+
+        $ownedByCustomer = session('customer_id') && $order->customer_id == session('customer_id');
+        $justPlaced = session('last_order_number') === $orderNumber;
+        $validSignature = $request->hasValidSignature();
+
+        if (!$ownedByCustomer && !$justPlaced && !$validSignature) {
+            abort(403, 'You do not have permission to view this order.');
+        }
+
         return view('order-confirmation', compact('order'));
     }
 }

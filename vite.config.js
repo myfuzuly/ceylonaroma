@@ -13,4 +13,11 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    css: {
+        transformer: 'lightningcss',
+    },
+    build: {
+        cssMinify: 'lightningcss',
+        sourcemap: false,
+    },
 });

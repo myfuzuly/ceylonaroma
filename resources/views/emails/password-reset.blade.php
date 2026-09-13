@@ -21,7 +21,7 @@ p{line-height:1.65;color:#3a4a3e;margin:0 0 1rem;font-size:.93rem}
 <body>
 <div class="wrap">
     <div class="header">
-        <img src="https://ceylonaroma.com/images/ceylonaroma3.png" alt="Ceylon Aroma">
+        <img src="https://ceylonaroma.com/images/ceylonaroma4.png" alt="Ceylon Aroma">
     </div>
     <div class="body">
         <h2>Reset Your Password</h2>

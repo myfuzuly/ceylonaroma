@@ -74,7 +74,7 @@
         <span class="cfb-label">Sri Lanka's Pride</span>
         <h2 class="cfb-title">Ceylon Cinnamon<br><em>World's Finest</em></h2>
         <p class="cfb-sub">Harvested from the heartland of Sri Lanka — the only true Ceylon cinnamon, with a delicate sweetness no other country can replicate.</p>
-        <a href="{{ route('products.index', ['category' => 'ceylon-cinnamon']) }}" class="cfb-btn">
+        <a href="{{ route('products.category', 'true-ceylon-cinnamon') }}" class="cfb-btn">
             Explore Cinnamon
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -91,7 +91,7 @@
         </div>
         <div class="cat-grid">
             @foreach($categories as $cat)
-            <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="cat-card">
+            <a href="{{ route('products.category', $cat->slug) }}" class="cat-card">
                 @if($cat->image)
                     <img src="{{ asset('storage/'.$cat->image) }}" alt="{{ $cat->name }}" loading="lazy" class="cat-bg-img">
                 @else
@@ -107,3 +107,56 @@
         </div>
     </div>
 </section>
+
+{{-- ── Wholesale Price Banner ── --}}
+<section class="wp-banner">
+    <div class="container wp-banner-inner">
+        <div class="wp-banner-text">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            <div>
+                <h3>Today's Wholesale Prices</h3>
+                <p>Check our current bulk export rates, updated regularly.</p>
+            </div>
+        </div>
+        <a href="{{ route('wholesale-prices.index') }}" class="wp-banner-btn">
+            View Price List
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+    </div>
+</section>
+
+{{-- ── Featured Export Collections ── --}}
+@if($collections->count())
+<section class="section collections-section">
+    <div class="container">
+        <div class="section-head center">
+            <span class="section-label">Handpicked For Buyers</span>
+            <h2 class="section-title">Featured Export Collections</h2>
+            <p class="section-sub">Curated product ranges loved by our global partners</p>
+        </div>
+        <div class="collections-grid">
+            @foreach($collections as $col)
+            <a href="{{ route('products.index', ['search' => $col->name]) }}" class="collection-card">
+                @if($col->image)
+                    <img src="{{ \Illuminate\Support\Str::startsWith($col->image, ['http','/']) ? $col->image : asset('storage/'.$col->image) }}" alt="{{ $col->name }}" loading="lazy" class="collection-bg-img">
+                @endif
+                <div class="collection-overlay"></div>
+                @if($col->tag)
+                    <span class="collection-tag">{{ $col->tag }}</span>
+                @endif
+                <div class="collection-body">
+                    <h3 class="collection-title">{{ $col->name }}</h3>
+                    @if($col->description)
+                        <p class="collection-desc">{{ $col->description }}</p>
+                    @endif
+                    <span class="collection-link">
+                        Explore Now
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </span>
+                </div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif

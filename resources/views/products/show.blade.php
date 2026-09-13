@@ -39,10 +39,17 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
   "@type": "BreadcrumbList",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ceylonaroma.com" },
-    { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://ceylonaroma.com/products" }@if($product->category),
-    { "@type": "ListItem", "position": 3, "name": "{{ addslashes($product->category->name) }}", "item": "https://ceylonaroma.com/products?category={{ $product->category->slug }}" },
-    { "@type": "ListItem", "position": 4, "name": "{{ addslashes($product->name) }}", "item": "https://ceylonaroma.com/products/{{ $product->slug }}" }@else,
-    { "@type": "ListItem", "position": 3, "name": "{{ addslashes($product->name) }}", "item": "https://ceylonaroma.com/products/{{ $product->slug }}" }@endif
+    { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://ceylonaroma.com/products" }@php $bcPos = 2; @endphp
+    @if($product->category)
+        @if($product->category->parent)
+            @php $bcPos++; @endphp
+    , { "@type": "ListItem", "position": {{ $bcPos }}, "name": "{{ addslashes($product->category->parent->name) }}", "item": "{{ route('products.category', $product->category->parent->slug) }}" }
+        @endif
+        @php $bcPos++; @endphp
+    , { "@type": "ListItem", "position": {{ $bcPos }}, "name": "{{ addslashes($product->category->name) }}", "item": "{{ route('products.category', $product->category->slug) }}" }
+    @endif
+    @php $bcPos++; @endphp
+    , { "@type": "ListItem", "position": {{ $bcPos }}, "name": "{{ addslashes($product->name) }}", "item": "https://ceylonaroma.com/products/{{ $product->slug }}" }
   ]
 }
 </script>
@@ -86,7 +93,11 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
             <div class="product-info">
                 @if($product->category)
                 <div class="product-cat-label">
-                    <a href="{{ route('products.index', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a>
+                    @if($product->category->parent)
+                        <a href="{{ route('products.category', $product->category->parent->slug) }}">{{ $product->category->parent->name }}</a>
+                        <span class="product-cat-sep">/</span>
+                    @endif
+                    <a href="{{ route('products.category', $product->category->slug) }}">{{ $product->category->name }}</a>
                 </div>
                 @endif
 
@@ -185,9 +196,9 @@ $schemaAvail = $product->in_stock ? 'https://schema.org/InStock' : 'https://sche
                         <div class="product-qty-row">
                             <div class="qty-form">
                                 <label for="detail-qty" class="sr-only">Quantity</label>
-                                <button type="button" class="qty-btn qty-dec-detail">−</button>
-                                <input type="number" name="quantity" value="1" min="1" max="999" class="qty-input qty-input-detail" id="detail-qty">
-                                <button type="button" class="qty-btn qty-inc-detail">+</button>
+                                <button type="button" class="qty-btn qty-dec-detail" aria-label="Decrease quantity">−</button>
+                                <input type="number" name="quantity" value="1" min="1" max="999" class="qty-input qty-input-detail" id="detail-qty" aria-label="Quantity">
+                                <button type="button" class="qty-btn qty-inc-detail" aria-label="Increase quantity">+</button>
                             </div>
                             <button type="submit" class="btn btn-gold detail-add-btn">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>

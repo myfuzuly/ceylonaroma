@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\{Product, Category};
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -36,8 +38,8 @@ class ProductController extends Controller
             'category_id'         => 'nullable|exists:categories,id',
             'short_description'   => 'nullable|string|max:300',
             'description'         => 'nullable|string',
-            'image'               => 'nullable|image|max:2048',
-            'gallery_images.*'    => 'nullable|image|max:2048',
+            'image'               => 'nullable|image|max:4096',
+            'gallery_images.*'    => 'nullable|image|max:4096',
             'price'               => 'nullable|numeric|min:0',
             'price_unit'          => 'nullable|string|max:30',
             'currency'            => 'nullable|string|max:5',
@@ -57,7 +59,7 @@ class ProductController extends Controller
             'sort_order'          => 'integer',
             'status'              => 'boolean',
             'variants'            => 'nullable|array',
-            'variant_images.*'    => 'nullable|image|max:2048',
+            'variant_images.*'    => 'nullable|image|max:4096',
         ]);
 
         $data['slug'] = Str::slug($data['name']);
@@ -66,7 +68,7 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products','public');
+            $data['image'] = $this->storeAsWebp($request->file('image'), 'products');
         }
 
         foreach (['in_stock','is_featured','is_bestseller','is_new_arrival','is_export_ready','status'] as $bool) {
@@ -94,8 +96,8 @@ class ProductController extends Controller
             'category_id'         => 'nullable|exists:categories,id',
             'short_description'   => 'nullable|string|max:300',
             'description'         => 'nullable|string',
-            'image'               => 'nullable|image|max:2048',
-            'gallery_images.*'    => 'nullable|image|max:2048',
+            'image'               => 'nullable|image|max:4096',
+            'gallery_images.*'    => 'nullable|image|max:4096',
             'price'               => 'nullable|numeric|min:0',
             'price_unit'          => 'nullable|string|max:30',
             'currency'            => 'nullable|string|max:5',
@@ -120,7 +122,7 @@ class ProductController extends Controller
             $data['image'] = null;
         }
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products','public');
+            $data['image'] = $this->storeAsWebp($request->file('image'), 'products');
         }
 
         foreach (['in_stock','is_featured','is_bestseller','is_new_arrival','is_export_ready','status'] as $bool) {
@@ -149,7 +151,7 @@ class ProductController extends Controller
         if ($request->hasFile('gallery_images')) {
             foreach ($request->file('gallery_images') as $file) {
                 if ($file && $file->isValid()) {
-                    $kept[] = $file->store('products/gallery', 'public');
+                    $kept[] = $this->storeAsWebp($file, 'products/gallery');
                 }
             }
         }
@@ -182,12 +184,46 @@ class ProductController extends Controller
 
             // Upload new image if provided
             if (isset($variantImages[$idx]) && $variantImages[$idx]->isValid()) {
-                $entry['image'] = $variantImages[$idx]->store('products/variants', 'public');
+                $entry['image'] = $this->storeAsWebp($variantImages[$idx], 'products/variants');
             }
 
             $result[] = $entry;
         }
 
         return $result;
+    }
+
+    /**
+     * Store an uploaded image as WebP and return its storage-relative path.
+     * Falls back to the original file if GD can't decode it.
+     */
+    private function storeAsWebp(UploadedFile $file, string $directory): string
+    {
+        $source = match ($file->getMimeType()) {
+            'image/jpeg' => @imagecreatefromjpeg($file->getRealPath()),
+            'image/png'  => @imagecreatefrompng($file->getRealPath()),
+            'image/gif'  => @imagecreatefromgif($file->getRealPath()),
+            'image/webp' => @imagecreatefromwebp($file->getRealPath()),
+            default      => null,
+        };
+
+        if (!$source || !function_exists('imagewebp')) {
+            return $file->store($directory, 'public');
+        }
+
+        imagepalettetotruecolor($source);
+        imagealphablending($source, true);
+        imagesavealpha($source, true);
+
+        $path = trim($directory, '/').'/'.Str::uuid().'.webp';
+        $fullPath = Storage::disk('public')->path($path);
+        if (!is_dir(dirname($fullPath))) {
+            mkdir(dirname($fullPath), 0755, true);
+        }
+
+        imagewebp($source, $fullPath, 82);
+        imagedestroy($source);
+
+        return $path;
     }
 }

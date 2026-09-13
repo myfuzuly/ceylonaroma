@@ -27,7 +27,7 @@ p{line-height:1.65;color:#3a4a3e;margin:0 0 1rem;font-size:.93rem}
 <body>
 <div class="wrap">
     <div class="header">
-        <img src="https://ceylonaroma.com/images/ceylonaroma3.png" alt="Ceylon Aroma">
+        <img src="https://ceylonaroma.com/images/ceylonaroma4.png" alt="Ceylon Aroma">
     </div>
     <div class="check-band">Order Received</div>
     <div class="body">
@@ -59,7 +59,7 @@ p{line-height:1.65;color:#3a4a3e;margin:0 0 1rem;font-size:.93rem}
         </div>
 
         <p style="text-align:center">
-            <a href="{{ url('/account/orders/'.$order->order_number) }}" class="btn">Track Your Order</a>
+            <a href="{{ $trackUrl }}" class="btn">Track Your Order</a>
         </p>
 
         <p>Questions? Reply to this email or reach us at <a href="mailto:info@ceylonaroma.com" style="color:#2d6a4f">info@ceylonaroma.com</a> or <a href="tel:+94718821234" style="color:#2d6a4f">+94 71 882 1234</a>.</p>

@@ -61,7 +61,7 @@
     <div class="container">
         <span class="section-label export-hero-label">International Trade</span>
         <h1>Export Services</h1>
-        <p>End-to-end export solutions from Sri Lanka to 60+ countries. We manage documentation, freight coordination, and compliance so you can focus on growing your business.</p>
+        <p>From 500 kg to full container programmes — we handle the entire export cycle. Source procurement, processing, quality testing, freight booking, and documentation. You receive product and paperwork together.</p>
         <a href="{{ route('contact') }}" class="btn btn-gold">Request Export Quote
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -79,33 +79,33 @@
         <div class="export-steps">
             <div class="export-step">
                 <div class="export-step-num">01</div>
-                <h3>Enquiry & Quotation</h3>
-                <p>Submit your product requirements, quantities, destination, and preferred incoterm. We respond with a detailed quote within 24 hours.</p>
+                <h3>Enquiry &amp; Quotation</h3>
+                <p>Send your product specification, required quantity, and destination port. We respond with a FOB or CIF quote, available lot certificate, and lead time within 24 hours on business days.</p>
             </div>
             <div class="export-step">
                 <div class="export-step-num">02</div>
-                <h3>Sample Dispatch</h3>
-                <p>Upon request, we dispatch product samples with Certificate of Analysis (COA) within 3–5 working days via DHL or FedEx.</p>
+                <h3>Sample Approval</h3>
+                <p>Paid samples dispatched with full Certificate of Analysis within 3–5 working days. Sample costs are credited against your first commercial order of 500 kg or more.</p>
             </div>
             <div class="export-step">
                 <div class="export-step-num">03</div>
-                <h3>Order Confirmation</h3>
-                <p>Once samples are approved, confirm your Purchase Order. We issue a Proforma Invoice with payment terms and production timeline.</p>
+                <h3>Purchase Order &amp; Pro Forma Invoice</h3>
+                <p>You issue a PO. We issue a pro forma invoice with final price, payment terms (50% T/T advance + 50% against copy of shipping documents, or LC at sight), and confirmed shipment date.</p>
             </div>
             <div class="export-step">
                 <div class="export-step-num">04</div>
-                <h3>Production & QC</h3>
-                <p>Products are processed, packed, and inspected to your specifications. Third-party inspection is available on request.</p>
+                <h3>Production &amp; Quality Control</h3>
+                <p>Product is processed, QC-tested at source, and a pre-shipment sample sent to the independent ISO 17025 laboratory. You receive the CoA before the container is sealed.</p>
             </div>
             <div class="export-step">
                 <div class="export-step-num">05</div>
-                <h3>Documentation</h3>
-                <p>We prepare all mandatory export documents including Commercial Invoice, Packing List, Certificate of Origin, and Phytosanitary Certificate.</p>
+                <h3>Shipment &amp; Documentation</h3>
+                <p>We book freight, obtain all export certificates, and release the full documentation pack — BL, Certificate of Origin, Phytosanitary Certificate, CoA, ISO cert, packing list, invoice — within 48 hours of container departure.</p>
             </div>
             <div class="export-step">
                 <div class="export-step-num">06</div>
-                <h3>Shipment & Tracking</h3>
-                <p>Goods are shipped via Colombo Port (sea) or BIA (air). Bill of Lading / Airway Bill and tracking details provided on despatch.</p>
+                <h3>Ongoing Supply Programme</h3>
+                <p>Your account manager proactively notifies you of crop availability, price movements, and new products. Quarterly review calls to align supply with your forecast demand.</p>
             </div>
         </div>
     </div>
@@ -272,9 +272,9 @@
 <section class="export-cta-section">
     <div class="container">
         <div class="export-cta-inner">
-            <h2>Ready to Start Importing?</h2>
-            <p>Send us your product requirements and we'll respond with a detailed quotation within 24 hours.</p>
-            <a href="{{ route('contact') }}" class="btn btn-gold btn-lg">Get Your Export Quote
+            <h2>Ready to Source Directly from Sri Lanka?</h2>
+            <p>Send your product specification and destination country. We'll respond with a priced FOB or CIF quote within 24 hours — no obligation to proceed.</p>
+            <a href="{{ route('contact') }}" class="btn btn-gold btn-lg">Request Your Export Quote
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
         </div>

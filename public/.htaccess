@@ -1,3 +1,13 @@
+# ── Block direct PHP execution (except index.php) ─────────────
+<FilesMatch "^(?!index\.php$).+\.php$">
+    Require all denied
+</FilesMatch>
+
+# ── Block compressed source artifacts ─────────────────────────
+<FilesMatch "\.(gz|bz2|zip|tar)$">
+    Require all denied
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -59,4 +69,18 @@
         Header set Cache-Control "public, max-age=15552000"
     </FilesMatch>
     # Security headers handled by Laravel SecurityHeaders middleware
+    Header always set X-Permitted-Cross-Domain-Policies "none"
+    Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+    Header always set Cross-Origin-Resource-Policy "same-site"
+</IfModule>
+
+# ── Block common injection probe paths ────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+    RewriteCond %{QUERY_STRING} javascript: [NC,OR]
+    RewriteCond %{QUERY_STRING} \.\./\.\.
+    RewriteRule .* - [F,L]
 </IfModule>

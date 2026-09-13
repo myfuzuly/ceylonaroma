@@ -9,7 +9,7 @@
 @endforeach
 @foreach($categories as $cat)
     <url>
-        <loc>{{ route('products.index', ['category' => $cat->slug]) }}</loc>
+        <loc>{{ route('products.category', $cat->slug) }}</loc>
         <lastmod>{{ $cat->updated_at->toAtomString() }}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>

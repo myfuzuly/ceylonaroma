@@ -9,8 +9,8 @@
 <div class="export-hero">
     <div class="container">
         <span class="section-label export-hero-label">Custom Branding</span>
-        <h1>Private Label Services</h1>
-        <p>Launch your own branded Ceylon spice, tea, or coffee line. We handle formulation, packaging, labelling, and export — you sell under your brand.</p>
+        <h1>Build Your Spice Brand on Sri Lanka's Finest</h1>
+        <p>Private label spices, tea, and coffee — from brand brief to first shipment in 6–10 weeks. We handle sourcing, processing, quality testing, and packaging. You focus on your brand and market.</p>
         <a href="{{ route('contact') }}" class="btn btn-gold">Start Your Private Label Inquiry
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -24,7 +24,7 @@
             <div class="pl-intro-text">
                 <span class="section-label">How It Works</span>
                 <h2>Your Brand. Our Expertise.</h2>
-                <p>Private label means we produce, pack, and label products under your brand name instead of ours. You own the brand; we supply the product with full traceability and export documentation.</p>
+                <p>Private label means we produce, pack, and label products under your brand name instead of ours. You own the brand; we supply the product with full traceability, ISO 22000-certified processing, and complete export documentation. No intermediaries — direct from our facility to your market.</p>
                 <p>Ideal for:</p>
                 <ul class="pl-ideal-list">
                     <li>Supermarkets and grocery chains launching own-brand ranges</li>
@@ -226,9 +226,9 @@
 <section class="export-cta-section">
     <div class="container">
         <div class="export-cta-inner">
-            <h2>Ready to Launch Your Brand?</h2>
-            <p>Share your product brief and we'll respond with a quotation, sample plan, and timeline within 24 hours.</p>
-            <a href="{{ route('contact') }}" class="btn btn-gold btn-lg">Start Your Private Label Project
+            <h2>Tell Us About Your Brand</h2>
+            <p>Share your product type, target market, and packaging brief. We respond with a quotation, sample plan, and production timeline within 24–48 hours — no obligation to proceed.</p>
+            <a href="{{ route('contact') }}" class="btn btn-gold btn-lg">Start Your Private Label Inquiry
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
         </div>

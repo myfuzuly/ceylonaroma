@@ -29,21 +29,13 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard')->with('success', 'Welcome back, '.$user->name.'!');
         }
 
-        // Fallback env credentials — compared with hash to avoid plaintext
-        $adminEmail       = env('ADMIN_EMAIL', 'admin@ceylonaroma.com');
-        $adminPasswordHash = env('ADMIN_PASSWORD_HASH', '');
-        if ($adminPasswordHash && $request->email === $adminEmail && Hash::check($request->password, $adminPasswordHash)) {
-            session()->regenerate();
-            session(['admin_logged_in' => true, 'admin_name' => 'Administrator', 'admin_email' => $adminEmail]);
-            return redirect()->route('admin.dashboard');
-        }
-
         return back()->withErrors(['email' => 'Invalid credentials.'])->withInput($request->except('password'));
     }
 
     public function logout(Request $request)
     {
-        $request->session()->forget(['admin_logged_in','admin_name','admin_email']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
     }
 }

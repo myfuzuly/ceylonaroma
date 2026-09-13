@@ -29,7 +29,7 @@
                 </span>
             </div>
             <div class="ccta-actions">
-                <a href="{{ route('products.index', ['category' => 'ceylon-coffee']) }}" class="ccta-btn-primary">
+                <a href="{{ route('products.category', 'ceylon-coffee') }}" class="ccta-btn-primary">
                     Explore Ceylon Coffee
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
@@ -68,15 +68,6 @@
             </div>
             @endforeach
         </div>
-    </div>
-</section>
-
-{{-- ── Core Values Infographic ── --}}
-<section class="core-values-section">
-    <div class="container">
-        <img src="/images/core-values.png"
-             alt="Our Core Values — Authenticity, Purity, Sustainability, Quality, Trust"
-             loading="lazy" class="core-values-img">
     </div>
 </section>
 
@@ -166,7 +157,7 @@
             <a href="{{ route('blog.show', $post->slug) }}" class="kcp-card">
                 <div class="kcp-img">
                     @if($post->image)
-                        <img src="{{ asset('storage/'.$post->image) }}" alt="{{ $post->title }}" loading="lazy">
+                        <img src="{{ \Illuminate\Support\Str::startsWith($post->image, ['http', '/']) ? $post->image : asset('storage/'.$post->image) }}" alt="{{ $post->title }}" loading="lazy">
                     @else
                         @php
                         $kcpPlaceholders = ['/images/blog-spices.webp','/images/blog-tea.jpg','/images/blog-coffee.webp','/images/blog-cinnamon.jpg','/images/blog-clove.jpg'];

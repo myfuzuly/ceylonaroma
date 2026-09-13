@@ -119,7 +119,7 @@
                             <input type="hidden" name="variants[{{ $vi }}][existing_image]" value="{{ $variant['image'] }}">
                             @endif
                             <input type="file" name="variant_images[{{ $vi }}]" accept="image/*" style="font-size:.8rem">
-                            <span class="f-hint">JPG, PNG, WebP — max 2MB</span>
+                            <span class="f-hint">JPG, PNG, WebP — max 4MB, auto-converted to WebP</span>
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                 <div class="iuz-placeholder" id="iuzPlaceholder">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                     <span style="font-size:.85rem;font-weight:600;color:var(--a-muted)">Click or drag to upload</span>
-                    <span class="f-hint">JPG, PNG, WebP — max 2MB</span>
+                    <span class="f-hint">JPG, PNG, WebP — max 4MB, auto-converted to WebP</span>
                 </div>
                 @endif
             </div>
@@ -190,7 +190,7 @@
         {{-- Gallery Images --}}
         <div class="form-card">
             <div class="form-section-title">Gallery Images</div>
-            <p style="font-size:.78rem;color:var(--a-muted);margin-bottom:.85rem">Additional images shown in the product gallery thumbnails. Up to 8 images, max 2MB each.</p>
+            <p style="font-size:.78rem;color:var(--a-muted);margin-bottom:.85rem">Additional images shown in the product gallery thumbnails. Up to 8 images, max 4MB each — auto-converted to WebP.</p>
 
             {{-- Existing gallery --}}
             @if(!empty($product->gallery) && is_array($product->gallery) && count($product->gallery))
@@ -209,7 +209,7 @@
             @endif
 
             <input type="file" name="gallery_images[]" accept="image/*" multiple id="galleryInput" style="font-size:.8rem;color:var(--a-muted)">
-            <span class="f-hint">Select multiple files at once — JPG, PNG, WebP — max 2MB each</span>
+            <span class="f-hint">Select multiple files at once — JPG, PNG, WebP — max 4MB each, auto-converted to WebP</span>
 
             {{-- Preview strip for newly selected --}}
             <div id="gallery-new-preview" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.65rem"></div>
@@ -337,7 +337,7 @@
             +'<select name="variants['+idx+'][price_unit]" class="f-control">'+units+'</select></div>'
             +'<div class="f-group" style="grid-column:span 3"><label class="f-label">Variant Image</label>'
             +'<input type="file" name="variant_images['+idx+']" accept="image/*" style="font-size:.8rem">'
-            +'<span class="f-hint">JPG, PNG, WebP — max 2MB</span></div>'
+            +'<span class="f-hint">JPG, PNG, WebP — max 4MB, auto-converted to WebP</span></div>'
             +'</div></div>';
     }
     if(addBtn) addBtn.addEventListener('click', function(){

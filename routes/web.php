@@ -11,13 +11,36 @@ use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PayHereController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\WholesalePriceController;
+use App\Http\Controllers\LegacyRedirectController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\SliderController;
+
+/* ─── Legacy WordPress URLs → 301 redirects (pre-migration site) ─── */
+Route::get('/product/{slug}', [LegacyRedirectController::class, 'product']);
+Route::get('/category/{a}/{b?}/{c?}', [LegacyRedirectController::class, 'category']);
+Route::get('/tag/{slug?}', [LegacyRedirectController::class, 'tag']);
+Route::get('/author/{slug?}', fn() => redirect('/', 301));
+Route::get('/product-brand/{slug?}', fn() => redirect()->route('products.index', [], 301));
+Route::get('/true-ceylon-cinnamon-the-worlds-finest-cinnamon', fn() => redirect()->route('blog.index', [], 301));
+Route::get('/ceylon-coffee-discover-sri-lankas-hidden-coffee-heritage', fn() => redirect()->route('blog.index', [], 301));
+Route::get('/ceylon-black-pepper-the-king-of-spices-from-sri-lanka', fn() => redirect()->route('blog.index', [], 301));
+
+/* ─── Renamed product slugs (pre-cleanup) → 301 redirects — must precede {product:slug} ─── */
+Route::get('/products/refined-carrier-oils-carrier-oils', fn() => redirect()->route('products.show', 'refined-carrier-oils', 301));
+Route::get('/products/herbal-powder-blends-herbal-powders', fn() => redirect()->route('products.show', 'herbal-powder-blends', 301));
+Route::get('/products/cinnamon-cut-cinnamon-cut', fn() => redirect()->route('products.show', 'cinnamon-cut', 301));
+Route::get('/products/traditional-sri-lankan-foods-dehydrated-foods', fn() => redirect()->route('products.show', 'traditional-sri-lankan-foods', 301));
+Route::get('/products/ceylon-black-tea-op-grade-black-tea', fn() => redirect()->route('products.show', 'ceylon-black-tea', 301));
+Route::get('/products/flavoured-ceylon-tea-flavoured-tea', fn() => redirect()->route('products.category', 'flavored-tea', 301));
 
 /* ─── Frontend ─── */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/category/{category:slug}', [ProductController::class, 'index'])->name('products.category');
+Route::get('/products-suggest', [ProductController::class, 'suggestions'])->name('products.suggestions');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/wholesale-prices', [WholesalePriceController::class, 'index'])->name('wholesale-prices.index');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog_post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/contact', [InquiryController::class, 'show'])->name('contact');
@@ -28,6 +51,7 @@ Route::get('/quality', fn() => view('pages.quality'))->name('quality');
 Route::get('/private-label', fn() => view('pages.private-label'))->name('private-label');
 Route::get('/privacy-policy', fn() => view('pages.privacy'))->name('privacy');
 Route::get('/terms-conditions', fn() => view('pages.terms'))->name('terms');
+Route::get('/return-policy', fn() => view('pages.returns'))->name('returns');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/wishlist', fn() => view('wishlist'))->name('wishlist');
 
@@ -118,6 +142,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/',                    [Admin\OrderController::class, 'index'])->name('index');
             Route::get('/{order}',             [Admin\OrderController::class, 'show'])->name('show');
             Route::patch('/{order}/status',    [Admin\OrderController::class, 'updateStatus'])->name('status');
+        });
+
+        Route::prefix('/wholesale-prices')->name('wholesale-prices.')->group(function () {
+            Route::get('/',           [Admin\WholesalePriceController::class, 'index'])->name('index');
+            Route::post('/',          [Admin\WholesalePriceController::class, 'store'])->name('store');
+            Route::delete('/{wholesalePrice}', [Admin\WholesalePriceController::class, 'destroy'])->name('destroy');
         });
 
         Route::resource('/users', Admin\UserController::class)->except(['show']);

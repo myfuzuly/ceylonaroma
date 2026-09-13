@@ -7,13 +7,6 @@
     <div class="container">
         <h1 class="page-title">Your Cart</h1>
 
-        @if(session('success'))
-            <div class="auth-alert auth-alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="auth-alert auth-alert-error">{{ session('error') }}</div>
-        @endif
-
         @if(empty($cart))
             <div class="cart-empty">
                 <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>

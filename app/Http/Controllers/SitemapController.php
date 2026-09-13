@@ -12,7 +12,7 @@ class SitemapController extends Controller
     public function index(): Response
     {
         $products   = Product::where('status', 1)->select('slug','updated_at')->get();
-        $categories = Category::whereNull('parent_id')->select('slug','updated_at')->get();
+        $categories = Category::where('status', true)->select('slug','updated_at')->get();
         $posts      = BlogPost::where('status', 1)->select('slug','updated_at')->get();
 
         $staticPages = [
@@ -23,6 +23,7 @@ class SitemapController extends Controller
             ['loc' => route('export'),         'priority' => '0.7', 'freq' => 'monthly'],
             ['loc' => route('quality'),        'priority' => '0.7', 'freq' => 'monthly'],
             ['loc' => route('private-label'),  'priority' => '0.7', 'freq' => 'monthly'],
+            ['loc' => route('returns'),        'priority' => '0.4', 'freq' => 'yearly'],
             ['loc' => route('blog.index'),     'priority' => '0.6', 'freq' => 'weekly'],
         ];
 
@@ -39,7 +40,7 @@ class SitemapController extends Controller
         }
         foreach ($categories as $cat) {
             $xml .= $url(
-                route('products.index', ['category' => $cat->slug]),
+                route('products.category', $cat->slug),
                 'weekly', '0.8',
                 $cat->updated_at->toAtomString()
             );

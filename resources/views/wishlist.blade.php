@@ -8,7 +8,7 @@
     <div class="container">
         <h1 class="page-title">My Wishlist</h1>
 
-        <div id="wishlist-empty" class="wishlist-empty" style="display:none">
+        <div id="wishlist-empty" class="wishlist-empty wishlist-empty-hidden">
             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
             <h2>Your wishlist is empty</h2>
             <p>Save products you love by clicking the heart icon on any product card.</p>
@@ -35,12 +35,12 @@
             <div class="product-category wish-cat"></div>
             <h3 class="product-name"><a class="wish-name-link"></a></h3>
             <div class="product-card-footer">
-                <div class="product-card-btns" style="width:100%;gap:.5rem">
-                    <a class="btn btn-gold btn-sm wish-quote-link" style="flex:1;justify-content:center">
+                <div class="product-card-btns wishlist-card-btns">
+                    <a class="btn btn-gold btn-sm wish-quote-link">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                         Get Quote
                     </a>
-                    <a class="btn btn-outline btn-sm wish-view-link" style="justify-content:center">
+                    <a class="btn btn-outline btn-sm wish-view-link">
                         View
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </a>
@@ -64,8 +64,8 @@
     function render(){
         var list = getWish();
         grid.innerHTML = '';
-        if(!list.length){ empty.style.display=''; grid.style.display='none'; return; }
-        empty.style.display = 'none';
+        if(!list.length){ empty.classList.remove('wishlist-empty-hidden'); grid.style.display='none'; return; }
+        empty.classList.add('wishlist-empty-hidden');
         grid.style.display  = '';
         list.forEach(function(item){
             var node = tpl.content.cloneNode(true);
@@ -95,7 +95,7 @@
                 saveWish(w);
                 render();
                 /* sync badge elsewhere */
-                document.querySelectorAll('.nav-wish-badge').forEach(function(b){ b.textContent = w.length || ''; b.style.display = w.length ? '' : 'none'; });
+                document.querySelectorAll('.nav-wish-badge').forEach(function(b){ b.textContent = w.length || ''; b.style.display = w.length ? 'flex' : 'none'; });
             });
             grid.appendChild(node);
         });

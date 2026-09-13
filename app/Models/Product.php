@@ -51,6 +51,16 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function wholesalePrice()
+    {
+        return $this->hasOne(WholesalePrice::class)->latestOfMany();
+    }
+
+    public function wholesalePrices()
+    {
+        return $this->hasMany(WholesalePrice::class)->latest();
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';

@@ -1,5 +1,10 @@
 @push('head')
-@php $firstSlideImg = $slides->isNotEmpty() ? asset('storage/'.$slides->first()->image) : '/images/hero-visual.webp'; @endphp
+@php
+$firstSlideRaw = $slides->isNotEmpty() ? $slides->first()->image : null;
+$firstSlideImg = $firstSlideRaw
+    ? (\Illuminate\Support\Str::startsWith($firstSlideRaw, ['http', '/']) ? $firstSlideRaw : asset('storage/'.$firstSlideRaw))
+    : '/images/hero-visual.webp';
+@endphp
 <link rel="preload" as="image" href="{{ $firstSlideImg }}" fetchpriority="high">
 @endpush
 
@@ -12,7 +17,7 @@
             @forelse($slides as $i => $slide)
             <div class="hs-slide{{ $i === 0 ? ' active' : '' }}" data-index="{{ $i }}">
                 @php $slideAlt = (strlen(trim($slide->title ?? '')) > 5) ? $slide->title : 'Ceylon Aroma — Premium Ceylon Spices, Tea & Coffee Export from Sri Lanka'; @endphp
-                <img src="{{ asset('storage/'.$slide->image) }}"
+                <img src="{{ \Illuminate\Support\Str::startsWith($slide->image, ['http', '/']) ? $slide->image : asset('storage/'.$slide->image) }}"
                      alt="{{ $slideAlt }}"
                      loading="{{ $i === 0 ? 'eager' : 'lazy' }}"
                      {{ $i === 0 ? 'fetchpriority="high"' : 'decoding="async"' }}>
@@ -52,28 +57,31 @@
                 Premium Quality Export
             </div>
             <h1 class="hero-title">
-                Delivering the<br>
-                Natural <em>Taste &amp; Aroma</em><br>
-                of Sri Lanka to the World
+                Export-Ready Ceylon Spices,<br>
+                <em>Direct from Source.</em>
             </h1>
             <p class="hero-desc">
-                Premium spices, teas, oils and natural products from the
-                fertile highlands of Sri Lanka — crafted for global export
-                with certified quality and authenticity.
+                ISO 22000 certified. HACCP compliant. Premium cinnamon, black pepper,
+                tea, coffee and natural products exported to 60+ countries —
+                with full compliance documentation included in every shipment.
             </p>
             <div class="hero-cta">
-                <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg">
-                    Explore Products
+                <a href="{{ route('contact') }}" class="btn btn-primary btn-lg">
+                    Request Export Quote
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
-                <a href="{{ route('contact') }}" class="btn btn-outline">
-                    Get Export Quote
+                <a href="{{ route('products.index') }}" class="btn btn-outline">
+                    View Product Catalogue
                 </a>
             </div>
             <div class="hero-trust">
                 <div class="hero-trust-item">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    ISO Certified
+                    ISO 22000:2018
+                </div>
+                <div class="hero-trust-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                    HACCP Certified
                 </div>
                 <div class="hero-trust-item">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
@@ -81,7 +89,7 @@
                 </div>
                 <div class="hero-trust-item">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                    25+ Years Experience
+                    Samples from 25 kg
                 </div>
             </div>
         </div>

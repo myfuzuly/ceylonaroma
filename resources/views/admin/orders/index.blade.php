@@ -2,10 +2,10 @@
 
 @section('title', 'Orders')
 
+@section('breadcrumb')<span>Orders</span>@endsection
+
 @section('content')
-<div class="admin-page-head">
-    <h1>Orders</h1>
-</div>
+<div class="page-title">Orders</div>
 
 {{-- Status tabs --}}
 <div class="order-tabs">
@@ -19,18 +19,21 @@
 </div>
 
 {{-- Search --}}
-<form method="GET" class="admin-search-form mb-3">
-    @if(request('status'))<input type="hidden" name="status" value="{{ request('status') }}">@endif
-    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search order #, name, email, company…" class="form-control">
-    <button type="submit" class="btn btn-outline">Search</button>
-    @if(request('search'))<a href="{{ request()->url() }}{{ request('status') ? '?status='.request('status') : '' }}" class="btn btn-ghost">Clear</a>@endif
-</form>
+<div class="filter-bar">
+    <form method="GET" style="display:flex;gap:.6rem;flex-wrap:wrap">
+        @if(request('status'))<input type="hidden" name="status" value="{{ request('status') }}">@endif
+        <div class="f-search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search order #, name, email, company…">
+        </div>
+        <button type="submit" class="a-btn a-btn-ghost">Search</button>
+        @if(request('search'))<a href="{{ request()->url() }}{{ request('status') ? '?status='.request('status') : '' }}" class="a-btn a-btn-ghost">Clear</a>@endif
+    </form>
+</div>
 
-@if($orders->isEmpty())
-    <div class="admin-empty">No orders found.</div>
-@else
-<div class="admin-table-wrap">
-    <table class="admin-table">
+<div class="table-wrap">
+    <div class="table-scroll">
+    <table>
         <thead>
             <tr>
                 <th>Order #</th>
@@ -45,12 +48,12 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($orders as $order)
+        @forelse($orders as $order)
         <tr>
             <td><span class="order-num">{{ $order->order_number }}</span></td>
             <td>
-                <div>{{ $order->name }}</div>
-                <small class="text-muted">{{ $order->email }}</small>
+                <div class="td-name">{{ $order->name }}</div>
+                <div class="td-sub">{{ $order->email }}</div>
             </td>
             <td>{{ $order->company ?? '—' }}</td>
             <td>{{ $order->country }}</td>
@@ -61,19 +64,24 @@
                         PayHere {{ ucfirst($order->payment_status ?? 'pending') }}
                     </span>
                 @else
-                    <span class="text-muted">Inquiry</span>
+                    <span style="color:var(--a-muted)">Inquiry</span>
                 @endif
             </td>
             <td><span class="status-pill status-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
             <td>{{ $order->created_at->format('d M Y') }}</td>
             <td>
-                <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-xs btn-outline">View</a>
+                <a href="{{ route('admin.orders.show', $order) }}" class="a-btn a-btn-ghost a-btn-sm">View</a>
             </td>
         </tr>
-        @endforeach
+        @empty
+        <tr><td colspan="9" style="text-align:center;padding:3rem;color:var(--a-muted)">No orders found.</td></tr>
+        @endforelse
         </tbody>
     </table>
+    </div>
 </div>
-<div class="mt-4">{{ $orders->links() }}</div>
+
+@if($orders->hasPages())
+<div class="a-pagination">{{ $orders->links('partials.admin-pagination') }}</div>
 @endif
 @endsection

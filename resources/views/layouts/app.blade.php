@@ -80,9 +80,14 @@
             headers: {'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json'},
             body: data
         })
-        .then(function(r){ return r.json(); })
-        .then(function(json) {
+        .then(function(r){ return r.json().then(function(json){ return {ok: r.ok, json: json}; }); })
+        .then(function(res) {
             btn.classList.remove('is-adding');
+            if (!res.ok) {
+                window.showToast(res.json.message || 'Could not add to cart. Please try again.', 'error');
+                return;
+            }
+            var json = res.json;
             btn.classList.add('is-added');
             var orig = btn.innerHTML;
             btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Added';

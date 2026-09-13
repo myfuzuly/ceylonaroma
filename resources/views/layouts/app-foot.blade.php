@@ -16,6 +16,42 @@
                     <div class="footer-cta-stat"><strong>25+</strong><span>Yrs Experience</span></div>
                 </div>
             </div>
+
+            @if(request()->routeIs('home'))
+            @php
+                $footerWp = \App\Models\WholesalePrice::with('product')
+                    ->whereHas('product', fn($q) => $q->where('status', true))
+                    ->orderByDesc('updated_at')->get()->unique('product_id')
+                    ->take(5);
+                $footerWpDate = $footerWp->max('updated_at');
+            @endphp
+            @if($footerWp->count())
+            <div class="wp-mini-card">
+                <div class="wp-mini-head">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    Wholesale Prices
+                </div>
+                <table class="wp-mini-table">
+                    <tbody>
+                        @foreach($footerWp as $wp)
+                        <tr>
+                            <td class="wp-mini-name">{{ $wp->product->name }}</td>
+                            <td class="wp-mini-price">{{ $wp->currency }} {{ number_format($wp->price, 2) }}<span>/{{ $wp->unit }}</span></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <a href="{{ route('wholesale-prices.index') }}" class="wp-mini-link">
+                    View Full Price List
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+                @if($footerWpDate)
+                <div class="wp-mini-updated">Last updated {{ $footerWpDate->format('d M Y') }}</div>
+                @endif
+            </div>
+            @endif
+            @endif
+
             <div class="footer-cta-actions">
                 <a href="{{ route('contact') }}" class="btn btn-gold footer-cta-btn-primary">
                     Request Export Quote
@@ -46,7 +82,7 @@
                 {{-- Brand --}}
                 <div class="footer-brand">
                     <a href="{{ route('home') }}" class="logo" aria-label="Ceylon Aroma Home">
-                        <img src="/images/ceylonaroma3.png" alt="Ceylon Aroma" class="logo-img logo-img-footer">
+                        <img src="/images/ceylonaroma4.png" alt="Ceylon Aroma" class="logo-img logo-img-footer">
                     </a>
                     <p class="footer-tagline">We are a leading exporter of premium quality spices, tea, coffee, oils and natural products from Sri Lanka.</p>
                     <div class="footer-socials">
@@ -75,13 +111,13 @@
                 <div class="footer-col">
                     <h5>Products</h5>
                     <div class="footer-links">
-                        <a href="{{ route('products.index', ['category' => 'ceylon-spices']) }}">Ceylon Spices</a>
-                        <a href="{{ route('products.index', ['category' => 'ceylon-coffee']) }}">Ceylon Coffee</a>
-                        <a href="{{ route('products.index', ['category' => 'ceylon-tea']) }}">Ceylon Tea</a>
-                        <a href="{{ route('products.index', ['category' => 'aromatic-oils']) }}">Aromatic Oils</a>
-                        <a href="{{ route('products.index', ['category' => 'frozen-pulps']) }}">Frozen Pulp</a>
-                        <a href="{{ route('products.index', ['category' => 'dehydrated-products']) }}">Dehydrated Products</a>
-                        <a href="{{ route('products.index', ['category' => 'dates-nuts']) }}">Nuts &amp; Natural Foods</a>
+                        <a href="{{ route('products.category', 'premium-ceylon-spices') }}">Premium Ceylon Spices</a>
+                        <a href="{{ route('products.category', 'ceylon-coffee') }}">Ceylon Coffee</a>
+                        <a href="{{ route('products.category', 'ceylon-tea') }}">Ceylon Tea</a>
+                        <a href="{{ route('products.category', 'ceylon-essential-oils') }}">Ceylon Essential Oils</a>
+                        <a href="{{ route('products.category', 'frozen-pulps') }}">Frozen Pulp</a>
+                        <a href="{{ route('products.category', 'dehydrated-products') }}">Dehydrated Products</a>
+                        <a href="{{ route('products.category', 'dates-nuts') }}">Dates &amp; Nuts</a>
                     </div>
                 </div>
                 {{-- Company --}}
@@ -103,6 +139,7 @@
                         <a href="{{ route('private-label') }}">Private Label</a>
                         <a href="{{ route('quality') }}">Our Certifications</a>
                         <a href="{{ route('export') }}">Shipping &amp; Delivery</a>
+                        <a href="{{ route('returns') }}">Return &amp; Quality Claims</a>
                         <a href="{{ route('terms') }}">Terms &amp; Conditions</a>
                     </div>
                 </div>
@@ -135,10 +172,11 @@
     <div class="container">
         <div class="footer-bottom">
             <span>&copy; {{ date('Y') }} {{ $settings['site_name'] ?? 'Ceylon Aroma' }} (Pvt) Ltd. All Rights Reserved.</span>
-            <span class="footer-credit">Conceived &amp; Crafted by <a href="https://fidhaps.com" target="_blank" rel="noopener" class="footer-credit-link">FIDHAPS</a></span>
+            <span class="footer-credit">Engineered by <a href="https://fidhaps.com" target="_blank" rel="noopener" class="footer-credit-link">FIDHAPS</a></span>
             <div class="footer-bottom-links">
                 <a href="{{ route('privacy') }}">Privacy Policy</a>
                 <a href="{{ route('terms') }}">Terms &amp; Conditions</a>
+                <a href="{{ route('returns') }}">Return Policy</a>
             </div>
         </div>
     </div>

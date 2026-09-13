@@ -27,7 +27,7 @@
                 @forelse($posts as $p)
                 <tr>
                     <td>
-                        @if($p->image)<img src="{{ asset('storage/'.$p->image) }}" class="td-img" alt="">
+                        @if($p->image)<img src="{{ \Illuminate\Support\Str::startsWith($p->image, ['http', '/']) ? $p->image : asset('storage/'.$p->image) }}" class="td-img" alt="">
                         @else<div class="td-img-placeholder">📖</div>@endif
                     </td>
                     <td><div class="td-name">{{ $p->title }}</div><div class="td-sub">{{ Str::limit($p->excerpt, 60) }}</div></td>

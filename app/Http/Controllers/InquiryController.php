@@ -20,7 +20,7 @@ class InquiryController extends Controller
     public function store(StoreInquiryRequest $request)
     {
         $inquiry = Inquiry::create([
-            ...$request->safe()->except('_pot'),
+            ...$request->safe()->except(['_pot', 'recaptcha_token']),
             'products' => $request->products ?? [],
             'status'   => 'new',
         ]);
