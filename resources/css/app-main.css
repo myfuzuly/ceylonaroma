@@ -884,6 +884,7 @@ button.mob-nav-item:active{background:var(--forest)}
     flex-direction:column-reverse;
     align-items:flex-end;
     gap:12px;
+    pointer-events:none;
 }
 .wa-toggle{
     width:56px;height:56px;
@@ -896,6 +897,7 @@ button.mob-nav-item:active{background:var(--forest)}
     box-shadow:0 4px 16px rgba(37,211,102,.45);
     transition:transform .2s ease,box-shadow .2s ease;
     flex-shrink:0;
+    pointer-events:auto;
 }
 .wa-toggle:hover{transform:scale(1.08);box-shadow:0 6px 22px rgba(37,211,102,.55)}
 .wa-icon-close{display:none}
