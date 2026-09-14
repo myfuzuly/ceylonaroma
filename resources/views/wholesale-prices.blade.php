@@ -568,7 +568,6 @@
 </section>
 
 @if($availableDates->count() > 1)
-@push('scripts')
 <script>
 (function(){
     var sel     = document.getElementById('wphDateSelect');
@@ -647,7 +646,6 @@
     }
 })();
 </script>
-@endpush
 @endif
 
 @endsection

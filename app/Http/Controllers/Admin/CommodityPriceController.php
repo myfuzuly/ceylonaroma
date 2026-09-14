@@ -12,7 +12,7 @@ class CommodityPriceController extends Controller
 {
     public function index()
     {
-        $currentPrices = CommodityPrice::currentPrices();
+        $currentPrices = CommodityPrice::currentPrices(visibleOnly: false);
         $grouped       = $currentPrices->groupBy('commodity');
         $lastUpdated   = CommodityPrice::lastUpdatedDate();
         $todayDate     = today()->toDateString();
@@ -50,6 +50,7 @@ class CommodityPriceController extends Controller
                         'price_lkr'  => $lkr,
                         'price_usd'  => $usd,
                         'sort_order' => (int) ($row['sort_order'] ?? 0),
+                        'is_visible' => isset($row['is_visible']) ? (int)(bool)$row['is_visible'] : 1,
                     ]
                 );
             }

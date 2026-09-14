@@ -7,7 +7,7 @@
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
     <div>
         <div class="page-title" style="margin-bottom:.25rem">Commodity Prices</div>
-        <p style="font-size:.8rem;color:var(--a-muted);margin:0">Prices repeat daily — publish today's list to record a new snapshot.</p>
+        <p style="font-size:.8rem;color:var(--a-muted);margin:0">Prices repeat daily — publish today's list to record a new snapshot. Toggle the eye to hide/show a row on the public page.</p>
     </div>
     @if($todayCount > 0)
     <span style="background:rgba(52,211,153,.12);color:#34D399;font-size:.75rem;font-weight:700;padding:.35rem .85rem;border-radius:20px;border:1px solid rgba(52,211,153,.25)">
@@ -63,7 +63,10 @@
     <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--a-border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
         <div>
             <div style="font-size:.93rem;font-weight:700;color:var(--a-text)">Today's Price List</div>
-            <div style="font-size:.75rem;color:var(--a-muted);margin-top:.15rem">Pre-filled with the most recent prices. Edit and publish to record today's snapshot.</div>
+            <div style="font-size:.75rem;color:var(--a-muted);margin-top:.15rem">Pre-filled with the most recent prices. Toggle
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                to hide a row from the public page.
+            </div>
         </div>
         <div style="display:flex;gap:.65rem;align-items:center">
             <span style="font-size:.72rem;color:var(--a-muted)">Publishing for: <strong style="color:var(--a-text)">{{ \Carbon\Carbon::parse($todayDate)->format('d M Y') }}</strong></span>
@@ -84,18 +87,19 @@
                         <th style="padding:.6rem 1rem;text-align:left;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);font-weight:700;border-bottom:1px solid var(--a-border)">Grade / Type</th>
                         <th style="padding:.6rem 1rem;text-align:right;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);font-weight:700;border-bottom:1px solid var(--a-border);white-space:nowrap">LKR / kg</th>
                         <th style="padding:.6rem 1rem;text-align:right;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);font-weight:700;border-bottom:1px solid var(--a-border);white-space:nowrap">USD / kg</th>
+                        <th style="padding:.6rem 1rem;text-align:center;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);font-weight:700;border-bottom:1px solid var(--a-border);white-space:nowrap" title="Visible on public page">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php $i = 0; $prevCommodity = null; @endphp
+                    @php $i = 0; @endphp
                     @foreach($grouped as $commodity => $rows)
                     @foreach($rows as $row)
-                    @php
-                        $isFirstInGroup = $row === $rows->first();
-                        $rowspan = $rows->count();
-                    @endphp
-                    <tr class="cp-row{{ $isFirstInGroup ? ' cp-group-first' : '' }}" style="{{ $isFirstInGroup ? 'border-top:2px solid var(--a-border)' : '' }}">
-                        @if($isFirstInGroup)
+                    @php $isFirst = $row === $rows->first(); $rowspan = $rows->count(); @endphp
+                    <tr class="cp-row{{ $isFirst ? ' cp-group-first' : '' }}" data-visible="{{ $row->is_visible ? '1' : '0' }}"
+                        style="{{ $isFirst ? 'border-top:2px solid var(--a-border)' : '' }}{{ !$row->is_visible ? ';opacity:.45' : '' }}">
+                        @if($isFirst)
                         <td rowspan="{{ $rowspan }}" style="padding:.6rem 1rem;font-weight:700;color:var(--a-text);vertical-align:top;border-right:1px solid var(--a-border);white-space:nowrap;font-size:.82rem">
                             {{ $commodity }}
                         </td>
@@ -114,9 +118,22 @@
                         <td style="padding:.45rem .75rem;border-bottom:1px solid rgba(0,0,0,.04)">
                             <input type="number" name="rows[{{ $i }}][price_usd]"
                                    value="{{ $row->price_usd !== null ? (float)$row->price_usd : '' }}"
-                                   step="0.01" min="0" placeholder="—"
+                                   step="0.0001" min="0" placeholder="—"
                                    class="cp-price-input cp-usd-input"
                                    style="width:100%;max-width:90px;text-align:right;padding:.3rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit">
+                        </td>
+                        <td style="padding:.45rem .75rem;border-bottom:1px solid rgba(0,0,0,.04);text-align:center">
+                            <input type="hidden" name="rows[{{ $i }}][is_visible]" value="0">
+                            <label class="cp-vis-toggle" title="{{ $row->is_visible ? 'Visible — click to hide' : 'Hidden — click to show' }}">
+                                <input type="checkbox" name="rows[{{ $i }}][is_visible]" value="1"
+                                       class="cp-vis-cb"{{ $row->is_visible ? ' checked' : '' }}>
+                                <span class="cp-vis-icon">
+                                    {{-- eye open --}}
+                                    <svg class="cp-eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    {{-- eye closed --}}
+                                    <svg class="cp-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </span>
+                            </label>
                         </td>
                     </tr>
                     @php $i++ @endphp
@@ -125,7 +142,11 @@
                 </tbody>
             </table>
         </div>
-        <div style="padding:1rem 1.25rem;border-top:1px solid var(--a-border);display:flex;justify-content:flex-end;gap:.65rem">
+        <div style="padding:1rem 1.25rem;border-top:1px solid var(--a-border);display:flex;justify-content:space-between;align-items:center;gap:.65rem;flex-wrap:wrap">
+            <p style="font-size:.72rem;color:var(--a-muted);margin:0">Leave a price blank to show <strong>—</strong> on the public page. Hidden rows (
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                ) do not appear on the public page.
+            </p>
             <button type="submit" class="a-btn a-btn-primary">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 Publish Today's Prices
@@ -133,14 +154,12 @@
         </div>
     </form>
 </div>
-<p style="font-size:.72rem;color:var(--a-muted);margin-top:.5rem">Leave a field blank to mark that commodity as "price not available" (shown as — on the public page).</p>
 </div>
 
 {{-- ── History Tab ── --}}
 <div id="cp-history-view" hidden>
 @if($historyDates->count())
 <div style="display:grid;grid-template-columns:220px 1fr;gap:1.25rem;align-items:start">
-    {{-- Date list --}}
     <div class="form-card" style="padding:0;overflow:hidden;max-height:600px;overflow-y:auto">
         <div style="padding:.75rem 1rem;border-bottom:1px solid var(--a-border);font-size:.78rem;font-weight:700;color:var(--a-text)">Price Snapshots</div>
         <ul style="list-style:none;margin:0;padding:.35rem 0">
@@ -156,8 +175,6 @@
             @endforeach
         </ul>
     </div>
-
-    {{-- Detail panel --}}
     <div class="form-card" id="cp-hist-detail" style="padding:0;overflow:hidden">
         <div style="padding:.85rem 1.25rem;border-bottom:1px solid var(--a-border);display:flex;align-items:center;justify-content:space-between">
             <span id="cp-hist-title" style="font-weight:700;font-size:.88rem;color:var(--a-text)">Select a date</span>
@@ -179,6 +196,17 @@
 .cp-price-input:focus{outline:none;border-color:var(--a-accent,#C6862A);box-shadow:0 0 0 2px rgba(198,134,42,.15)}
 .cp-hist-date-btn:hover{background:rgba(198,134,42,.05);border-left-color:rgba(198,134,42,.4)}
 .cp-hist-date-btn.active{background:rgba(198,134,42,.08);border-left-color:var(--a-accent,#C6862A);font-weight:600;color:var(--a-accent,#C6862A)}
+/* visibility toggle */
+.cp-vis-toggle{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;transition:background .15s}
+.cp-vis-toggle:hover{background:rgba(0,0,0,.07)}
+.cp-vis-cb{position:absolute;opacity:0;width:0;height:0}
+/* default = checked = visible */
+.cp-vis-toggle .cp-eye-on{display:block;color:var(--a-accent,#C6862A)}
+.cp-vis-toggle .cp-eye-off{display:none;color:var(--a-muted)}
+/* when unchecked (hidden) */
+.cp-vis-cb:not(:checked) ~ .cp-vis-icon .cp-eye-on{display:none}
+.cp-vis-cb:not(:checked) ~ .cp-vis-icon .cp-eye-off{display:block}
+tr[data-visible="0"]{opacity:.45}
 </style>
 
 @push('scripts')
@@ -194,12 +222,19 @@
         });
     });
 
+    /* ── Visibility toggle: dim row on uncheck ── */
+    document.querySelectorAll('.cp-vis-cb').forEach(function(cb){
+        cb.addEventListener('change', function(){
+            var row = cb.closest('tr');
+            if (row) row.style.opacity = cb.checked ? '1' : '.45';
+        });
+    });
+
     /* ── History date picker ── */
-    var histBtns   = document.querySelectorAll('.cp-hist-date-btn');
-    var histTitle  = document.getElementById('cp-hist-title');
-    var histCount  = document.getElementById('cp-hist-count');
-    var histBody   = document.getElementById('cp-hist-body');
-    var csrfToken  = '{{ csrf_token() }}';
+    var histBtns  = document.querySelectorAll('.cp-hist-date-btn');
+    var histTitle = document.getElementById('cp-hist-title');
+    var histCount = document.getElementById('cp-hist-count');
+    var histBody  = document.getElementById('cp-hist-body');
 
     function loadDate(btn) {
         histBtns.forEach(function(b){ b.classList.remove('active'); });
@@ -209,7 +244,7 @@
         histBody.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--a-muted)">Loading…</div>';
 
         fetch('{{ route("admin.commodity-prices.history") }}?date=' + date, {
-            headers: {'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken}
+            headers: {'Accept': 'application/json'}
         })
         .then(function(r){ return r.json(); })
         .then(function(rows){
@@ -222,8 +257,8 @@
             var html = '<table style="width:100%;border-collapse:collapse;font-size:.82rem"><thead><tr style="background:rgba(0,0,0,.03)"><th style="padding:.5rem 1rem;text-align:left;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);border-bottom:1px solid var(--a-border)">Commodity</th><th style="padding:.5rem 1rem;text-align:left;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);border-bottom:1px solid var(--a-border)">Grade</th><th style="padding:.5rem 1rem;text-align:right;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);border-bottom:1px solid var(--a-border)">LKR</th><th style="padding:.5rem 1rem;text-align:right;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);border-bottom:1px solid var(--a-border)">USD</th></tr></thead><tbody>';
             rows.forEach(function(row){
                 var borderStyle = (prev && prev !== row.commodity) ? 'border-top:2px solid var(--a-border)' : 'border-top:1px solid rgba(0,0,0,.04)';
-                var lkr = row.price_lkr ? parseFloat(row.price_lkr).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
-                var usd = row.price_usd ? parseFloat(row.price_usd).toFixed(1) : '—';
+                var lkr = row.price_lkr ? parseInt(row.price_lkr).toLocaleString() : '—';
+                var usd = row.price_usd ? parseFloat(row.price_usd).toFixed(2) : '—';
                 html += '<tr style="' + borderStyle + '"><td style="padding:.45rem 1rem;font-weight:600">' + row.commodity + '</td><td style="padding:.45rem 1rem;color:var(--a-muted)">' + row.grade + '</td><td style="padding:.45rem 1rem;text-align:right;font-variant-numeric:tabular-nums">' + lkr + '</td><td style="padding:.45rem 1rem;text-align:right;font-variant-numeric:tabular-nums">' + usd + '</td></tr>';
                 prev = row.commodity;
             });
