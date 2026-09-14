@@ -15,6 +15,8 @@ use App\Http\Controllers\WholesalePriceController;
 use App\Http\Controllers\LegacyRedirectController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\CommodityPriceController as AdminCommodityPriceController;
 
 /* ─── Legacy WordPress URLs → 301 redirects (pre-migration site) ─── */
 Route::get('/product/{slug}', [LegacyRedirectController::class, 'product']);
@@ -41,6 +43,7 @@ Route::get('/products/category/{category:slug}', [ProductController::class, 'ind
 Route::get('/products-suggest', [ProductController::class, 'suggestions'])->name('products.suggestions');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/wholesale-prices', [WholesalePriceController::class, 'index'])->name('wholesale-prices.index');
+Route::get('/wholesale-prices/by-date', [WholesalePriceController::class, 'byDate'])->name('wholesale-prices.by-date');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog_post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/contact', [InquiryController::class, 'show'])->name('contact');
@@ -154,5 +157,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/settings',  [Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [Admin\SettingController::class, 'update'])->name('settings.update');
+
+        Route::get('menu',                      [MenuController::class, 'index'])->name('menu.index');
+        Route::post('menu/reorder',             [MenuController::class, 'reorder'])->name('menu.reorder');
+        Route::post('menu/toggle/{category}',   [MenuController::class, 'toggle'])->name('menu.toggle');
+        Route::post('menu/featured',            [MenuController::class, 'updateFeatured'])->name('menu.featured');
+
+        Route::prefix('commodity-prices')->name('commodity-prices.')->group(function () {
+            Route::get('/',                     [AdminCommodityPriceController::class, 'index'])->name('index');
+            Route::post('/bulk-update',         [AdminCommodityPriceController::class, 'bulkUpdate'])->name('bulk-update');
+            Route::get('/history',              [AdminCommodityPriceController::class, 'historyForDate'])->name('history');
+        });
     });
 });
