@@ -171,7 +171,7 @@
     </div>
     <div class="container">
         <div class="footer-bottom">
-            <span>&copy; {{ date('Y') }} Ceylon Aroma Commodities Exports (Pvt) Ltd. All Rights Reserved.</span>
+            <span>{{ date('Y') }} &copy; Ceylon Aroma Commodities Exports (Pvt) Ltd. All Rights Reserved.</span>
             <span class="footer-credit">Engineered by <a href="https://fidhaps.com" target="_blank" rel="noopener" class="footer-credit-link">FIDHAPS</a></span>
             <div class="footer-bottom-links">
                 <a href="{{ route('privacy') }}">Privacy Policy</a>
