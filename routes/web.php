@@ -45,6 +45,7 @@ Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name
 Route::get('/wholesale-prices', [WholesalePriceController::class, 'index'])->name('wholesale-prices.index');
 Route::get('/wholesale-prices/by-date', [WholesalePriceController::class, 'byDate'])->name('wholesale-prices.by-date');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/category/{category}', [BlogController::class, 'index'])->name('blog.category');
 Route::get('/blog/{blog_post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/contact', [InquiryController::class, 'show'])->name('contact');
 Route::post('/inquiry', [InquiryController::class, 'store'])->name('inquiry.store')->middleware('throttle:5,10');

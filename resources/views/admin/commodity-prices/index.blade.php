@@ -63,13 +63,17 @@
     <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--a-border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
         <div>
             <div style="font-size:.93rem;font-weight:700;color:var(--a-text)">Today's Price List</div>
-            <div style="font-size:.75rem;color:var(--a-muted);margin-top:.15rem">Pre-filled with the most recent prices. Toggle
+            <div style="font-size:.75rem;color:var(--a-muted);margin-top:.15rem">Pre-filled with the most recent prices. Edit commodity/grade names inline. Toggle
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 to hide a row from the public page.
             </div>
         </div>
-        <div style="display:flex;gap:.65rem;align-items:center">
+        <div style="display:flex;gap:.65rem;align-items:center;flex-wrap:wrap">
             <span style="font-size:.72rem;color:var(--a-muted)">Publishing for: <strong style="color:var(--a-text)">{{ \Carbon\Carbon::parse($todayDate)->format('d M Y') }}</strong></span>
+            <button type="button" id="cpAddRowBtn" class="a-btn a-btn-sm" style="background:rgba(52,211,153,.1);color:#34D399;border:1px solid rgba(52,211,153,.25)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Item
+            </button>
             <button type="submit" form="cp-bulk-form" class="a-btn a-btn-primary a-btn-sm">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 Publish Today's Prices
@@ -80,7 +84,7 @@
     <form id="cp-bulk-form" action="{{ route('admin.commodity-prices.bulk-update') }}" method="POST">
         @csrf
         <div style="overflow-x:auto">
-            <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+            <table style="width:100%;border-collapse:collapse;font-size:.82rem" id="cpPriceTable">
                 <thead>
                     <tr style="background:var(--a-bg-alt,rgba(0,0,0,.03))">
                         <th style="padding:.6rem 1rem;text-align:left;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);font-weight:700;border-bottom:1px solid var(--a-border);white-space:nowrap">Commodity</th>
@@ -90,24 +94,33 @@
                         <th style="padding:.6rem 1rem;text-align:center;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted);font-weight:700;border-bottom:1px solid var(--a-border);white-space:nowrap" title="Visible on public page">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         </th>
+                        <th style="padding:.6rem .75rem;border-bottom:1px solid var(--a-border);width:36px"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="cpPriceTbody">
                     @php $i = 0; @endphp
                     @foreach($grouped as $commodity => $rows)
                     @foreach($rows as $row)
                     @php $isFirst = $row === $rows->first(); $rowspan = $rows->count(); @endphp
                     <tr class="cp-row{{ $isFirst ? ' cp-group-first' : '' }}" data-visible="{{ $row->is_visible ? '1' : '0' }}"
                         style="{{ $isFirst ? 'border-top:2px solid var(--a-border)' : '' }}{{ !$row->is_visible ? ';opacity:.45' : '' }}">
-                        @if($isFirst)
-                        <td rowspan="{{ $rowspan }}" style="padding:.6rem 1rem;font-weight:700;color:var(--a-text);vertical-align:top;border-right:1px solid var(--a-border);white-space:nowrap;font-size:.82rem">
-                            {{ $commodity }}
+                        <td style="padding:.35rem .75rem;border-bottom:1px solid rgba(0,0,0,.04)">
+                            <input type="text" name="rows[{{ $i }}][commodity]"
+                                   value="{{ $row->commodity }}"
+                                   placeholder="Commodity name"
+                                   required
+                                   class="cp-text-input cp-commodity-input"
+                                   style="width:100%;min-width:120px;padding:.3rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit;font-weight:600">
                         </td>
-                        @endif
-                        <td style="padding:.45rem 1rem;color:var(--a-muted);border-bottom:1px solid rgba(0,0,0,.04)">{{ $row->grade }}</td>
-                        <td style="padding:.45rem .75rem;border-bottom:1px solid rgba(0,0,0,.04)">
-                            <input type="hidden" name="rows[{{ $i }}][commodity]" value="{{ $row->commodity }}">
-                            <input type="hidden" name="rows[{{ $i }}][grade]" value="{{ $row->grade }}">
+                        <td style="padding:.35rem .75rem;border-bottom:1px solid rgba(0,0,0,.04)">
+                            <input type="text" name="rows[{{ $i }}][grade]"
+                                   value="{{ $row->grade }}"
+                                   placeholder="Grade / type"
+                                   required
+                                   class="cp-text-input cp-grade-input"
+                                   style="width:100%;min-width:110px;padding:.3rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit">
+                        </td>
+                        <td style="padding:.35rem .75rem;border-bottom:1px solid rgba(0,0,0,.04)">
                             <input type="hidden" name="rows[{{ $i }}][sort_order]" value="{{ $row->sort_order }}">
                             <input type="number" name="rows[{{ $i }}][price_lkr]"
                                    value="{{ $row->price_lkr !== null ? (float)$row->price_lkr : '' }}"
@@ -115,25 +128,29 @@
                                    class="cp-price-input cp-lkr-input"
                                    style="width:100%;max-width:110px;text-align:right;padding:.3rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit">
                         </td>
-                        <td style="padding:.45rem .75rem;border-bottom:1px solid rgba(0,0,0,.04)">
+                        <td style="padding:.35rem .75rem;border-bottom:1px solid rgba(0,0,0,.04)">
                             <input type="number" name="rows[{{ $i }}][price_usd]"
                                    value="{{ $row->price_usd !== null ? (float)$row->price_usd : '' }}"
                                    step="0.0001" min="0" placeholder="—"
                                    class="cp-price-input cp-usd-input"
                                    style="width:100%;max-width:90px;text-align:right;padding:.3rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit">
                         </td>
-                        <td style="padding:.45rem .75rem;border-bottom:1px solid rgba(0,0,0,.04);text-align:center">
+                        <td style="padding:.35rem .75rem;border-bottom:1px solid rgba(0,0,0,.04);text-align:center">
                             <input type="hidden" name="rows[{{ $i }}][is_visible]" value="0">
                             <label class="cp-vis-toggle" title="{{ $row->is_visible ? 'Visible — click to hide' : 'Hidden — click to show' }}">
                                 <input type="checkbox" name="rows[{{ $i }}][is_visible]" value="1"
                                        class="cp-vis-cb"{{ $row->is_visible ? ' checked' : '' }}>
                                 <span class="cp-vis-icon">
-                                    {{-- eye open --}}
                                     <svg class="cp-eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    {{-- eye closed --}}
                                     <svg class="cp-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                                 </span>
                             </label>
+                        </td>
+                        <td style="padding:.35rem .5rem;border-bottom:1px solid rgba(0,0,0,.04);text-align:center">
+                            <button type="button" class="cp-remove-row" title="Remove this row"
+                                    style="width:26px;height:26px;border-radius:5px;border:none;background:none;cursor:pointer;color:var(--a-muted);display:flex;align-items:center;justify-content:center;transition:background .1s,color .1s">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </button>
                         </td>
                     </tr>
                     @php $i++ @endphp
@@ -142,10 +159,21 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- Add Item inline form --}}
+        <div id="cpNewRowsArea" style="display:none;padding:1rem 1.25rem;border-top:2px dashed rgba(52,211,153,.25);background:rgba(52,211,153,.03)">
+            <div style="font-size:.72rem;font-weight:700;color:#34D399;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem">
+                New Items — will be added when you publish
+            </div>
+            <div id="cpNewRowsList"></div>
+            <button type="button" id="cpAddAnotherBtn" class="a-btn a-btn-sm" style="background:rgba(52,211,153,.1);color:#34D399;border:1px solid rgba(52,211,153,.25);margin-top:.5rem">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Another
+            </button>
+        </div>
+
         <div style="padding:1rem 1.25rem;border-top:1px solid var(--a-border);display:flex;justify-content:space-between;align-items:center;gap:.65rem;flex-wrap:wrap">
-            <p style="font-size:.72rem;color:var(--a-muted);margin:0">Leave a price blank to show <strong>—</strong> on the public page. Hidden rows (
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                ) do not appear on the public page.
+            <p style="font-size:.72rem;color:var(--a-muted);margin:0">Leave a price blank to show <strong>—</strong> on the public page. Edit commodity and grade names directly in the table.
             </p>
             <button type="submit" class="a-btn a-btn-primary">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -193,20 +221,21 @@
 </div>
 
 <style>
-.cp-price-input:focus{outline:none;border-color:var(--a-accent,#C6862A);box-shadow:0 0 0 2px rgba(198,134,42,.15)}
+.cp-price-input:focus,.cp-text-input:focus{outline:none;border-color:var(--a-accent,#C6862A);box-shadow:0 0 0 2px rgba(198,134,42,.15)}
+.cp-text-input{transition:border-color .12s}
+.cp-commodity-input{font-weight:600}
 .cp-hist-date-btn:hover{background:rgba(198,134,42,.05);border-left-color:rgba(198,134,42,.4)}
 .cp-hist-date-btn.active{background:rgba(198,134,42,.08);border-left-color:var(--a-accent,#C6862A);font-weight:600;color:var(--a-accent,#C6862A)}
-/* visibility toggle */
 .cp-vis-toggle{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;transition:background .15s}
 .cp-vis-toggle:hover{background:rgba(0,0,0,.07)}
 .cp-vis-cb{position:absolute;opacity:0;width:0;height:0}
-/* default = checked = visible */
 .cp-vis-toggle .cp-eye-on{display:block;color:var(--a-accent,#C6862A)}
 .cp-vis-toggle .cp-eye-off{display:none;color:var(--a-muted)}
-/* when unchecked (hidden) */
 .cp-vis-cb:not(:checked) ~ .cp-vis-icon .cp-eye-on{display:none}
 .cp-vis-cb:not(:checked) ~ .cp-vis-icon .cp-eye-off{display:block}
 tr[data-visible="0"]{opacity:.45}
+.cp-remove-row:hover{background:rgba(239,68,68,.1)!important;color:#EF4444!important}
+.cp-new-row{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15);border-radius:8px;display:grid;grid-template-columns:1fr 1fr 110px 90px 28px;gap:.5rem;padding:.65rem;margin-bottom:.5rem;align-items:center}
 </style>
 
 @push('scripts')
@@ -229,6 +258,58 @@ tr[data-visible="0"]{opacity:.45}
             if (row) row.style.opacity = cb.checked ? '1' : '.45';
         });
     });
+
+    /* ── Remove existing row ── */
+    document.getElementById('cpPriceTbody').addEventListener('click', function(e){
+        var btn = e.target.closest('.cp-remove-row');
+        if (!btn) return;
+        var row = btn.closest('tr');
+        if (row) row.remove();
+        reindexRows();
+    });
+
+    /* ── Reindex all row[n] names after removal ── */
+    function reindexRows(){
+        var rows = document.querySelectorAll('#cpPriceTbody tr');
+        rows.forEach(function(tr, idx){
+            tr.querySelectorAll('[name]').forEach(function(el){
+                el.name = el.name.replace(/rows\[\d+\]/, 'rows[' + idx + ']');
+            });
+        });
+        window._cpNextIdx = rows.length;
+    }
+
+    window._cpNextIdx = {{ $i }};
+
+    /* ── Add new item row ── */
+    function addNewRow(){
+        var area = document.getElementById('cpNewRowsArea');
+        var list = document.getElementById('cpNewRowsList');
+        area.style.display = 'block';
+
+        var idx = window._cpNextIdx++;
+        var div = document.createElement('div');
+        div.className = 'cp-new-row';
+        div.innerHTML =
+            '<input type="text" name="rows[' + idx + '][commodity]" placeholder="Commodity (e.g. Cinnamon)" required'
+            + ' style="padding:.35rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit;font-weight:600">'
+            + '<input type="text" name="rows[' + idx + '][grade]" placeholder="Grade / type" required'
+            + ' style="padding:.35rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit">'
+            + '<input type="number" name="rows[' + idx + '][price_lkr]" placeholder="LKR" step="0.01" min="0"'
+            + ' style="text-align:right;padding:.35rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit">'
+            + '<input type="number" name="rows[' + idx + '][price_usd]" placeholder="USD" step="0.0001" min="0"'
+            + ' style="text-align:right;padding:.35rem .5rem;border:1px solid var(--a-border);border-radius:5px;background:var(--a-surface);color:var(--a-text);font-size:.82rem;font-family:inherit">'
+            + '<input type="hidden" name="rows[' + idx + '][sort_order]" value="' + idx + '">'
+            + '<input type="hidden" name="rows[' + idx + '][is_visible]" value="1">'
+            + '<button type="button" onclick="this.closest(\'.cp-new-row\').remove()" title="Remove"'
+            + ' style="width:26px;height:26px;border-radius:5px;border:none;background:rgba(239,68,68,.1);cursor:pointer;color:#EF4444;display:flex;align-items:center;justify-content:center">'
+            + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+        list.appendChild(div);
+        div.querySelector('input[type=text]').focus();
+    }
+
+    document.getElementById('cpAddRowBtn').addEventListener('click', addNewRow);
+    document.getElementById('cpAddAnotherBtn').addEventListener('click', addNewRow);
 
     /* ── History date picker ── */
     var histBtns  = document.querySelectorAll('.cp-hist-date-btn');

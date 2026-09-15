@@ -128,6 +128,322 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 @vite(['resources/css/bundle.css', 'resources/js/app.js'])
 @stack('head')
+<style>
+/* ═══════════════════════════════════════════════════════════
+   PREMIUM MEGA MENU — inline to guarantee load
+   ═══════════════════════════════════════════════════════════ */
+.nav-mega{
+  display:none;position:fixed;left:0;right:0;width:100%;
+  background:#fff;
+  border-top:3px solid transparent;
+  border-image:linear-gradient(90deg,#C8922A 0%,#e8b84b 40%,#C8922A 100%) 1;
+  box-shadow:0 8px 40px rgba(27,67,50,.13),0 2px 8px rgba(27,67,50,.07);
+  z-index:9999;
+  animation:megaFadeIn .22s cubic-bezier(.4,0,.2,1) both
+}
+@keyframes megaFadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.nav-mega-wrap.mega-open .nav-mega{display:block}
+.nav-mega-wrap{position:static}
+.nav-mega-wrap .nav-link svg{transition:transform .2s}
+.nav-mega-wrap.mega-open .nav-link svg{transform:rotate(180deg)}
+.nav-mega-inner{max-width:1400px;margin:0 auto;padding:0}
+
+/* Layout: category grid | featured panel */
+.mega-flat-layout{
+  display:grid;
+  grid-template-columns:1fr 264px;
+  background:#fff
+}
+
+/* Category grid */
+.mega-flat-cats{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:0;
+  padding:1.35rem 1.5rem 1.1rem;
+  align-items:start;
+  border-bottom:1px solid rgba(27,67,50,.06)
+}
+.mega-flat-col{
+  padding:.6rem .8rem .75rem;
+  border-right:1px solid rgba(27,67,50,.055);
+  display:flex;flex-direction:column;
+  cursor:default;
+  position:relative;
+  transition:background .22s
+}
+.mega-flat-col::after{
+  content:'';
+  position:absolute;left:0;top:12%;bottom:12%;
+  width:2px;
+  background:linear-gradient(180deg,transparent,#C8922A 30%,#C8922A 70%,transparent);
+  opacity:0;
+  transition:opacity .22s
+}
+.mega-flat-col:hover{background:rgba(200,146,42,.03)}
+.mega-flat-col:hover::after{opacity:1}
+.mega-flat-col:last-child{border-right:none}
+
+/* Premium column title — no icons */
+.mega-flat-title{
+  display:block;
+  font-size:.82rem;font-weight:700;
+  color:#1A2A20;letter-spacing:.02em;
+  line-height:1.25;
+  text-decoration:none;
+  margin-bottom:.42rem;
+  transition:color .18s
+}
+.mega-flat-title:hover{color:#C8922A}
+
+/* Gold gradient divider */
+.mega-flat-line{
+  height:1.5px;
+  background:linear-gradient(90deg,#C8922A 0%,rgba(200,146,42,.18) 100%);
+  margin-bottom:.52rem;border-radius:1px
+}
+
+/* Sub-items */
+.mega-flat-item{
+  display:flex;align-items:center;gap:.3rem;
+  font-size:.72rem;color:#4a5568;
+  padding:.19rem .08rem;
+  text-decoration:none;
+  transition:color .13s,padding-left .15s
+}
+.mega-flat-item:hover,.mega-flat-item.is-active{
+  color:#1B4332;padding-left:.28rem
+}
+.mega-flat-chev{
+  flex-shrink:0;color:#C8922A;opacity:.4;
+  transition:opacity .13s,transform .13s
+}
+.mega-flat-item:hover .mega-flat-chev{opacity:.9;transform:translateX(2px)}
+
+/* Row divider — spans full grid width */
+.mega-flat-row-divider{
+  grid-column:1 / -1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(27,67,50,.12) 15%,rgba(27,67,50,.12) 85%,transparent);
+  margin:.1rem 0
+}
+/* More-items separator (within a column, before "See all") */
+.mega-flat-more-sep{
+  height:1px;background:rgba(27,67,50,.07);
+  margin:.4rem 0 .28rem
+}
+/* Row 1 columns (has-more): slightly elevated title */
+.mega-flat-col.has-more .mega-flat-title{
+  color:#1A2A20;font-weight:800
+}
+
+/* View all / See all link */
+.mega-flat-all{
+  display:inline-flex;align-items:center;gap:.22rem;
+  margin-top:.4rem;
+  font-size:.67rem;font-weight:700;color:#C8922A;
+  text-decoration:none;letter-spacing:.015em;
+  transition:color .15s,gap .15s
+}
+.mega-flat-all:hover{color:#1B4332;gap:.38rem}
+
+/* ── Featured side panel ── */
+.mega-feat{
+  background:linear-gradient(160deg,#fffdf6 0%,#fef9ed 100%);
+  border-left:1px solid rgba(200,146,42,.18);
+  display:flex;flex-direction:column;overflow:hidden
+}
+.mega-feat-imgwrap{
+  height:170px;overflow:hidden;flex-shrink:0;position:relative
+}
+.mega-feat-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s cubic-bezier(.4,0,.2,1)
+}
+.mega-feat:hover .mega-feat-img{transform:scale(1.06)}
+.mega-feat-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(27,67,50,.0) 40%,rgba(27,67,50,.5) 100%);
+  pointer-events:none
+}
+.mega-feat-body{
+  padding:1rem 1.2rem 1.25rem;
+  display:flex;flex-direction:column;flex:1
+}
+.mega-feat-label{
+  font-size:.52rem;font-weight:800;letter-spacing:.22em;
+  text-transform:uppercase;color:#C8922A;
+  margin-bottom:.38rem;display:block
+}
+.mega-feat-title{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.15rem;font-weight:700;color:#1B4332;
+  line-height:1.2;margin:0 0 .38rem
+}
+.mega-feat-desc{
+  font-size:.71rem;color:#6B7280;
+  line-height:1.6;margin:0 0 .85rem;flex:1
+}
+.mega-feat-cta{
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
+  background:#1B4332;color:#fff;
+  font-size:.67rem;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;padding:.65rem 1rem;
+  border-radius:8px;text-decoration:none;
+  transition:background .2s,transform .15s,box-shadow .2s
+}
+.mega-feat-cta:hover{
+  background:#C8922A;transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(200,146,42,.35)
+}
+.mega-feat-cta svg{transition:transform .2s}
+.mega-feat-cta:hover svg{transform:translateX(3px)}
+
+/* ── Bottom quick-link strip ── */
+.mega-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.65rem 1.5rem;
+  background:linear-gradient(90deg,#f6f2e9 0%,#f9f6ef 100%);
+  border-top:1px solid rgba(200,146,42,.18)
+}
+.mega-strip-links{display:flex;align-items:center}
+.mega-strip-link{
+  display:flex;align-items:center;gap:.45rem;
+  font-size:.72rem;font-weight:600;color:#374151;
+  padding:.38rem .8rem;white-space:nowrap;text-decoration:none;
+  transition:color .15s
+}
+.mega-strip-link:hover{color:#1B4332}
+.mega-strip-icon{
+  width:18px;height:18px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:#C8922A
+}
+.mega-strip-div{
+  width:1px;height:16px;
+  background:rgba(27,67,50,.15);
+  flex-shrink:0;margin:0 .05rem
+}
+.mega-strip-all{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.68rem;font-weight:700;color:#fff;
+  background:#1B4332;padding:.5rem 1.1rem;
+  border-radius:8px;text-transform:uppercase;
+  letter-spacing:.06em;white-space:nowrap;
+  text-decoration:none;
+  transition:background .18s,transform .15s,box-shadow .18s
+}
+.mega-strip-all:hover{
+  background:#C8922A;transform:translateY(-1px);
+  box-shadow:0 3px 12px rgba(27,67,50,.2)
+}
+@media(max-width:1100px){
+  .mega-flat-layout{grid-template-columns:1fr}
+  .mega-feat{display:none}
+}
+@media(max-width:1100px){
+  .mega-flat-cats{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:768px){
+  .mega-flat-cats{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — UI/UX UPGRADE (reduced height + premium polish)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Reduced left panel height */
+.hs-left{min-height:440px}
+.hs-left-inner{
+  padding:2.75rem clamp(1.5rem,2.5vw,3rem) 2.75rem clamp(1.5rem,calc((100vw - 1280px)/2 + 2.5rem),6.5rem);
+  max-width:540px;
+}
+
+/* Tighter title */
+.hero-title{
+  font-size:clamp(2.1rem,3.8vw,3.5rem);
+  margin:0 0 1rem;
+  line-height:1.08;
+}
+
+/* Description — slimmer */
+.hero-desc{
+  font-size:.9rem;
+  line-height:1.75;
+  margin:0 0 1.5rem;
+  max-width:40ch;
+}
+
+/* CTA — premium gold primary button */
+.hero-cta .btn-primary{
+  background:linear-gradient(135deg,#C8922A 0%,#D4A843 55%,#C07A1F 100%);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 2px 12px rgba(200,146,42,.35);
+  font-weight:700;
+  letter-spacing:.03em;
+}
+.hero-cta .btn-primary:hover{
+  background:linear-gradient(135deg,#B87E22 0%,#C8922A 55%,#A86D1A 100%);
+  box-shadow:0 6px 22px rgba(200,146,42,.45);
+  transform:translateY(-2px);
+}
+.hero-cta .btn-primary svg{transition:transform .2s}
+.hero-cta .btn-primary:hover svg{transform:translateX(3px)}
+
+/* Outline CTA — subtle forest */
+.hero-cta .btn-outline{
+  color:var(--canopy);
+  border-color:rgba(27,67,50,.35);
+  font-weight:600;
+}
+.hero-cta .btn-outline:hover{
+  background:rgba(27,67,50,.06);
+  border-color:var(--canopy);
+  color:var(--canopy);
+}
+
+/* Trust badges — tighter */
+.hero-trust{margin-top:1.5rem;padding-top:1.1rem}
+.hero-trust-item svg{color:var(--gold)}
+
+/* Purity badge — slightly smaller */
+.hero-purity-badge{width:116px;height:116px}
+.hpb-pct{font-size:1.7rem}
+
+/* Stats bar — compact */
+.stat-item{padding:1rem 1.25rem}
+.stat-num{font-size:1.45rem}
+
+/* Eyebrow pill — sharper */
+.hero-eyebrow{
+  font-size:.6rem;
+  letter-spacing:.18em;
+  padding:.32rem .9rem .32rem .65rem;
+  margin-bottom:1rem;
+  background:rgba(200,146,42,.07);
+  border-color:rgba(200,146,42,.3);
+}
+
+/* Hero entrance animation */
+.hs-left-inner{animation:heroIn .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes heroIn{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .hs-left-inner{animation:none}
+}
+
+/* Mobile hero height */
+@media(max-width:768px){
+  .hs-right{height:260px}
+  .hs-left{min-height:unset}
+  .hs-left-inner{padding:2rem 1.25rem}
+  .hero-title{font-size:1.85rem}
+  .stat-item{padding:.75rem 1rem}
+}
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-nav">Skip to main content</a>
@@ -180,8 +496,9 @@
     try{
       $navCategories = \App\Models\Category::where('status',true)
         ->whereNull('parent_id')
-        ->with(['children'=>function($q){ $q->where('status',true)->orderBy('sort_order'); }])
-        ->orderBy('sort_order')->get();
+        ->where('show_in_nav', true)
+        ->with(['children'=>function($q){ $q->where('status',true)->orderBy('sort_order')->with(['children'=>function($q2){ $q2->where('status',true)->orderBy('sort_order'); }]); }])
+        ->orderBy('nav_order')->orderBy('sort_order')->get();
     } catch(\Throwable $e){ $navCategories = collect(); }
   }
 @endphp
@@ -192,37 +509,114 @@
                 </a>
                 <div class="nav-mega">
                     <div class="nav-mega-inner">
-                        {{-- View all bar --}}
-                        <div class="nav-mega-topbar">
-                            <span class="nav-mega-heading">Our Product Categories</span>
-                            <a href="{{ route('products.index') }}" class="nav-mega-all">
-                                View All Products
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                            </a>
-                        </div>
-                        {{-- Category columns --}}
-                        <div class="nav-mega-grid">
-                            @foreach($navCategories ?? [] as $cat)
-                            <div class="nav-mega-col">
-                                <a href="{{ route('products.category', $cat->slug) }}"
-                                   class="nav-mega-cat {{ optional(request()->route('category'))->slug === $cat->slug ? 'active' : '' }}">
-                                    {{ $cat->name }}
-                                </a>
-                                @if($cat->children->isNotEmpty())
-                                <ul class="nav-mega-subs">
-                                    @foreach($cat->children as $sub)
-                                    <li>
-                                        <a href="{{ route('products.category', $sub->slug) }}"
-                                           class="{{ optional(request()->route('category'))->slug === $sub->slug ? 'active' : '' }}">
-                                            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                                            {{ $sub->name }}
-                                        </a>
-                                    </li>
+                        @php
+                        $catIcons = [
+                            0=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3C9 3 5 7 6 13c.6 3.5 3.5 6.5 6 7 2.5-.5 5.4-3.5 6-7 1-6-3-10-6-10z"/><path d="M9 12c1-1.5 3-2 6-1"/></svg>',
+                            1=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>',
+                            2=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 2l8 8"/><path d="M8.5 10.5C7 12 5.5 12.5 4 13c1 1.5 2.5 2.5 5.5 2.5C13 15.5 15 13.5 15.5 11s.5-5 .5-5-3 0-5 .5c-3 .75-4 3-5 4.5z"/></svg>',
+                            3=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>',
+                            4=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M8 8c0 3 8 3 8 0"/><path d="M6 20h12a1 1 0 000-2 2 2 0 00-2-2H8a2 2 0 00-2 2 1 1 0 000 2z"/></svg>',
+                            5=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="5" rx="4" ry="2.5"/><path d="M8 5c0 4.5 8 4.5 8 0"/><path d="M8 11c0 4.5 8 4.5 8 0"/><path d="M8 17c0 3.5 8 3.5 8 0"/></svg>',
+                            6=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+                            7=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>',
+                            8=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
+                        ];
+                        $iconCount = count($catIcons);
+                        @endphp
+                        {{-- Flat all-in-one mega layout --}}
+                        <div class="mega-flat-layout">
+                            @php
+                                $allCats  = $navCategories ?? collect();
+                                $row1Cats = $allCats->slice(0, 6)->values();
+                                $row2Cats = $allCats->slice(6)->values();
+                            @endphp
+                            <div class="mega-flat-cats">
+                                {{-- Row 1: categories with more than 5 sub-items --}}
+                                @foreach($row1Cats as $cat)
+                                @php $childCount = $cat->children->count(); @endphp
+                                <div class="mega-flat-col has-more">
+                                    <a href="{{ route('products.category', $cat->slug) }}" class="mega-flat-title">{{ $cat->name }}</a>
+                                    <div class="mega-flat-line"></div>
+                                    @foreach($cat->children->take(5) as $child)
+                                    <a href="{{ route('products.category', $child->slug) }}" class="mega-flat-item{{ optional(request()->route('category'))->slug === $child->slug ? ' is-active' : '' }}">
+                                        <svg class="mega-flat-chev" width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                        {{ $child->name }}
+                                    </a>
                                     @endforeach
-                                </ul>
+                                    <div class="mega-flat-more-sep"></div>
+                                    <a href="{{ route('products.category', $cat->slug) }}" class="mega-flat-all">See all ({{ $childCount }}) →</a>
+                                </div>
+                                @endforeach
+
+                                {{-- Row divider --}}
+                                @if($row1Cats->isNotEmpty() && $row2Cats->isNotEmpty())
+                                <div class="mega-flat-row-divider"></div>
                                 @endif
+
+                                {{-- Row 2: categories with 5 or fewer sub-items --}}
+                                @foreach($row2Cats as $cat)
+                                <div class="mega-flat-col">
+                                    <a href="{{ route('products.category', $cat->slug) }}" class="mega-flat-title">{{ $cat->name }}</a>
+                                    <div class="mega-flat-line"></div>
+                                    @foreach($cat->children->take(5) as $child)
+                                    <a href="{{ route('products.category', $child->slug) }}" class="mega-flat-item{{ optional(request()->route('category'))->slug === $child->slug ? ' is-active' : '' }}">
+                                        <svg class="mega-flat-chev" width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                        {{ $child->name }}
+                                    </a>
+                                    @endforeach
+                                    @if($cat->children->isNotEmpty())
+                                    <a href="{{ route('products.category', $cat->slug) }}" class="mega-flat-all">View all →</a>
+                                    @endif
+                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
+
+                            {{-- Right: featured panel --}}
+                            <div class="mega-feat">
+                                <div class="mega-feat-imgwrap">
+                                    <img src="/images/cinnamon-feature.png" alt="Featured Collection" class="mega-feat-img" loading="lazy"
+                                         onerror="this.src='/images/spice-flatlay.png'">
+                                    <div class="mega-feat-overlay"></div>
+                                </div>
+                                <div class="mega-feat-body">
+                                    <span class="mega-feat-label">Featured Collection</span>
+                                    <h3 class="mega-feat-title">Pure Ceylon Cinnamon</h3>
+                                    <p class="mega-feat-desc">The true taste of Sri Lanka, naturally exceptional.</p>
+                                    <a href="{{ route('products.index') }}" class="mega-feat-cta">
+                                        Shop Collection
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Bottom quick-link strip --}}
+                        <div class="mega-strip">
+                            <div class="mega-strip-links">
+                                <a href="{{ route('products.index') }}" class="mega-strip-link">
+                                    <span class="mega-strip-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                                    New Arrivals
+                                </a>
+                                <span class="mega-strip-div"></span>
+                                <a href="{{ route('products.index') }}?sort=popular" class="mega-strip-link">
+                                    <span class="mega-strip-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                                    Best Sellers
+                                </a>
+                                <span class="mega-strip-div"></span>
+                                <a href="{{ route('export') }}" class="mega-strip-link">
+                                    <span class="mega-strip-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>
+                                    Export Range
+                                </a>
+                                <span class="mega-strip-div"></span>
+                                <a href="{{ route('contact') }}" class="mega-strip-link">
+                                    <span class="mega-strip-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span>
+                                    Wholesale Enquiries
+                                </a>
+                            </div>
+                            <a href="{{ route('products.index') }}" class="mega-strip-all">
+                                View All Products
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'About Us — Ceylon Aroma Commodities')
+@section('title', 'About Us — Ceylon Aroma Commodities Exports (Private) Limited')
 @section('meta_description', 'Ceylon Aroma is a Sri Lanka B2B exporter of natural spices, teas, coffees and oils. 25+ years of experience, ISO 22000 certified, serving importers in 60+ countries.')
 @section('content')
 
@@ -13,12 +13,14 @@
 </div>
 
 {{-- ── Who We Are ── --}}
-<section class="section">
+<section class="section about-who-section">
     <div class="container">
         <div class="about-intro-grid">
             <div>
                 <span class="section-label">Who We Are</span>
+                <div class="about-intro-accent" aria-hidden="true"></div>
                 <h2 class="section-title">About Ceylon Aroma</h2>
+                <p class="about-legal-name">Ceylon Aroma Commodities Exports (Private) Limited</p>
                 <p class="about-intro-body">
                     Ceylon Aroma is a Kegalle-based spice, tea, and coffee exporter supplying food manufacturers, importers, wholesalers, and private label brands worldwide. We are not a trading company — we work directly with growers and processors in Sri Lanka's agricultural communities, buying at source, processing in our own ISO 22000-certified facility, and exporting under our own documentation.
                 </p>
@@ -28,16 +30,34 @@
                 <p class="about-intro-body">
                     For over 25 years, we have built what we believe is the most commercially rigorous spice export operation in Sri Lanka — because the buyers who have worked with us for a decade know: the moment a shipment clears EU customs without a single query, that is where reputation is made.
                 </p>
-                <div class="about-intro-cta">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary">Explore Products</a>
-                    <a href="{{ route('contact') }}" class="btn btn-outline">Export Inquiry</a>
-                </div>
+                <ul class="about-intro-facts">
+                    <li>Direct from Sri Lankan growers — no trading-company intermediaries</li>
+                    <li>Own ISO 22000-certified processing facility in Kegalle</li>
+                    <li>Export documentation completed within 48 hours of dispatch</li>
+                </ul>
             </div>
             <div class="about-img-col">
-                <img src="/images/ceylonaroma4.png" alt="Ceylon Aroma Spices" class="about-main-img">
-                <div class="about-stat-pill">
-                    <span class="about-stat-num">60+</span>
-                    <span class="about-stat-lbl">Countries Exported</span>
+                <div class="about-logo-frame">
+                    <img src="/images/ceylonaroma4.png" alt="Ceylon Aroma" class="about-main-img">
+                    <span class="about-logo-origin">Kegalle, Sri Lanka</span>
+                </div>
+                <div class="about-stats-strip">
+                    <div class="about-stat-block">
+                        <span class="about-stat-block-num">60+</span>
+                        <span class="about-stat-block-lbl">Countries</span>
+                    </div>
+                    <div class="about-stat-block">
+                        <span class="about-stat-block-num">25+</span>
+                        <span class="about-stat-block-lbl">Years Export</span>
+                    </div>
+                    <div class="about-stat-block">
+                        <span class="about-stat-block-num">ISO</span>
+                        <span class="about-stat-block-lbl">22000 Certified</span>
+                    </div>
+                </div>
+                <div class="about-img-cta">
+                    <a href="{{ route('products.index') }}" class="btn btn-primary">Explore Products</a>
+                    <a href="{{ route('contact') }}" class="btn btn-outline">Export Inquiry</a>
                 </div>
             </div>
         </div>

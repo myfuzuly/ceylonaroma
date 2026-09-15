@@ -22,9 +22,9 @@
             {{-- Category filter pills --}}
             @if($categories->count())
             <nav class="blog-filter-pills" aria-label="Filter articles by category">
-                <a href="{{ route('blog.index') }}" class="bfp {{ !request('category') ? 'bfp--active' : '' }}">All Articles</a>
+                <a href="{{ route('blog.index') }}" class="bfp {{ !($activeCategory ?? null) ? 'bfp--active' : '' }}">All Articles</a>
                 @foreach($categories as $cat)
-                <a href="{{ route('blog.index', ['category' => $cat]) }}" class="bfp {{ request('category') === $cat ? 'bfp--active' : '' }}">{{ $cat }}</a>
+                <a href="{{ route('blog.category', \Illuminate\Support\Str::slug($cat)) }}" class="bfp {{ ($activeCategory ?? null) === $cat ? 'bfp--active' : '' }}">{{ $cat }}</a>
                 @endforeach
             </nav>
             @endif
@@ -90,9 +90,9 @@
             <div class="sidebar-card">
                 <h4>Categories</h4>
                 <div class="blog-cats-list">
-                    <a href="{{ route('blog.index') }}" class="{{ !request('category') ? 'active' : '' }}">All Articles</a>
+                    <a href="{{ route('blog.index') }}" class="{{ !($activeCategory ?? null) ? 'active' : '' }}">All Articles</a>
                     @foreach($categories as $cat)
-                    <a href="{{ route('blog.index', ['category' => $cat]) }}" class="{{ request('category') === $cat ? 'active' : '' }}">{{ $cat }}</a>
+                    <a href="{{ route('blog.category', \Illuminate\Support\Str::slug($cat)) }}" class="{{ ($activeCategory ?? null) === $cat ? 'active' : '' }}">{{ $cat }}</a>
                     @endforeach
                 </div>
             </div>

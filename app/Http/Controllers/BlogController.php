@@ -7,21 +7,33 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, string $category = null)
     {
         $request->validate([
             'category' => 'nullable|string|max:100',
             'page'     => 'nullable|integer|min:1|max:9999',
         ]);
 
-        $query = BlogPost::where('status', true)->orderByDesc('published_at');
-        if ($request->category) {
-            $query->where('category', substr(trim($request->category), 0, 100));
-        }
-        $posts = $query->paginate(9)->withQueryString();
         $categories = BlogPost::where('status', true)->distinct()->pluck('category')->filter();
 
-        return view('blog.index', compact('posts','categories'));
+        // Resolve category: route segment slug takes priority over query string
+        $activeCategory = null;
+        if ($category !== null) {
+            // Match slug to actual DB category name
+            $activeCategory = $categories->first(
+                fn($cat) => \Illuminate\Support\Str::slug($cat) === $category
+            );
+        } elseif ($request->category) {
+            $activeCategory = substr(trim($request->category), 0, 100);
+        }
+
+        $query = BlogPost::where('status', true)->orderByDesc('published_at');
+        if ($activeCategory) {
+            $query->where('category', $activeCategory);
+        }
+        $posts = $query->paginate(9)->withQueryString();
+
+        return view('blog.index', compact('posts', 'categories', 'activeCategory'));
     }
 
     public function show(BlogPost $blog_post)

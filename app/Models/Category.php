@@ -11,9 +11,13 @@ class Category extends Model
 
     protected $fillable = [
         'parent_id', 'name', 'slug', 'description', 'image', 'icon', 'sort_order', 'status',
+        'show_in_nav', 'nav_order',
     ];
 
-    protected $casts = ['status' => 'boolean'];
+    protected $casts = [
+        'status'      => 'boolean',
+        'show_in_nav' => 'boolean',
+    ];
 
     public function products()
     {
