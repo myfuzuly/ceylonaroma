@@ -683,6 +683,21 @@ textarea.form-control{resize:vertical;min-height:120px}
 .contact-tel{color:inherit;text-decoration:none;transition:color .18s}
 .contact-tel:hover{color:var(--canopy)}
 .contact-tel-sub{font-size:.82em;opacity:.65;display:block;margin-top:.2rem}
+.contact-info-item--link{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem;padding:.85rem 1rem;border-radius:12px;border:1px solid var(--border,rgba(0,0,0,.08));text-decoration:none;color:inherit;transition:background .18s,border-color .18s,box-shadow .18s;cursor:pointer}
+.contact-info-item--link:hover{background:var(--parchment);border-color:var(--sage,#7aab8a);box-shadow:0 2px 12px rgba(45,106,79,.07)}
+.contact-info-item--link:last-of-type{margin-bottom:0}
+.contact-info-icon--wa{background:rgba(37,211,102,.12);color:#25d366}
+.contact-info-icon--hotline{background:rgba(45,106,79,.1);color:var(--canopy)}
+.contact-info-icon--landline{background:rgba(120,100,60,.1);color:var(--earth,#8b6914)}
+.contact-info-item--link .contact-info-text{flex:1;min-width:0}
+.contact-info-item--link .contact-info-text strong{font-size:.75rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem}
+.contact-phone-num{display:block;font-size:1rem;font-weight:600;color:var(--canopy);letter-spacing:.01em;line-height:1.2}
+.contact-phone-hint{display:block;font-size:.78rem;color:var(--muted);margin-top:.1rem;opacity:.8}
+.contact-action-chip{flex-shrink:0;display:inline-flex;align-items:center;padding:.3rem .75rem;border-radius:999px;font-size:.75rem;font-weight:600;letter-spacing:.03em;transition:background .18s,color .18s}
+.contact-action-chip--wa{background:rgba(37,211,102,.15);color:#1a9e50}
+.contact-info-item--link:hover .contact-action-chip--wa{background:#25d366;color:#fff}
+.contact-action-chip--call{background:rgba(45,106,79,.1);color:var(--canopy)}
+.contact-info-item--link:hover .contact-action-chip--call{background:var(--canopy);color:#fff}
 .contact-promise-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem}
 .contact-promise-list li{display:flex;align-items:center;gap:.6rem;font-size:.875rem;color:var(--ink);line-height:1.5}
 .contact-promise-list li svg{color:var(--canopy);flex-shrink:0}
