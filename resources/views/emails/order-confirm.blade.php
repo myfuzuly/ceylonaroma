@@ -62,7 +62,7 @@ p{line-height:1.65;color:#3a4a3e;margin:0 0 1rem;font-size:.93rem}
             <a href="{{ $trackUrl }}" class="btn">Track Your Order</a>
         </p>
 
-        <p>Questions? Reply to this email or reach us at <a href="mailto:info@ceylonaroma.com" style="color:#2d6a4f">info@ceylonaroma.com</a> or <a href="tel:+94718821234" style="color:#2d6a4f">+94 71 882 1234</a>.</p>
+        <p>Questions? Reply to this email or reach us at <a href="mailto:info@ceylonaroma.com" style="color:#2d6a4f">info@ceylonaroma.com</a> or <a href="tel:+94712930930" style="color:#2d6a4f">+94 712 930 930</a>.</p>
     </div>
     <div class="footer">
         &copy; {{ date('Y') }} Ceylon Aroma Commodities Exports (Pvt) Ltd &middot; Kegalle, Sri Lanka

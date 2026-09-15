@@ -9,7 +9,7 @@ return new class extends Migration
     {
         DB::table('settings')->updateOrInsert(
             ['key' => 'phone_whatsapp'],
-            ['value' => '94718821234', 'updated_at' => now(), 'created_at' => now()]
+            ['value' => '94712930930', 'updated_at' => now(), 'created_at' => now()]
         );
     }
 

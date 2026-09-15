@@ -47,7 +47,7 @@
                 <strong>Ceylon Aroma Commodities Exports (Pvt) Ltd</strong><br>
                 No: F – 05, New City Building, Nidahas Mawatha, Kegalle, Sri Lanka<br>
                 Email: <a href="mailto:info@ceylonaroma.com" style="color:var(--forest)">info@ceylonaroma.com</a><br>
-                Phone: <a href="tel:+94718821234" style="color:var(--forest)">+94 71 882 1234</a>
+                Phone: <a href="tel:+94712930930" style="color:var(--forest)">+94 712 930 930</a>
             </p>
 
             <h2>11. Changes to These Terms</h2>
