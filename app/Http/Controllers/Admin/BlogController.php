@@ -56,16 +56,19 @@ class BlogController extends Controller
             'excerpt'      => 'nullable|string|max:500',
             'content'      => 'nullable|string',
             'image'        => 'nullable|image|max:2048',
+            'image_url'    => 'nullable|string|max:500',
             'published_at' => 'nullable|date',
             'status'       => 'boolean',
         ]);
         $data['status'] = $request->boolean('status', true);
         if ($request->boolean('remove_image')) {
             $data['image'] = null;
-        }
-        if ($request->hasFile('image')) {
+        } elseif ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('blog','public');
+        } elseif ($request->filled('image_url')) {
+            $data['image'] = $request->input('image_url');
         }
+        unset($data['image_url']);
         $blog->update($data);
         return redirect()->route('admin.blog.index')->with('success','Post updated.');
     }
